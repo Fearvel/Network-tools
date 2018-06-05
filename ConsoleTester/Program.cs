@@ -5,6 +5,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using de.fearvel.net;
+using de.fearvel.net.Ping;
+
 namespace ConsoleTester
 {
     class Program

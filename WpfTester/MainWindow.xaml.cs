@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using de.fearvel.net;
+using de.fearvel.net.Ping;
 
 namespace WpfTester
 {

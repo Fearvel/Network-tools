@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Net.NetworkInformation;
+using System.Threading;
 
-namespace de.fearvel.net
+namespace de.fearvel.net.Ping
 {
     public class FPing
     {
@@ -115,7 +111,7 @@ namespace de.fearvel.net
 
         public TimeSpan CalculateEstimatedTime()
         {
-            Double timeEst = CalculateIpRangeIpAddresses().Count * 0.025;
+            Double timeEst = CalculateIpRangeIpAddresses().Count * 0.035;
             return new TimeSpan((((((int)timeEst) / 60) / 60) / 24) % 60,
                 ((((int)timeEst) / 60) / 60) % 60,
                 (((int)timeEst) / 60) % 60,
