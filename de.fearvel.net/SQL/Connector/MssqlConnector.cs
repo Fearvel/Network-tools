@@ -43,5 +43,9 @@ namespace de.fearvel.net.SQL.Connector
         {
             base.NonQuery(new SqlCommand(sqlCmd, (SqlConnection)Connect));
         }
+        public SqlConnection GetConnection()
+        {
+            return (SqlConnection)Connect;
+        }
     }
 }

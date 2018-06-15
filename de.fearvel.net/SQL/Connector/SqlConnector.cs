@@ -37,5 +37,6 @@ namespace de.fearvel.net.SQL.Connector
         public bool IsOpen => Connect != null;
         public abstract DataTable Query(string sqlCmd);
         public abstract void NonQuery(string sqlCmd);
+        
     }
 }

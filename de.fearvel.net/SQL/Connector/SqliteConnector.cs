@@ -41,5 +41,10 @@ namespace de.fearvel.net.SQL.Connector
         {
             base.NonQuery(new SQLiteCommand(sqlCmd, (SQLiteConnection)Connect));
         }
+
+        public SQLiteConnection GetConnection()
+        {
+            return (SQLiteConnection) Connect;
+        }
     }
 }

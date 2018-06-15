@@ -34,5 +34,9 @@ namespace de.fearvel.net.SQL.Connector
         {
             base.NonQuery(new MySqlCommand(sqlCmd, (MySqlConnection)Connect));
         }
+        public MySqlConnection GetConnection()
+        {
+            return (MySqlConnection)Connect;
+        }
     }
 }
