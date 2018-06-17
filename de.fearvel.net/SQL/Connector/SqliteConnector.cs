@@ -34,12 +34,12 @@ namespace de.fearvel.net.SQL.Connector
 
         public override DataTable Query(string sqlCmd)
         {
-            return base.Query(new SQLiteCommand(sqlCmd, (SQLiteConnection)Connect));
+            return base.Query(new SQLiteCommand(sqlCmd));
         }
 
         public override void NonQuery(string sqlCmd)
         {
-            base.NonQuery(new SQLiteCommand(sqlCmd, (SQLiteConnection)Connect));
+            base.NonQuery(new SQLiteCommand(sqlCmd));
         }
 
         public SQLiteConnection GetConnection()

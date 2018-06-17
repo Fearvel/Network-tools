@@ -27,13 +27,14 @@ namespace de.fearvel.net.SQL.Connector
 
         public override DataTable Query(string sqlCmd)
         {
-            return base.Query(new MySqlCommand(sqlCmd, (MySqlConnection)Connect));
+            return base.Query(new MySqlCommand(sqlCmd));
         }
 
         public override void NonQuery(string sqlCmd)
         {
-            base.NonQuery(new MySqlCommand(sqlCmd, (MySqlConnection)Connect));
+            base.NonQuery(new MySqlCommand(sqlCmd));
         }
+
         public MySqlConnection GetConnection()
         {
             return (MySqlConnection)Connect;

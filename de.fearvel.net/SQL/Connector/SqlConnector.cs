@@ -11,16 +11,18 @@ namespace de.fearvel.net.SQL.Connector
 
         public DataTable Query(DbCommand com)
         {
-            var command = com;
+            com.Connection = Connect;
             var dt = new DataTable();
-            dt.Load(command.ExecuteReader());
+            dt.Load(com.ExecuteReader());
             return dt;
         }
+
         public void NonQuery(DbCommand com)
         {
-            var command = com;
-            command.ExecuteNonQuery();
+            com.Connection = Connect;
+            com.ExecuteNonQuery();
         }
+
         public void Close()
         {
             if (IsOpen)
