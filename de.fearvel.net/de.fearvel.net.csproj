@@ -78,6 +78,7 @@
     <Compile Include="SQL\Connector\MysqlConnector.cs" />
     <Compile Include="SQL\Connector\SqlConnector.cs" />
     <Compile Include="SQL\Connector\SqliteConnector.cs" />
+    <Compile Include="WebRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
