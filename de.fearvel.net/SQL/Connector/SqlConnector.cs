@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace de.fearvel.net.SQL.Connector
 {
@@ -9,12 +10,21 @@ namespace de.fearvel.net.SQL.Connector
         protected DbConnection Connect = null;
         protected DbConnectionStringBuilder ConStr;
 
-        public DataTable Query(DbCommand com)
+        public void Query(DbCommand com, out DataTable dt)
         {
             com.Connection = Connect;
-            var dt = new DataTable();
+            dt = new DataTable();
             dt.Load(com.ExecuteReader());
-            return dt;
+        }
+
+        public void Query(DbCommand com, out DataSet ds)
+        {
+            com.Connection = Connect;
+            var da = new SqlDataAdapter();
+            com.Connection = Connect;
+            da.SelectCommand = (SqlCommand)com;
+            ds = new DataSet();
+            da.Fill(ds);
         }
 
         public void NonQuery(DbCommand com)
@@ -37,8 +47,9 @@ namespace de.fearvel.net.SQL.Connector
             }
         }
         public bool IsOpen => Connect != null;
-        public abstract DataTable Query(string sqlCmd);
+        public abstract void Query(string sqlCmd, out DataTable dt);
+        public abstract void Query(string sqlCmd, out DataSet ds);
         public abstract void NonQuery(string sqlCmd);
-        
+
     }
 }

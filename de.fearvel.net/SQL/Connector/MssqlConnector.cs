@@ -34,9 +34,13 @@ namespace de.fearvel.net.SQL.Connector
             Connect.Open();
         }
 
-        public override DataTable Query(string sqlCmd)
+        public override void Query(string sqlCmd, out DataSet ds)
         {
-            return base.Query(new SqlCommand(sqlCmd));
+            base.Query(new SqlCommand(sqlCmd), out ds);
+        }
+        public override void Query(string sqlCmd, out DataTable dt)
+        {
+            base.Query(new SqlCommand(sqlCmd), out dt);
         }
 
         public override void NonQuery(string sqlCmd)

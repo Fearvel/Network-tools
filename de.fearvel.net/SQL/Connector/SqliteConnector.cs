@@ -32,9 +32,13 @@ namespace de.fearvel.net.SQL.Connector
             ((SQLiteConnection)Connect).ChangePassword(pass);
         }
 
-        public override DataTable Query(string sqlCmd)
+        public override void Query(string sqlCmd, out  DataTable dt)
         {
-            return base.Query(new SQLiteCommand(sqlCmd));
+            base.Query(new SQLiteCommand(sqlCmd),out dt);
+        }
+        public override void Query(string sqlCmd, out DataSet ds)
+        {
+            base.Query(new SQLiteCommand(sqlCmd), out ds);
         }
 
         public override void NonQuery(string sqlCmd)
