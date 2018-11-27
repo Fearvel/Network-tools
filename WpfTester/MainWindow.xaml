@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox HorizontalAlignment="Left" Height="100" Margin="287,130,0,0" VerticalAlignment="Top" Width="100" Name="lbox"/>
+        <ListBox HorizontalAlignment="Left" Height="100" Margin="287,130,0,0" VerticalAlignment="Top" Width="100" Name="lbox" Visibility="Hidden"/>
+        <DataGrid  x:Name="DataGrid"/>
 
     </Grid>
 </Window>

@@ -25,7 +25,6 @@ namespace de.fearvel.net
             {
                 client.Dispose();
             }
-
             return ms;
         }
 
@@ -38,39 +37,22 @@ namespace de.fearvel.net
             f.Close();
         }
 
-        public static string SendPostRequest(List<RequestDataPackage> data, string serverUrl, bool trustedCertificateOnly = true)
+        public static string SendPostRequest(Dictionary<string, string> data, string serverUrl, bool trustedCertificateOnly = true)
         {
             using (WebClient client = new WebClient())
             {
                 if (!trustedCertificateOnly)
                     ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
                 NameValueCollection postData = new NameValueCollection();
-                foreach (var var in data)
+                foreach (var itm in data)
                 {
-                    postData.Add(var.Identifier, var.Data);
+                    postData.Add(itm.Key, itm.Value);
                 }
                 return Encoding.UTF8.GetString(client.UploadValues(serverUrl, postData));
             }
         }
 
-        private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
-        {
-            // all Certificates are accepted
-            return true;
-        }
-
-        public class RequestDataPackage
-        {
-            public string Identifier;
-            public string Data;
-
-            public RequestDataPackage(string identifier, string data)
-            {
-                Identifier = identifier;
-                Data = data;
-            }
-            public RequestDataPackage() { }
-        }
-
+        private static bool TrustCertificate(object sender, X509Certificate x509Certificate,
+            X509Chain x509Chain, SslPolicyErrors sslPolicyErrors) => true; // all Certificates are accepted
     }
 }

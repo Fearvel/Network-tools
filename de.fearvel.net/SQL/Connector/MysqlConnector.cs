@@ -5,12 +5,13 @@ namespace de.fearvel.net.SQL.Connector
 {
     public class MysqlConnector : SqlConnector
     {
-        public MysqlConnector(string address, int port, string database, string username, string password, bool sslm)
-        {
+        public MysqlConnector(string address, int port, string database,
+            string username, string password, bool sslm) =>
             ConnectToDatabase(address, port, database, username, password, sslm);
-        }
 
-        private void ConnectToDatabase(string address, int port, string database, string username, string password, bool sslm)
+
+        private void ConnectToDatabase(string address, int port, string database,
+            string username, string password, bool sslm)
         {
             ConStr = new MySqlConnectionStringBuilder
             {
@@ -22,26 +23,18 @@ namespace de.fearvel.net.SQL.Connector
                 SslMode = sslm ? MySqlSslMode.Required : MySqlSslMode.None
             };
             Connect = new MySqlConnection(ConStr.ConnectionString);
-            Connect.Open();
         }
 
-        public override void Query(string sqlCmd, out DataSet ds)
-        {
+        public override void Query(string sqlCmd, out DataSet ds) =>
             base.Query(new MySqlCommand(sqlCmd), out ds);
-        }
-        public override void Query(string sqlCmd, out DataTable dt)
-        {
+
+        public override void Query(string sqlCmd, out DataTable dt) =>
             base.Query(new MySqlCommand(sqlCmd), out dt);
-        }
 
-        public override void NonQuery(string sqlCmd)
-        {
+
+        public override void NonQuery(string sqlCmd) =>
             base.NonQuery(new MySqlCommand(sqlCmd));
-        }
 
-        public MySqlConnection GetConnection()
-        {
-            return (MySqlConnection)Connect;
-        }
+        public MySqlConnection GetConnection() => (MySqlConnection)Connect;
     }
 }

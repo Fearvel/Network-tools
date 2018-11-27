@@ -3,43 +3,39 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
+using de.fearvel.net.DataTypes;
 
-namespace de.fearvel.net.Ping
+namespace de.fearvel.net
 {
-    public class FPing
+    public class FnPing
     {
-        private IPAddress StartIpAddress { get; set; }
-        private IPAddress EndIpAddress { get; set; }
+        private readonly IPAddress _startIpAddress;
+        private readonly IPAddress _endIpAddress;
 
-        public FPing(IPAddress startIpAddress, IPAddress endIpAddress)
+        public FnPing(IPAddress startIpAddress, IPAddress endIpAddress)
         {
-            StartIpAddress = startIpAddress;
-            EndIpAddress = endIpAddress;
-        }
-        /// <summary>
-        ///     Gets the alive network hosts.
-        /// </summary>
-        /// <returns></returns>
-        public FPingResult RangePing(int timeout = 1)
-        {
-            return PingThreadControl(CalculateIpRangeIpAddresses(), timeout);
+            _startIpAddress = startIpAddress;
+            _endIpAddress = endIpAddress;
         }
 
+        public FnPingResult RangePing(int timeout = 1) =>
+            PingThreadControl(CalculateIpRangeIpAddresses(), timeout);
+        
         private List<IPAddress> CalculateIpRangeIpAddresses()
         {
             var list = new List<IPAddress>();
-            int i = StartIpAddress.GetAddressBytes()[0];
-            int k = StartIpAddress.GetAddressBytes()[1];
-            int j = StartIpAddress.GetAddressBytes()[2];
-            int l = StartIpAddress.GetAddressBytes()[3];
-            byte b = EndIpAddress.GetAddressBytes()[0];
-            for (; i <= EndIpAddress.GetAddressBytes()[0]; i++)
+            int i = _startIpAddress.GetAddressBytes()[0];
+            int k = _startIpAddress.GetAddressBytes()[1];
+            int j = _startIpAddress.GetAddressBytes()[2];
+            int l = _startIpAddress.GetAddressBytes()[3];
+            byte b = _endIpAddress.GetAddressBytes()[0];
+            for (; i <= _endIpAddress.GetAddressBytes()[0]; i++)
             {
-                for (; k <= EndIpAddress.GetAddressBytes()[1]; k++)
+                for (; k <= _endIpAddress.GetAddressBytes()[1]; k++)
                 {
-                    for (; j <= EndIpAddress.GetAddressBytes()[2]; j++)
+                    for (; j <= _endIpAddress.GetAddressBytes()[2]; j++)
                     {
-                        for (; l <= EndIpAddress.GetAddressBytes()[3]; l++)
+                        for (; l <= _endIpAddress.GetAddressBytes()[3]; l++)
                         {
                             list.Add(
                                 new IPAddress(
@@ -61,16 +57,10 @@ namespace de.fearvel.net.Ping
             return list;
         }
 
-        /// <summary>
-        ///     Pings the specified ips.
-        /// </summary>
-        /// <param name="ips">The ips.</param>
-        /// <param name="timeout"></param>
-        /// <returns></returns>
-        private FPingResult PingThreadControl(List<IPAddress> ips, int timeout = 5000)
+        private FnPingResult PingThreadControl(List<IPAddress> ips, int timeout = 5000)
         {
             var ipCount = 0;
-            var ipResult = new FPingResult();
+            var ipResult = new FnPingResult();
             foreach (var ip in ips)
             {
                 ipCount++;
@@ -91,23 +81,16 @@ namespace de.fearvel.net.Ping
 
                 ThreadPool.QueueUserWorkItem(ThreadedPing);
             }
-            do
-            {
-            } while (ipCount > 0);
+            do{} while (ipCount > 0);
+
             ipResult.End();
             return ipResult;
         }
 
-        public IPStatus GetIpStatus(IPAddress ip)
-        {
-            return GetIpStatus(ip, 5000);
-        }
-        public IPStatus GetIpStatus(IPAddress ip, int timeout)
-        {
-            var ping = new System.Net.NetworkInformation.Ping();
-            var pingReply = ping.Send(ip, timeout);
-            return pingReply?.Status ?? IPStatus.BadDestination;
-        }
+        public IPStatus GetIpStatus(IPAddress ip) => GetIpStatus(ip, 5000);
+
+        public IPStatus GetIpStatus(IPAddress ip, int timeout) =>
+            new System.Net.NetworkInformation.Ping().Send(ip, timeout)?.Status ?? IPStatus.BadDestination;
 
         public TimeSpan CalculateEstimatedTime()
         {
@@ -118,6 +101,5 @@ namespace de.fearvel.net.Ping
                 ((int)timeEst) % 60 + 1,
                 (int)((timeEst % 1) * 1000));
         }
-
     }
 }
