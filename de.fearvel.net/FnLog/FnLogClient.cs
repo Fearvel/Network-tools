@@ -14,8 +14,9 @@ namespace de.fearvel.net.FnLog
         {
             DateTime startTime = DateTime.Now;
             bool wait = true;
-            var socket = GetSocket(serverUrl, acceptSelfSigned);
 
+            var socket = GetSocket(serverUrl, acceptSelfSigned);
+            
             socket.On(Socket.EVENT_CONNECT, () =>
             {
                 socket.Emit("log", log.Serialize());
@@ -23,16 +24,17 @@ namespace de.fearvel.net.FnLog
 
             socket.On("closingAnswer", (data) =>
             {
-                Debug.WriteLine(data);
-                wait = false;
                 socket.Disconnect();
             });
 
             socket.On("info", (data) =>
             {
-                Debug.WriteLine(data);
             });
 
+            socket.On(Socket.EVENT_DISCONNECT, () =>
+            {
+                wait = false;
+            });
             while (wait && startTime.AddSeconds(20).CompareTo(DateTime.Now) >= 0) { }
 
         }

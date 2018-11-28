@@ -17,7 +17,7 @@ namespace ConsoleLogTest
 
 
             FnLog.SetInstance(
-                new FnLogInitPackage("https://localhost:6544","TESTERV",new Version(1,1,1,1),FnLog.TelemetryType.LogLocalAndSendErrorsAndWarnings,"fnlog.db","") 
+                new FnLogInitPackage("https://log.fearvel.de:9024", "TESTERV",new Version(1,1,1,1),FnLog.TelemetryType.LogLocalAndSendErrorsAndWarnings,"fnlog.db","") 
                );
             FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
             FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");

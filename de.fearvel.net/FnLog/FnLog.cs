@@ -61,8 +61,8 @@ namespace de.fearvel.net.FnLog
                         _logClient.SendLog(new Log()
                         {
                             ProgramName = _fnLogInitPackage.ProgramName,
-                            ProgramVersion = FnLogClientVersion.ToString(),
-                            FnLogVersion = _fnLogInitPackage.ProgramVersion.ToString(),
+                            FnLogVersion = FnLogClientVersion.ToString(),
+                            ProgramVersion = _fnLogInitPackage.ProgramVersion.ToString(),
                             Guid = _localLog.Guid.ToString(),
                             LogType = (int)t,
                             Title = title,
