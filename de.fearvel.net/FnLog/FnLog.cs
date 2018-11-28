@@ -12,7 +12,6 @@ namespace de.fearvel.net.FnLog
         private static FnLog _instance;
         private readonly FnLogInitPackage _fnLogInitPackage;
 
-        private static FnLogClient _logClient;
         private static LocalLogger _localLog;
         public enum LogType : int { CriticalError, Error, Warning, Notice, RuntimeInfo };
         public enum TelemetryType : int { LogLocalOnly, LogLocalAndSendErrorsAndWarnings, LogLocalSendAll }
@@ -53,12 +52,8 @@ namespace de.fearvel.net.FnLog
                         _fnLogInitPackage.Telemetry == TelemetryType.LogLocalSendAll
                         )
                     {
-                        if (_logClient == null)
-                        {
-                            _logClient = new FnLogClient();
-                        }
                         _localLog.AddLog(t, title, description, true);
-                        _logClient.SendLog(new Log()
+                        FnLogClient.SendLog(new Log()
                         {
                             ProgramName = _fnLogInitPackage.ProgramName,
                             FnLogVersion = FnLogClientVersion.ToString(),

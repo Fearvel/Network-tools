@@ -40,10 +40,13 @@ namespace WpfTester
             //}
             try
             {
-                FnLogClient fc = new FnLogClient();
 
-                DataTable dt = fc.RetrieveAllLogs("https://localhost:6544", new ValueWrap() { Val = "aaaaaa" }, true);
-                DataGrid.ItemsSource = dt.DefaultView;
+               
+                
+                //var dt = de.fearvel.net.SocketIo.SocketIoClient.RetrieveSingleValue<DataTable>("https://localhost:9051",
+                //    "oidTable", "oid", new ValueWrap() { Val = "aaaaaa" }.Serialize());
+                //DataGrid.ItemsSource = dt.DefaultView;
+
             }
             catch (AccessKeyDeclinedException e)
             {
@@ -51,6 +54,13 @@ namespace WpfTester
             }
             
             
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+            DataGrid.ItemsSource = (await FnLogClient.RetrieveLogsAsync("https://localhost:9024", new ValueWrap() { Val = "aaaaaa" }, true)).DefaultView;
+
         }
     }
 }

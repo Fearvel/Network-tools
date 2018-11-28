@@ -97,7 +97,9 @@
     <Compile Include="DataTypes\KeyValueWrap.cs" />
     <Compile Include="DataTypes\Log.cs" />
     <Compile Include="DataTypes\SimpleResult.cs" />
+    <Compile Include="DataTypes\TimeDelay.cs" />
     <Compile Include="DataTypes\ValueWrap.cs" />
+    <Compile Include="Exceptions\ResultNullOrNotReceivedException.cs" />
     <Compile Include="Exceptions\AccessKeyDeclinedException.cs" />
     <Compile Include="Exceptions\InstanceNotSetException.cs" />
     <Compile Include="FnLog\Database\LocalLogger.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="FnPing.cs" />
     <Compile Include="DataTypes\FnPingResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SocketIo\SocketIoClient.cs" />
     <Compile Include="SQL\Connector\MssqlConnector.cs" />
     <Compile Include="SQL\Connector\MysqlConnector.cs" />
     <Compile Include="SQL\Connector\SqlConnector.cs" />

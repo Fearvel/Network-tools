@@ -1,6 +1,6 @@
-﻿using System;
-using System.Data;
-using System.Diagnostics;
+﻿using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 using de.fearvel.net.DataTypes;
 using de.fearvel.net.Exceptions;
 using Quobject.SocketIoClientDotNet.Client;
@@ -10,50 +10,87 @@ namespace de.fearvel.net.FnLog
 {
     public class FnLogClient
     {
-        public void SendLog(Log log, string serverUrl, bool acceptSelfSigned = true)
+        private class ThreadedLogSender
         {
-            DateTime startTime = DateTime.Now;
-            bool wait = true;
+            private Log _log;
+            private string _serverUrl;
+            private bool _acceptSelfSigned;
+            private int _timeout;
 
-            var socket = GetSocket(serverUrl, acceptSelfSigned);
-            
-            socket.On(Socket.EVENT_CONNECT, () =>
+            public ThreadedLogSender(Log log, string serverUrl, bool acceptSelfSigned = true, int timeout = 20000)
             {
-                socket.Emit("log", log.Serialize());
-            });
+                this._log = log;
+                this._serverUrl = serverUrl;
+                _timeout = timeout;
+                _acceptSelfSigned = acceptSelfSigned;
+            }
 
-            socket.On("closingAnswer", (data) =>
+            public void Send()
             {
-                socket.Disconnect();
-            });
+                new Thread(Sender).Start(); 
+            }
 
-            socket.On("info", (data) =>
+            private void Sender()
             {
-            });
+                var delay = new TimeDelay(_timeout);
+                bool wait = true;
+                var socket = SocketIo.SocketIoClient.GetSocket(_serverUrl, _acceptSelfSigned);
 
-            socket.On(Socket.EVENT_DISCONNECT, () =>
-            {
-                wait = false;
-            });
-            while (wait && startTime.AddSeconds(20).CompareTo(DateTime.Now) >= 0) { }
+                socket.On(Socket.EVENT_CONNECT, () =>
+                {
+                    socket.Emit("log", _log.Serialize());
+                });
 
+                socket.On("closingAnswer", (data) =>
+                {
+                    socket.Disconnect();
+                });
+
+                socket.On("info", (data) =>
+                {
+                });
+
+                socket.On(Socket.EVENT_DISCONNECT, () =>
+                {
+                    wait = false;
+                });
+                while (wait && delay.Locked) { }
+            }
         }
 
-        public DataTable RetrieveAllLogs(string serverUrl, ValueWrap accessKey,
-            bool acceptSelfSigned = true)
+        public static void SendLog(Log log, string serverUrl, bool acceptSelfSigned = true)
         {
-            DateTime startTime = DateTime.Now;
+            var a = new ThreadedLogSender(log, serverUrl, acceptSelfSigned);
+            a.Send();
+            //new ThreadedLogSender(log, serverUrl, acceptSelfSigned).Send();
+        }
+
+
+        public static async Task<DataTable> RetrieveLogsAsync(string serverUrl, ValueWrap accessKey,
+            bool acceptSelfSigned = true, int timeout = 5000) => 
+            await AsyncLogRetriever(serverUrl, accessKey, acceptSelfSigned, timeout);
+
+        private static Task<DataTable> AsyncLogRetriever(string serverUrl, ValueWrap accessKey,
+            bool acceptSelfSigned = true, int timeout = 5000) =>
+             Task.Run<DataTable>(() => RetrieveLogs(serverUrl, accessKey, acceptSelfSigned, timeout));
+
+
+        public static DataTable RetrieveLogs(string serverUrl, ValueWrap accessKey,
+            bool acceptSelfSigned = true, int timeout = 5000)
+        {
+            var delay = new TimeDelay(timeout);
             bool wait = true;
             bool result = false;
             DataTable dt = null;
 
-            var socket = GetSocket(serverUrl, acceptSelfSigned);
+            var socket = SocketIo.SocketIoClient.GetSocket(serverUrl, acceptSelfSigned);
             socket.On(Socket.EVENT_CONNECT, () =>
             {
                 socket.Emit("retrieve", accessKey.Serialize());
+
             });
 
-            socket.On("LogTable", (data) =>
+            socket.On("logTable", (data) =>
             {
                 dt = JsonConvert.DeserializeObject<DataTable>(data.ToString());
                 result = true;
@@ -71,18 +108,10 @@ namespace de.fearvel.net.FnLog
                 wait = false;
             });
 
-            while (wait && startTime.AddSeconds(20).CompareTo(DateTime.Now) >= 0) { }
+            while (wait && delay.Locked) { }
             if (!result)
                 throw new AccessKeyDeclinedException("AccessKey INVALID");
             return dt;
         }
-
-        private Socket GetSocket(string serverUrl, bool acceptSelfSigned = true) =>
-            acceptSelfSigned ?
-            IO.Socket(serverUrl, CreateOptionsSecure()) :
-            IO.Socket(serverUrl);
-
-        public static IO.Options CreateOptionsSecure() => new IO.Options
-        { Secure = true, IgnoreServerCertificateValidation = true };
     }
 }
