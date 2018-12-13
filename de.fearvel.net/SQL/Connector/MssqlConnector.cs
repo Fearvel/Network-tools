@@ -3,6 +3,9 @@ using System.Data.SqlClient;
 
 namespace de.fearvel.net.SQL.Connector
 {
+    /// <summary>
+    /// Connector for MSSQL
+    /// </summary>
     public class MssqlConnector : SqlConnector
     {
         /// <summary>
@@ -18,7 +21,15 @@ namespace de.fearvel.net.SQL.Connector
             string username, string password, bool sslmode) =>
             ConnectToDatabase(serverName, instance, database, username, password, sslmode);
 
-
+        /// <summary>
+        /// Creates A Database Connection
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="instance"></param>
+        /// <param name="database"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="sslmode"></param>
         public void ConnectToDatabase(string address, string instance, string database,
             string username, string password, bool sslmode)
         {
@@ -34,17 +45,35 @@ namespace de.fearvel.net.SQL.Connector
             Connect = new SqlConnection(ConStr.ConnectionString);
         }
 
+        /// <summary>
+        /// SQL Query
+        /// out DataSet
+        /// </summary>
+        /// <param name="sqlCmd"></param>
+        /// <param name="ds"></param>
         public override void Query(string sqlCmd, out DataSet ds) =>
             base.Query(new SqlCommand(sqlCmd), out ds);
 
+        /// <summary>
+        /// SQL Query
+        /// out DataTable
+        /// </summary>
+        /// <param name="sqlCmd"></param>
+        /// <param name="dt"></param>
         public override void Query(string sqlCmd, out DataTable dt) =>
             base.Query(new SqlCommand(sqlCmd), out dt);
 
-
+        /// <summary>
+        /// SQL NonQuery
+        /// </summary>
+        /// <param name="sqlCmd"></param>
         public override void NonQuery(string sqlCmd) =>
             base.NonQuery(new SqlCommand(sqlCmd));
 
+        /// <summary>
+        /// Getter for a SqlConnection
+        /// </summary>
+        /// <returns></returns>
         public SqlConnection GetConnection() => (SqlConnection)Connect;
-
     }
 }

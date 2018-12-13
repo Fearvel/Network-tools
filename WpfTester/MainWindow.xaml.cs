@@ -16,8 +16,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using de.fearvel.net;
 using de.fearvel.net.DataTypes;
+using de.fearvel.net.DataTypes.Exceptions;
+using de.fearvel.net.DataTypes.SocketIo;
 using de.fearvel.net.FnLog;
-using de.fearvel.net.Exceptions;
 
 
 namespace WpfTester
@@ -59,7 +60,7 @@ namespace WpfTester
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
-            DataGrid.ItemsSource = (await FnLogClient.RetrieveLogsAsync("https://localhost:9024", new ValueWrap() { Val = "aaaaaa" }, true)).DefaultView;
+         //   DataGrid.ItemsSource = (await FnLogClient.RetrieveLogsAsync("https://localhost:9024", new ValueWrap() { Val = "aaaaaa" }, true)).DefaultView;
 
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using de.fearvel.net.DataTypes;
-using de.fearvel.net.Exceptions;
+using de.fearvel.net.DataTypes.Exceptions;
 using Quobject.SocketIoClientDotNet.Client;
 
 namespace de.fearvel.net.SocketIo
@@ -26,7 +26,10 @@ namespace de.fearvel.net.SocketIo
             socket.On(Socket.EVENT_CONNECT, () => { socket.Emit(senderEventName, senderEventValue); });
             socket.On(receiverEventName, (data) =>
             {
-                result = DataTypes.AbstractDataTypes.JsonSerializable<T>.DeSerialize((string)data);
+                result = data.GetType() == typeof(Newtonsoft.Json.Linq.JObject)
+                    ? DataTypes.AbstractDataTypes.JsonSerializable<T>.DeSerialize(
+                        ((Newtonsoft.Json.Linq.JObject) data).ToString().Replace("\r", "").Replace("\n", ""))
+                    : DataTypes.AbstractDataTypes.JsonSerializable<T>.DeSerialize((string) data);
                 socket.Disconnect();
             });
             socket.On(Socket.EVENT_DISCONNECT, () => { wait = false; });

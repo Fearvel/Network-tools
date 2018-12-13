@@ -7,17 +7,31 @@ using de.fearvel.net.DataTypes;
 
 namespace de.fearvel.net
 {
+    /// <summary>
+    /// Simple Ping Class
+    /// </summary>
     public class FnPing
     {
         private readonly IPAddress _startIpAddress;
         private readonly IPAddress _endIpAddress;
 
+        /// <summary>
+        /// Constructor
+        /// The Range will be defined here
+        /// </summary>
+        /// <param name="startIpAddress"></param>
+        /// <param name="endIpAddress"></param>
         public FnPing(IPAddress startIpAddress, IPAddress endIpAddress)
         {
             _startIpAddress = startIpAddress;
             _endIpAddress = endIpAddress;
         }
 
+        /// <summary>
+        /// Performs A Ping on all Addresses specified via constructor
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>           
         public FnPingResult RangePing(int timeout = 1) =>
             PingThreadControl(CalculateIpRangeIpAddresses(), timeout);
         
@@ -57,6 +71,12 @@ namespace de.fearvel.net
             return list;
         }
 
+        /// <summary>
+        /// Function to handle the threaded ping
+        /// </summary>
+        /// <param name="ips"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         private FnPingResult PingThreadControl(List<IPAddress> ips, int timeout = 5000)
         {
             var ipCount = 0;
@@ -87,11 +107,28 @@ namespace de.fearvel.net
             return ipResult;
         }
 
+        /// <summary>
+        /// Returns am IPStatus
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         public IPStatus GetIpStatus(IPAddress ip) => GetIpStatus(ip, 5000);
 
+        /// <summary>
+        /// Returns am IPStatus
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public IPStatus GetIpStatus(IPAddress ip, int timeout) =>
             new System.Net.NetworkInformation.Ping().Send(ip, timeout)?.Status ?? IPStatus.BadDestination;
 
+        /// <summary>
+        /// Calculates the theoretical Time the Planed ping will need
+        /// It expects Lan speed and latencies
+        /// on slower networks it will be inaccurate 
+        /// </summary>
+        /// <returns></returns>
         public TimeSpan CalculateEstimatedTime()
         {
             Double timeEst = CalculateIpRangeIpAddresses().Count * 0.035;

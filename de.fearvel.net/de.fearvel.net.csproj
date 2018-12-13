@@ -93,26 +93,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes\AbstractDataTypes\JsonSerializable.cs" />
-    <Compile Include="DataTypes\FnLogInitPackage.cs" />
-    <Compile Include="DataTypes\KeyValueWrap.cs" />
-    <Compile Include="DataTypes\Log.cs" />
-    <Compile Include="DataTypes\SimpleResult.cs" />
+    <Compile Include="DataTypes\Manastone\ManastoneActivationOffer.cs" />
+    <Compile Include="DataTypes\Manastone\ManastoneActivationRequest.cs" />
+    <Compile Include="DataTypes\Manastone\ManastoneDeactivationRequest.cs" />
+    <Compile Include="DataTypes\Manastone\ManastoneLicenseInformationOffer.cs" />
+    <Compile Include="DataTypes\Manastone\ManastoneLicenseInformationRequest.cs" />
+    <Compile Include="DataTypes\Manastone\ManastoneTokenOffer.cs" />
+    <Compile Include="DataTypes\Manastone\ManastoneTokenRequest.cs" />
+    <Compile Include="DataTypes\SocketIo\CommonResult.cs" />
+    <Compile Include="DataTypes\SocketIo\KeyValueWrap.cs" />
+    <Compile Include="DataTypes\SocketIo\OfferWrapper.cs" />
+    <Compile Include="DataTypes\SocketIo\SimpleOfferWrapper.cs" />
+    <Compile Include="DataTypes\SocketIo\SimpleResult.cs" />
     <Compile Include="DataTypes\TimeDelay.cs" />
-    <Compile Include="DataTypes\ValueWrap.cs" />
-    <Compile Include="Exceptions\ResultNullOrNotReceivedException.cs" />
-    <Compile Include="Exceptions\AccessKeyDeclinedException.cs" />
-    <Compile Include="Exceptions\InstanceNotSetException.cs" />
+    <Compile Include="DataTypes\SocketIo\ValueWrap.cs" />
+    <Compile Include="DataTypes\Exceptions\ResultNullOrNotReceivedException.cs" />
+    <Compile Include="DataTypes\Exceptions\AccessKeyDeclinedException.cs" />
+    <Compile Include="DataTypes\Exceptions\InstanceNotSetException.cs" />
+    <Compile Include="DataTypes\Exceptions\WrongDataTypeReceivedException.cs" />
     <Compile Include="FnLog\Database\LocalLogger.cs" />
     <Compile Include="FnLog\FnLogClient.cs" />
     <Compile Include="FnLog\FnLog.cs" />
     <Compile Include="FnPing.cs" />
     <Compile Include="DataTypes\FnPingResult.cs" />
+    <Compile Include="Manastone\ManastoneController.cs" />
+    <Compile Include="Manastone\ManastoneTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketIo\SocketIoClient.cs" />
     <Compile Include="SQL\Connector\MssqlConnector.cs" />
     <Compile Include="SQL\Connector\MysqlConnector.cs" />
     <Compile Include="SQL\Connector\SqlConnector.cs" />
     <Compile Include="SQL\Connector\SqliteConnector.cs" />
+    <Compile Include="Tools\DataTypeTools.cs" />
     <Compile Include="WebRequest.cs" />
   </ItemGroup>
   <ItemGroup>

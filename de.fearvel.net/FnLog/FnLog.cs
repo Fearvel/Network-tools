@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Data;
 using de.fearvel.net.FnLog.Database;
-using de.fearvel.net.DataTypes;
-using de.fearvel.net.Exceptions;
+using de.fearvel.net.DataTypes.AbstractDataTypes;
+using de.fearvel.net.DataTypes.Exceptions;
+
 namespace de.fearvel.net.FnLog
 {
 
     public class FnLog
     {
-        public static Version FnLogClientVersion => Version.Parse("2.0.0.0");
+        public static Version FnLogClientVersion => Version.Parse("2.0.1.0");
         private static FnLog _instance;
         private readonly FnLogInitPackage _fnLogInitPackage;
 
@@ -53,7 +54,7 @@ namespace de.fearvel.net.FnLog
                         )
                     {
                         _localLog.AddLog(t, title, description, true);
-                        FnLogClient.SendLog(new Log()
+                        FnLogClient.SendLog(new LogWrap()
                         {
                             ProgramName = _fnLogInitPackage.ProgramName,
                             FnLogVersion = FnLogClientVersion.ToString(),
@@ -78,5 +79,40 @@ namespace de.fearvel.net.FnLog
 
         public DataTable GetErrorsAndWarnings() =>
             _localLog.GetErrorsAndWarnings();
+
+
+        public class FnLogInitPackage : JsonSerializable<FnLogInitPackage>
+        {
+            public string LogServer;
+            public string ProgramName;
+            public Version ProgramVersion;
+            public TelemetryType Telemetry;
+            public string FileName;
+            public string EncryptionKey;
+
+            public FnLogInitPackage(string logServer, string programName,
+                Version programVersion, TelemetryType telemetry,
+                string fileName, string encryptionKey)
+            {
+                LogServer = logServer;
+                ProgramName = programName;
+                ProgramVersion = programVersion;
+                Telemetry = telemetry;
+                FileName = fileName;
+                EncryptionKey = encryptionKey;
+            }
+        }
+
+        public class LogWrap : JsonSerializable<LogWrap>
+        {
+            public string ProgramName;
+            public string ProgramVersion;
+            public string FnLogVersion;
+            public string Title;
+            public string Description;
+            public int LogType;
+            public string Guid;
+        }
     }
+
 }

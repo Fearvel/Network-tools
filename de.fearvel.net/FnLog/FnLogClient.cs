@@ -2,7 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using de.fearvel.net.DataTypes;
-using de.fearvel.net.Exceptions;
+using de.fearvel.net.DataTypes.Exceptions;
+using de.fearvel.net.DataTypes.SocketIo;
 using Quobject.SocketIoClientDotNet.Client;
 using Newtonsoft.Json;
 
@@ -12,12 +13,12 @@ namespace de.fearvel.net.FnLog
     {
         private class ThreadedLogSender
         {
-            private Log _log;
+            private FnLog.LogWrap _log;
             private string _serverUrl;
             private bool _acceptSelfSigned;
             private int _timeout;
 
-            public ThreadedLogSender(Log log, string serverUrl, bool acceptSelfSigned = true, int timeout = 20000)
+            public ThreadedLogSender(FnLog.LogWrap log, string serverUrl, bool acceptSelfSigned = true, int timeout = 20000)
             {
                 this._log = log;
                 this._serverUrl = serverUrl;
@@ -35,7 +36,7 @@ namespace de.fearvel.net.FnLog
                 var delay = new TimeDelay(_timeout);
                 bool wait = true;
                 var socket = SocketIo.SocketIoClient.GetSocket(_serverUrl, _acceptSelfSigned);
-
+                
                 socket.On(Socket.EVENT_CONNECT, () =>
                 {
                     socket.Emit("log", _log.Serialize());
@@ -58,7 +59,7 @@ namespace de.fearvel.net.FnLog
             }
         }
 
-        public static void SendLog(Log log, string serverUrl, bool acceptSelfSigned = true)
+        public static void SendLog(FnLog.LogWrap log, string serverUrl, bool acceptSelfSigned = true)
         {
             var a = new ThreadedLogSender(log, serverUrl, acceptSelfSigned);
             a.Send();
