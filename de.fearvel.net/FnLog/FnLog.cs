@@ -9,7 +9,7 @@ namespace de.fearvel.net.FnLog
 {
     public class FnLog
     {
-        public static Version FnLogClientVersion => Version.Parse("2.0.1.0");
+        public static Version FnLogClientVersion => Version.Parse("2.0.2.0");
         private static FnLog _instance;
         public static bool IsInitialized => _instance != null;
         private readonly FnLogInitPackage _fnLogInitPackage;
