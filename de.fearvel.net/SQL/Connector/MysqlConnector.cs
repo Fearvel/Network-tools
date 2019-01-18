@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.SQLite;
 using MySql.Data.MySqlClient;
 
 namespace de.fearvel.net.SQL.Connector
@@ -63,6 +64,28 @@ namespace de.fearvel.net.SQL.Connector
         /// <param name="dt"></param>
         public override void Query(string sqlCmd, out DataTable dt) =>
             base.Query(new MySqlCommand(sqlCmd), out dt);
+
+        public MySqlDataAdapter Query(string sqlCmd)
+        {
+            return Query(new MySqlCommand(sqlCmd));
+        }
+
+        public MySqlDataAdapter Query(MySqlCommand command)
+        {
+            command.Connection = (MySqlConnection)Connect;
+            return new MySqlDataAdapter(command);
+        }
+
+        public void Update(MySqlDataAdapter da, DataSet ds)
+        {
+            var changes = ds.GetChanges();
+            if (changes != null)
+            {
+                da.UpdateCommand = new MySqlCommandBuilder(da).GetUpdateCommand();
+                da.Update(changes);
+                ds.AcceptChanges();
+            }
+        }
 
         /// <summary>
         /// SQL NonQuery

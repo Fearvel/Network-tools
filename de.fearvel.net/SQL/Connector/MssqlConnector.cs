@@ -63,6 +63,28 @@ namespace de.fearvel.net.SQL.Connector
         public override void Query(string sqlCmd, out DataTable dt) =>
             base.Query(new SqlCommand(sqlCmd), out dt);
 
+        public SqlDataAdapter Query(string sqlCmd)
+        {
+            return Query(new SqlCommand());
+        }
+
+        public SqlDataAdapter Query(SqlCommand command)
+        {
+            command.Connection = (SqlConnection)Connect;
+            return new SqlDataAdapter(command);
+        }
+
+        public void Update(SqlDataAdapter da, DataSet ds)
+        {
+            var changes = ds.GetChanges();
+            if (changes != null)
+            {
+                da.UpdateCommand = new SqlCommandBuilder(da).GetUpdateCommand();
+                da.Update(changes);
+                ds.AcceptChanges();
+            }
+        }
+
         /// <summary>
         /// SQL NonQuery
         /// </summary>

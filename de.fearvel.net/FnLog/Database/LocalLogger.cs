@@ -26,6 +26,12 @@ namespace de.fearvel.net.FnLog.Database
             CreateTables();
             Guid = GetGuid();
         }
+        public LocalLogger(SqliteConnector con)
+        {
+            _connection = con;
+            CreateTables();
+            Guid = GetGuid();
+        }
 
         private void CreateTables()
         {

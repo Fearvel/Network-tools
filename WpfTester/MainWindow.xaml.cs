@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -19,6 +20,8 @@ using de.fearvel.net.DataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
 using de.fearvel.net.DataTypes.SocketIo;
 using de.fearvel.net.FnLog;
+using de.fearvel.net.Gui.wpf;
+using de.fearvel.net.SQL.Connector;
 
 
 namespace WpfTester
@@ -31,37 +34,80 @@ namespace WpfTester
         public MainWindow()
         {
             InitializeComponent();
-            //FPing fp = new FPing(new IPAddress(new byte[] { 192, 168, 1, 1 }), new IPAddress(new byte[] { 192, 168, 1, 211 }));        
-            //FPingResult ips = fp.RangePing();
-            //
 
-            //foreach (var ip in ips.SuccessIpAddresses)
-            //{
-            //    lbox.Items.Add(ip);
-            //}
             try
             {
+                SqliteConnector con = new SqliteConnector(@"C:\Users\schreiner.andreas\test2.db");
 
-               
+                DataSet ds = new DataSet();
+                var da = con.Query("Select * from aaa");
+                da.Fill(ds);
+
+                ds.Tables[0].Rows[0][1] = "newValb";
                 
-                //var dt = de.fearvel.net.SocketIo.SocketIoClient.RetrieveSingleValue<DataTable>("https://localhost:9051",
-                //    "oidTable", "oid", new ValueWrap() { Val = "aaaaaa" }.Serialize());
-                //DataGrid.ItemsSource = dt.DefaultView;
+                con.Update(da, ds);
+                ds.Tables[0].Rows[0][1] = "newValc";
+                con.Update(da, ds);
+                ds.Tables[0].Rows[0][1] = "newVald";
+                con.Update(da, ds);
+
+                de.fearvel.net.Gui.wpf.RestrictableTableEditor.SetInstance(con);
+                MainGrid.Children.Add(de.fearvel.net.Gui.wpf.RestrictableTableEditor.GetInstance().TableEditor);
+                RestrictableTableEditor.GetInstance().GetTables();
 
             }
             catch (AccessKeyDeclinedException e)
             {
                 Console.WriteLine(e);
             }
-            
-            
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+
+        public DockPanel CreateLimitedTableEditor()
         {
-            
-         //   DataGrid.ItemsSource = (await FnLogClient.RetrieveLogsAsync("https://localhost:9024", new ValueWrap() { Val = "aaaaaa" }, true)).DefaultView;
+            var dp = new DockPanel();
 
+            var sp = new StackPanel()
+            {
+                Orientation = Orientation.Horizontal,
+                Children =
+                {
+                    new Label()
+                    {
+                        Content = "Table:",
+                        Margin = new Thickness(20, 20, 0, 0)
+                    },
+                    new ComboBox()
+                    {
+                        Name = "TableComboBox",
+                        Width = 200,
+                        Margin = new Thickness(20, 20, 0, 0)
+                    },
+                    new Button()
+                    {
+                        Content = "Open",
+                        Width = 100,
+                        Margin = new Thickness(20, 20, 0, 0)
+                    }
+                }
+            };
+            DockPanel.SetDock(sp,Dock.Top);
+            var dg = new DataGrid();
+
+
+            dp.Children.Add(sp);
+            dp.Children.Add(dg);
+
+            return dp;
         }
-    }
+
+        private TabControl GetDbGroupBox()
+        {
+            var tabControl = new TabControl();
+            tabControl.Items.Add(new TabItem() {Header = "AAAAA"});
+            return tabControl;
+        }
+
+        
+        }
 }

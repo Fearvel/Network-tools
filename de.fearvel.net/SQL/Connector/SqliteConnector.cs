@@ -46,8 +46,12 @@ namespace de.fearvel.net.SQL.Connector
         /// Sets a Password for the SQLite Database
         /// </summary>
         /// <param name="pass"></param>
-        public void SetPassword(string pass) =>
-            ((SQLiteConnection)Connect).ChangePassword(pass);
+        public void SetPassword(string pass)
+        {
+            ((SQLiteConnection)Connect).Open();
+            ((SQLiteConnection) Connect).ChangePassword(pass);
+            ((SQLiteConnection)Connect).Close();
+        }
 
         /// <summary>
         /// SQL Query
@@ -66,6 +70,29 @@ namespace de.fearvel.net.SQL.Connector
         /// <param name="ds"></param>
         public override void Query(string sqlCmd, out DataSet ds) =>
             base.Query(new SQLiteCommand(sqlCmd), out ds);
+
+        public SQLiteDataAdapter Query(string sqlCmd)
+        {
+            return Query(new SQLiteCommand(sqlCmd));
+        }
+
+        public SQLiteDataAdapter Query(SQLiteCommand command)
+        {
+            command.Connection = (SQLiteConnection)Connect;
+            return new SQLiteDataAdapter(command);
+        }
+
+        public void Update(SQLiteDataAdapter da, DataSet ds)
+        {
+            var changes = ds.GetChanges();
+            if (changes != null)
+            {
+                da.UpdateCommand = new SQLiteCommandBuilder(da).GetUpdateCommand();
+                da.Update(changes);
+                ds.AcceptChanges();
+            }
+        }
+
 
         /// <summary>
         /// SQL NonQuery

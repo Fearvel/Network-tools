@@ -5,10 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfTester"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
-        <ListBox HorizontalAlignment="Left" Height="100" Margin="287,130,0,0" VerticalAlignment="Top" Width="100" Name="lbox" Visibility="Hidden"/>
-        <DataGrid  x:Name="DataGrid"/>
-
+        Title="MainWindow" Height="450" Width="800" >
+    <Grid x:Name="MainGrid">
+       
     </Grid>
 </Window>
