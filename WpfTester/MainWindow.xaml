@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" >
     <Grid x:Name="MainGrid">
-       
+        <DockPanel>
+            <ListView x:Name="ListViewT">
+              
+            </ListView>
+           
+        </DockPanel>
+        
+
     </Grid>
 </Window>

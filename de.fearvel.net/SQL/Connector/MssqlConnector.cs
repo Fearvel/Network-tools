@@ -65,7 +65,7 @@ namespace de.fearvel.net.SQL.Connector
 
         public SqlDataAdapter Query(string sqlCmd)
         {
-            return Query(new SqlCommand());
+            return Query(new SqlCommand(sqlCmd,(SqlConnection)Connect));
         }
 
         public SqlDataAdapter Query(SqlCommand command)

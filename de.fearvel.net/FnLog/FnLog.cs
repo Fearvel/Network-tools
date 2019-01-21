@@ -3,6 +3,7 @@ using System.Data;
 using de.fearvel.net.FnLog.Database;
 using de.fearvel.net.DataTypes.AbstractDataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
+using de.fearvel.net.Gui.wpf;
 using de.fearvel.net.SQL.Connector;
 
 namespace de.fearvel.net.FnLog
@@ -48,7 +49,7 @@ namespace de.fearvel.net.FnLog
             return _instance;
         }
 
-        public LogType ParseLogType(int i) => (LogType) i;
+        public static LogType ParseLogType(int i) => (LogType) i;
 
 
         protected FnLog(FnLogInitPackage fip)
@@ -79,6 +80,7 @@ namespace de.fearvel.net.FnLog
                         _fnLogInitPackage.Telemetry == TelemetryType.LogLocalSendAll
                     )
                     {
+ 
                         _localLog.AddLog(t, title, description, true);
                         FnLogClient.SendLog(new LogWrap()
                         {
@@ -91,12 +93,17 @@ namespace de.fearvel.net.FnLog
                             Description = description
                         }, _fnLogInitPackage.LogServer);
                     }
+                    else
+                    {
+                        _localLog.AddLog(t, title, description, false);
+                    }
+
                 }
                 else _localLog.AddLog(t, title, description);
             }
             catch (Exception e)
             {
-                _localLog.AddLog(LogType.Error, "SimpleLogSenderException", e.Message + e.StackTrace);
+                _localLog.AddLog(LogType.Error, "SimpleLogSenderException", e.Message + e.StackTrace,false);
             }
         }
 
@@ -138,6 +145,11 @@ namespace de.fearvel.net.FnLog
             public string Description;
             public int LogType;
             public string Guid;
+        }
+
+        public FnLogViewer GetViewer()
+        {
+            return new FnLogViewer(_localLog.Connection);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace de.fearvel.net.Manastone
 {
     public class ManastoneController
     {
+        public static Version ManastoneClientVersion => Version.Parse("1.0.0.0");
         private enum ActivationType {Activation, Reactivation}
         private string _initializationVector;
         private string _programUUID;

@@ -8,11 +8,11 @@ namespace de.fearvel.net.FnLog.Database
 {
     public class LocalLogger
     {
-        private SqliteConnector _connection;
+        internal SqliteConnector Connection { private set;  get; }
         internal Guid Guid { private set; get; }
         internal Guid GetGuid()
         {
-            _connection.Query("Select Val from Directory where Identifier = 'GUID';", out DataTable dt);
+            Connection.Query("Select Val from Directory where Identifier = 'GUID';", out DataTable dt);
             if (dt.Rows.Count == 0 || !Guid.TryParse(dt.Rows[0].Field<string>("Val"), out var res))
                 return Guid.Empty;
             return res;
@@ -20,15 +20,18 @@ namespace de.fearvel.net.FnLog.Database
 
         public LocalLogger( string fileName) : this( fileName, "") { }
 
+
+
+
         public LocalLogger( string fileName, string encKey)
         {
-            _connection = new SqliteConnector(fileName, encKey);
+            Connection = new SqliteConnector(fileName, encKey);
             CreateTables();
             Guid = GetGuid();
         }
         public LocalLogger(SqliteConnector con)
         {
-            _connection = con;
+            Connection = con;
             CreateTables();
             Guid = GetGuid();
         }
@@ -41,28 +44,28 @@ namespace de.fearvel.net.FnLog.Database
 
         private void CreateInformationTable()
         {
-            _connection.NonQuery("CREATE TABLE IF NOT EXISTS Directory" +
+            Connection.NonQuery("CREATE TABLE IF NOT EXISTS Directory" +
                      " (Identifier varchar(200),val Text," +
                      " CONSTRAINT uq_Version_Identifier UNIQUE (Identifier));");
-            _connection.Query("SELECT * FROM Directory", out DataTable dt);
+            Connection.Query("SELECT * FROM Directory", out DataTable dt);
             if (dt.Rows.Count != 0) return;
-            _connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('LoggerVersion'," +
+            Connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('LoggerVersion'," +
                      "'" + FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductVersion + "');");
-            _connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('GUID','" + Guid.NewGuid().ToString() + "');");
+            Connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('GUID','" + Guid.NewGuid().ToString() + "');");
         }
 
         private void CreateErrorTable()
         {
-            _connection.NonQuery("CREATE TABLE IF NOT EXISTS Log" +
+            Connection.NonQuery("CREATE TABLE IF NOT EXISTS Log" +
                     " (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                     " LogType int NOT NULL," +
                     " Title varchar(200) NOT NULL DEFAULT ''," +
                     " Description text NOT NULL DEFAULT ''," +
                     " DateTimeOfIncident Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                     " Reported boolean NOT NULL DEFAULT 0);");
-            _connection.NonQuery("CREATE TRIGGER IF NOT EXISTS removeOldRuntimeInfoOnInsert After INSERT ON Log" +
+            Connection.NonQuery("CREATE TRIGGER IF NOT EXISTS removeOldRuntimeInfoOnInsert After INSERT ON Log" +
                     " BEGIN Delete from Log where DateTimeOfIncident <= date('now','-30 day'); END");
-            _connection.NonQuery("CREATE TRIGGER IF NOT EXISTS removeReportedRuntimeInfo After INSERT ON Log" +
+            Connection.NonQuery("CREATE TRIGGER IF NOT EXISTS removeReportedRuntimeInfo After INSERT ON Log" +
                                  " BEGIN Delete from Log where DateTimeOfIncident <= date('now','-3 day') and Reported =1; END");
         }
 
@@ -76,7 +79,7 @@ namespace de.fearvel.net.FnLog.Database
                 command.Parameters.AddWithValue("@Description", description);
                 command.Parameters.AddWithValue("@Reported", BoolToInt(reported));
                 command.Prepare();
-                _connection.NonQuery(command);
+                Connection.NonQuery(command);
             }
         }
 
@@ -88,14 +91,14 @@ namespace de.fearvel.net.FnLog.Database
 
         public DataTable GetErrorsAndWarnings()
         {
-            _connection.Query("Select log.LogType, log.Title, log.Description, log.DateTimeOfIncident, version.Val as Version, guid.Val as GUID from" +
+            Connection.Query("Select log.LogType, log.Title, log.Description, log.DateTimeOfIncident, version.Val as Version, guid.Val as GUID from" +
                                      " Log log left join Directory version left join Directory guid " +
                                      "where version.Identifier = 'LoggerVersion' and guid.Identifier = 'GUID' and log.Reported = 0 and ( LogType = "
                                      + (int)FnLog.LogType.CriticalError + " or LogType = "
                                      + (int)FnLog.LogType.Error + " or LogType = "
                                      + (int)FnLog.LogType.Warning + " or LogType = "
                                      + (int)FnLog.LogType.Notice + ");", out DataTable dt);
-            _connection.NonQuery("Update Log set Reported = 1 where Reported = 0 and ( LogType = "
+            Connection.NonQuery("Update Log set Reported = 1 where Reported = 0 and ( LogType = "
                               + (int)FnLog.LogType.CriticalError + " or LogType = "
                               + (int)FnLog.LogType.Error + " or LogType = "
                               + (int)FnLog.LogType.Warning + " or LogType = "
@@ -106,13 +109,13 @@ namespace de.fearvel.net.FnLog.Database
 
         public DataTable GetLog(FnLog.LogType t)
         {
-            _connection.Query("Select * from Log where LogType = '" + t.ToString() + "';", out DataTable dt);
+            Connection.Query("Select * from Log where LogType = '" + t.ToString() + "';", out DataTable dt);
             return dt;
         }
 
         internal DataTable DumpLog()
         {
-            _connection.Query("Select * from Log;", out DataTable dt);
+            Connection.Query("Select * from Log;", out DataTable dt);
             return dt;
         }
     }

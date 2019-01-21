@@ -84,6 +84,7 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Presentation" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -97,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes\AbstractDataTypes\JsonSerializable.cs" />
+    <Compile Include="DataTypes\ComboBoxKeyValueItem.cs" />
     <Compile Include="DataTypes\Exceptions\ActivationExpiredException.cs" />
     <Compile Include="DataTypes\Exceptions\NoLicenceKeyRegistredException.cs" />
     <Compile Include="DataTypes\Exceptions\OfferInvalidException.cs" />
@@ -125,7 +127,11 @@
     <Compile Include="FnLog\FnLog.cs" />
     <Compile Include="FnPing.cs" />
     <Compile Include="DataTypes\FnPingResult.cs" />
+    <Compile Include="Gui\wpf\FnLogViewer.cs" />
     <Compile Include="Gui\wpf\RestrictableTableEditor.cs" />
+    <Compile Include="Gui\wpf\RestrictableTableEditorManager.xaml.cs">
+      <DependentUpon>RestrictableTableEditorManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Manastone\ManastoneController.cs" />
     <Compile Include="Manastone\ManastoneTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,7 +150,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Gui\wpf\RestrictableTableEditorManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.2\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

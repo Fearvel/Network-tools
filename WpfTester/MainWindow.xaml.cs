@@ -38,22 +38,33 @@ namespace WpfTester
             try
             {
                 SqliteConnector con = new SqliteConnector(@"C:\Users\schreiner.andreas\test2.db");
-
-                DataSet ds = new DataSet();
-                var da = con.Query("Select * from aaa");
-                da.Fill(ds);
-
-                ds.Tables[0].Rows[0][1] = "newValb";
-                
-                con.Update(da, ds);
-                ds.Tables[0].Rows[0][1] = "newValc";
-                con.Update(da, ds);
-                ds.Tables[0].Rows[0][1] = "newVald";
-                con.Update(da, ds);
-
+                //
+                //DataSet ds = new DataSet();
+                //var da = con.Query("Select * from aaa");
+                //da.Fill(ds);
+                //
+                //ds.Tables[0].Rows[0][1] = "newValb";
+                //
+                //con.Update(da, ds);
+                //ds.Tables[0].Rows[0][1] = "newValc";
+                //con.Update(da, ds);
+                //ds.Tables[0].Rows[0][1] = "newVald";
+                //con.Update(da, ds);
+                //
+                //de.fearvel.net.Gui.wpf.RestrictableTableEditor.SetInstance(con);
+                //MainGrid.Children.Add(de.fearvel.net.Gui.wpf.RestrictableTableEditor.GetInstance().TableEditor);
+                //RestrictableTableEditor.GetInstance().GetTables();
+                //FnLog.SetInstance(new FnLog.FnLogInitPackage("","TESTER",Version.Parse("0.0.0.1"),FnLog.TelemetryType.LogLocalOnly,"test.db",""));
+                //var r =  new Random();
+                //for (int i = 0; i < 20; i++)
+                //{
+                //    FnLog.GetInstance().Log(FnLog.LogType.CriticalError,r.Next(99).ToString(), r.Next(99).ToString());
+                //}
+                //
+                //MainGrid.Children.Add(FnLog.GetInstance().GetViewer().FnLogTable);
                 de.fearvel.net.Gui.wpf.RestrictableTableEditor.SetInstance(con);
-                MainGrid.Children.Add(de.fearvel.net.Gui.wpf.RestrictableTableEditor.GetInstance().TableEditor);
-                RestrictableTableEditor.GetInstance().GetTables();
+
+                MainGrid.Children.Add(new RestrictableTableEditorManager(con));
 
             }
             catch (AccessKeyDeclinedException e)
@@ -62,6 +73,29 @@ namespace WpfTester
             }
         }
 
+        public class TestWrap
+
+        {
+            public int Id { get; private set; }
+            public string TableName { get; private set; }
+            public bool NoAccess { get; private set; }
+            public ComboBox AccessLevel { get; private set; }
+
+            public TestWrap(int id, string tableName, int accessLevel)
+            {
+                AccessLevel = new ComboBox();
+                AccessLevel.Items.Add("No Access");
+                AccessLevel.Items.Add("ReadOnly");
+                AccessLevel.Items.Add("ReadWrite");
+                Id = id;
+                TableName = tableName;
+                AccessLevel.SelectedIndex = accessLevel;
+                if (accessLevel == 0)
+                {
+                    NoAccess = true;
+                }
+            }
+        }
 
         public DockPanel CreateLimitedTableEditor()
         {
