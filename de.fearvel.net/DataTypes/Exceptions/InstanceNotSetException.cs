@@ -3,6 +3,7 @@ namespace de.fearvel.net.DataTypes.Exceptions
 {
     /// <summary>
     /// Exception for Singletons that needs to be setup before using them
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public class InstanceNotSetException : Exception
     {

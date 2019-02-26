@@ -1,13 +1,26 @@
 ﻿using de.fearvel.net.DataTypes.AbstractDataTypes;
+
 namespace de.fearvel.net.DataTypes.SocketIo
 {
     /// <summary>
     /// Result class to determine an Transaction
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public class CommonResult : JsonSerializable<CommonResult>
     {
+        /// <summary>
+        /// Result boolean
+        /// </summary>
         public bool Result;
+
+        /// <summary>
+        /// Result code
+        /// </summary>
         public int Code;
+
+        /// <summary>
+        /// Message
+        /// </summary>
         public string Message;
 
         /// <summary>

@@ -18,27 +18,65 @@ namespace de.fearvel.net.Gui.wpf
     /// It automatically sets the access to the value 0 which is normally no access.
     /// It also removes deprecated entries on load.
     /// To Allow the User to access some Tables their permissions need to be set to a prior defined value different than 0.
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public class RestrictableTableEditor
     {
+        /// <summary>
+        /// AccessType enum
+        /// </summary>
         public enum AccessType : int
         {
             NoAccess,
             Ro,
             Rw
         };
-        public static AccessType ParseAccessType(int i) => (AccessType)i;
 
+        /// <summary>
+        /// AccessType
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public static AccessType ParseAccessType(int i) => (AccessType) i;
 
-
+        /// <summary>
+        /// Instance of the Singleton
+        /// </summary>
         private static RestrictableTableEditor _instance;
+
+        /// <summary>
+        /// The DB connection
+        /// </summary>
         private readonly SqliteConnector _dbConnection;
+
+        /// <summary>
+        /// The SqlDataAdapter
+        /// </summary>
         private SQLiteDataAdapter _da;
+
+        /// <summary>
+        /// DataSet
+        /// </summary>
         private DataSet _ds;
+
+        /// <summary>
+        /// rw flag
+        /// </summary>
         private bool _rw = false;
 
+        /// <summary>
+        /// DockPanel for the TableEditor
+        /// </summary>
         public DockPanel TableEditor { get; private set; }
+
+        /// <summary>
+        /// _tableSelection ComboBox
+        /// </summary>
         private readonly ComboBox _tableSelection;
+
+        /// <summary>
+        /// _editDataGrid DataGrid
+        /// </summary>
         private readonly DataGrid _editDataGrid;
 
         /// <summary>
@@ -179,7 +217,7 @@ namespace de.fearvel.net.Gui.wpf
             _ds.Clear();
             _da.Fill(_ds);
         }
-       
+
         /// <summary>
         /// Sets values of basic gui elements.
         /// </summary>

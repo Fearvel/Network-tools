@@ -3,6 +3,7 @@ namespace de.fearvel.net.DataTypes.Exceptions
 {
     /// <summary>
     /// Exception for declined Messages
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     class RequestDeclinedException : Exception
     {

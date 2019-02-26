@@ -10,26 +10,81 @@ using de.fearvel.net.Security.Hash;
 
 namespace de.fearvel.net.Manastone
 {
+    /// <summary>
+    /// EXPERIMENTAL but usable
+    /// Controller class for the Manastone DRM System
+    /// <copyright>Andreas Schreiner 2019</copyright>
+    /// </summary>
     public class ManastoneController
     {
+        /// <summary>
+        /// Version of this Manastone Client
+        /// </summary>
         public static Version ManastoneClientVersion => Version.Parse("1.0.0.0");
-        private enum ActivationType {Activation, Reactivation}
-        private string _initializationVector;
-        private string _programUUID;
+
+        /// <summary>
+        /// ActivationType enum
+        /// </summary>
+        private enum ActivationType
+        {
+            Activation,
+            Reactivation
+        }
+
+        /// <summary>
+        /// Initialization vector
+        /// </summary>
+        private readonly string _initializationVector;
+
+        /// <summary>
+        /// Program UUID
+        /// </summary>
+        private readonly string _programUUID;
+
+        /// <summary>
+        /// key for the Manastone database
+        /// </summary>
         private readonly string _fileKey;
 
+        /// <summary>
+        /// name of the Manastone database
+        /// </summary>
         private string FileName => "Manastone.db";
+
+        /// <summary>
+        /// Sqlite connection
+        /// </summary>
         private SqliteConnector _conn;
+
+        /// <summary>
+        /// Expiry date of the Activation
+        /// </summary>
         private DateTime? _activationExpiry = null;
+
+        /// <summary>
+        /// RO acces of _activationExpiry
+        /// </summary>
         public DateTime? ActivationExpiry => _activationExpiry;
 
 
+        /// <summary>
+        /// TESTING
+        /// Removes the DB encryption
+        /// </summary>
         public void RemoveEncryption()
         {
             _conn.SetPassword("");
         }
+
+        /// <summary>
+        /// instance of the singleton
+        /// </summary>
         private static ManastoneController _instance;
 
+        /// <summary>
+        /// GetInstance for this Singleton
+        /// </summary>
+        /// <returns>ManastoneController</returns>
         public static ManastoneController GetInstance()
         {
             if (_instance == null)
@@ -37,17 +92,29 @@ namespace de.fearvel.net.Manastone
             return _instance;
         }
 
+        /// <summary>
+        /// Setter for the instance
+        ///  because initialization vector and programUUID differs from program to program  
+        /// </summary>
+        /// <param name="initializationVector">initializationVector</param>
+        /// <param name="programUUID">programUUID</param>
         // ReSharper disable once InconsistentNaming
         public static void SetInstance(string initializationVector, string programUUID)
         {
             _instance = new ManastoneController(initializationVector, programUUID);
         }
 
+        /// <summary>
+        /// Creates the SqliteConnector
+        /// </summary>
         private void LoadDatabaseConnection()
         {
             _conn = new SqliteConnector(FileName, _fileKey);
         }
 
+        /// <summary>
+        /// Creates the Tables if necessary
+        /// </summary>
         private void CreateTables()
         {
             CreateDirectoryTable();
@@ -56,6 +123,9 @@ namespace de.fearvel.net.Manastone
             CreateActivationTable();
         }
 
+        /// <summary>
+        /// creates the Directory Table
+        /// </summary>
         private void CreateDirectoryTable() =>
             _conn.NonQuery(
                 "CREATE TABLE IF NOT EXISTS `Directory` (" +
@@ -64,6 +134,10 @@ namespace de.fearvel.net.Manastone
                 ");"
             );
 
+        /// <summary>
+        /// Creates the Token Table
+        /// and a required trigger
+        /// </summary>
         private void CreateTokenTable()
         {
             _conn.NonQuery(
@@ -81,6 +155,10 @@ namespace de.fearvel.net.Manastone
             );
         }
 
+        /// <summary>
+        /// Creates the Activation Table
+        /// and a required trigger
+        /// </summary>
         private void CreateActivationTable()
         {
             _conn.NonQuery(
@@ -98,6 +176,10 @@ namespace de.fearvel.net.Manastone
             );
         }
 
+        /// <summary>
+        /// Creates the LicenseKey Table
+        /// and a required trigger
+        /// </summary>
         private void CreateLicenseKeyTable()
         {
             _conn.NonQuery(
@@ -115,6 +197,9 @@ namespace de.fearvel.net.Manastone
             );
         }
 
+        /// <summary>
+        /// Purges the Tables from outdated entries
+        /// </summary>
         private void AutoClean() =>
             _conn.NonQuery(
                 "delete from LicenseKey where DOE < date() and DOE not null; " +
@@ -122,6 +207,10 @@ namespace de.fearvel.net.Manastone
                 "delete from Activation where DOE < date(); "
             );
 
+        /// <summary>
+        /// Checks if the Activation is valid
+        /// </summary>
+        /// <returns>bool true == valid</returns>
         public bool CheckActivation()
         {
             AutoClean();
@@ -135,19 +224,24 @@ namespace de.fearvel.net.Manastone
                 Activator(ActivationType.Reactivation);
                 return CheckActivation();
             }
+
             return true;
         }
 
-
-
+        /// <summary>
+        /// Activates the Program
+        /// </summary>
         private void Activate()
         {
             Activator(ActivationType.Activation);
         }
 
+        /// <summary>
+        /// Creates an Activation request sends it to the server and waits for respnse
+        /// </summary>
+        /// <param name="at"></param>
         private void Activator(ActivationType at)
         {
-
             var licenseKey = GetLicenseKey();
             ClearActivationAndTokens();
             CheckLicenseKey(licenseKey);
@@ -164,9 +258,12 @@ namespace de.fearvel.net.Manastone
                 default:
                     throw new Exception();
             }
-            var ow = SocketIoClient.RetrieveSingleValue<OfferWrapper<ManastoneActivationOffer>>(
-                "https://127.0.0.1:9041", "ActivationOffer", requestType,
-                new ManastoneActivationRequest(licenseKey).Serialize());
+
+            var ow =
+                SocketIoClient
+                    .RetrieveSingleValue<OfferWrapper<ManastoneActivationOffer>>( //Server hardcoded for testing
+                        "https://127.0.0.1:9041", "ActivationOffer", requestType,
+                        new ManastoneActivationRequest(licenseKey).Serialize());
             if (!ow.Result.Result)
             {
                 throw new RequestDeclinedException(ow.Result.Message, ow.Result.Code);
@@ -181,6 +278,9 @@ namespace de.fearvel.net.Manastone
             _activationExpiry = ow.Data.ValidUntil;
         }
 
+        /// <summary>
+        /// Removes all activationTokens
+        /// </summary>
         private void ClearActivationAndTokens()
         {
             AutoClean();
@@ -190,6 +290,10 @@ namespace de.fearvel.net.Manastone
             }
         }
 
+        /// <summary>
+        /// Removes all licenseKeys
+        /// </summary>
+        /// <param name="licenseKey"></param>
         private void CheckLicenseKey(string licenseKey)
         {
             if (licenseKey.Length <= 0)
@@ -198,6 +302,10 @@ namespace de.fearvel.net.Manastone
             }
         }
 
+        /// <summary>
+        /// Inserts a licenseKey
+        /// </summary>
+        /// <param name="licenseKey">string licenseKey</param>
         public void SetLicenseKey(string licenseKey)
         {
             AutoClean();
@@ -206,6 +314,10 @@ namespace de.fearvel.net.Manastone
             _conn.NonQuery(com);
         }
 
+        /// <summary>
+        /// Gets the latest licenseKey
+        /// </summary>
+        /// <returns></returns>
         private string GetLicenseKey()
         {
             AutoClean();
@@ -214,6 +326,11 @@ namespace de.fearvel.net.Manastone
             return dt.Rows.Count == 1 ? dt.Rows[0].Field<string>("LicenseKey") : "";
         }
 
+        /// <summary>
+        /// Inserts an ActivationKey
+        /// </summary>
+        /// <param name="activationKey">string activationKey</param>
+        /// <param name="doe">DateOfExpiry</param>
         private void InsertActivationKey(string activationKey, DateTime doe)
         {
             AutoClean();
@@ -224,6 +341,11 @@ namespace de.fearvel.net.Manastone
             _conn.NonQuery(com);
         }
 
+        /// <summary>
+        /// Checks if the activationOffer is valid
+        /// </summary>
+        /// <param name="mo">ManastoneActivationOffer</param>
+        /// <returns>bool</returns>
         private bool CheckActivationOffer(ManastoneActivationOffer mo)
         {
             var ak = ManastoneActivationWrap.DecryptAndDeserialize(mo.ActivationKey, ManastoneTools.GetHardwareId(),
@@ -232,6 +354,10 @@ namespace de.fearvel.net.Manastone
                    ak.programUUID == _programUUID;
         }
 
+        /// <summary>
+        /// Returns latest activation key
+        /// </summary>
+        /// <returns></returns>
         private string GetActivationKey()
         {
             DataTable dt = null;
@@ -239,6 +365,10 @@ namespace de.fearvel.net.Manastone
             return dt.Rows.Count == 1 ? dt.Rows[0].Field<string>("ActivationKey") : "";
         }
 
+        /// <summary>
+        /// CheckAndReturnActivation
+        /// </summary>
+        /// <returns>ManastoneActivationWrap</returns>
         private ManastoneActivationWrap CheckAndReturnActivation()
         {
             var ak = GetActivationKey();
@@ -253,10 +383,18 @@ namespace de.fearvel.net.Manastone
             return maw;
         }
 
+        /// <summary>
+        /// TESTING ATM
+        /// </summary>
         public void GetToken() //private after testing
         {
         }
 
+        /// <summary>
+        /// Creates an ManastoneController
+        /// </summary>
+        /// <param name="initializationVector">initializationVector</param>
+        /// <param name="programUUID">string programUUID</param>
         // ReSharper disable once InconsistentNaming
         private ManastoneController(string initializationVector, string programUUID)
         {
@@ -268,6 +406,9 @@ namespace de.fearvel.net.Manastone
             AutoClean();
         }
 
+        /// <summary>
+        /// TESTING ATM
+        /// </summary>
         internal class ManastoneServerConnection
         {
             private string _serverAddress;

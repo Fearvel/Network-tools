@@ -4,6 +4,7 @@ namespace de.fearvel.net.DataTypes.AbstractDataTypes
     /// <summary>
     /// Abstract Class for to Serialize or Deserialize to or from a JSON easier
     /// </summary>
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// <typeparam name="T"></typeparam>
     public abstract class JsonSerializable<T>
     {

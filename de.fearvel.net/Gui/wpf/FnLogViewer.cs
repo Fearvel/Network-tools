@@ -9,6 +9,7 @@ namespace de.fearvel.net.Gui.wpf
     /// <summary>
     /// FnLogViewer
     /// A simple way to display the recorded Logs to the user.
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public class FnLogViewer
     {

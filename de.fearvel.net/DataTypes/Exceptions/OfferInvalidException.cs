@@ -8,6 +8,7 @@ namespace de.fearvel.net.DataTypes.Exceptions
 {
     /// <summary>
     /// Exception for Invalid Offers
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     class OfferInvalidException : Exception
     {

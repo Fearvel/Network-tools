@@ -3,9 +3,13 @@ namespace de.fearvel.net.DataTypes.SocketIo
 {
     /// <summary>
     /// Result class to determine an Transaction
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public class SimpleResult : JsonSerializable<SimpleResult>
     {
+        /// <summary>
+        /// result boolean
+        /// </summary>
         public bool Result;
 
         /// <summary>

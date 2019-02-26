@@ -1,13 +1,22 @@
 ﻿using de.fearvel.net.DataTypes.AbstractDataTypes;
+
 namespace de.fearvel.net.DataTypes.SocketIo
 {
     /// <summary>
     /// Wrapper class for the Serializable Objects T and SimpleResult
     /// </summary>
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// <typeparam name="T"></typeparam>
     public class SimpleOfferWrapper<T> : JsonSerializable<SimpleOfferWrapper<T>>
     {
+        /// <summary>
+        /// Data of Type T
+        /// </summary>
         public T Data;
+
+        /// <summary>
+        /// Result
+        /// </summary>
         public SimpleResult Result;
 
         /// <summary>

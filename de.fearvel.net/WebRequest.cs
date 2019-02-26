@@ -10,18 +10,19 @@ namespace de.fearvel.net
 {
     /// <summary>
     /// Simple WebRequests
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public static class WebRequest
     {
         /// <summary>
         /// Downloads file to MemoryStream
         /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
+        /// <param name="url">URL</param>
+        /// <returns>Memory Stream containing a file</returns>
         public static MemoryStream Download(string url)
         {
             MemoryStream ms;
-            WebClient client = new WebClient();
+            var client = new WebClient();
             try
             {
                 ms = new MemoryStream(client.DownloadData(url));
@@ -30,14 +31,15 @@ namespace de.fearvel.net
             {
                 client.Dispose();
             }
+
             return ms;
         }
 
         /// <summary>
         /// Downloads file to the specified path
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="path"></param>
+        /// <param name="url">URL</param>
+        /// <param name="path">Location for downloaded file</param>
         public static void DownloadToFile(string url, string path)
         {
             var ms = Download(url);
@@ -50,21 +52,23 @@ namespace de.fearvel.net
         /// <summary>
         /// Sends a Post Request
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="serverUrl"></param>
-        /// <param name="trustedCertificateOnly"></param>
+        /// <param name="data">Dictionary of string string containing form keys and Content </param>
+        /// <param name="serverUrl">URL</param>
+        /// <param name="trustedCertificateOnly">boolean if true it will accept any certificate</param>
         /// <returns></returns>
-        public static string SendPostRequest(Dictionary<string, string> data, string serverUrl, bool trustedCertificateOnly = true)
+        public static string SendPostRequest(Dictionary<string, string> data, string serverUrl,
+            bool trustedCertificateOnly = true)
         {
-            using (WebClient client = new WebClient())
+            using (var client = new WebClient())
             {
                 if (!trustedCertificateOnly)
                     ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
-                NameValueCollection postData = new NameValueCollection();
+                var postData = new NameValueCollection();
                 foreach (var itm in data)
                 {
                     postData.Add(itm.Key, itm.Value);
                 }
+
                 return Encoding.UTF8.GetString(client.UploadValues(serverUrl, postData));
             }
         }

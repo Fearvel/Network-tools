@@ -3,9 +3,13 @@ namespace de.fearvel.net.DataTypes.SocketIo
 {
     /// <summary>
     /// Simple Serializable Wrapper for a string Value
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public class ValueWrap : JsonSerializable<ValueWrap>
     {
+        /// <summary>
+        /// valueString
+        /// </summary>
         public string Val;
 
         /// <summary>

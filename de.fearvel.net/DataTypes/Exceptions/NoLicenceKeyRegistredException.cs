@@ -4,6 +4,7 @@ namespace de.fearvel.net.DataTypes.Exceptions
 {
     /// <summary>
     /// Exception for missing LicenseKeys
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     class NoLicenceKeyRegistredException : Exception
     {

@@ -1,0 +1,14 @@
+﻿<DockPanel x:Class="de.fearvel.net.Gui.wpf.Adressverwaltung"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:de.fearvel.net.Gui.wpf">
+   <Grid Width="30" Height="Auto" Background="Blue" DockPanel.Dock="Left"></Grid>
+    <DockPanel Background="BlueViolet" DockPanel.Dock="Right">
+        <TextBox x:Name="Searchbox" Height="30" DockPanel.Dock="Top" Background="Yellow"/>
+        <ListView DockPanel.Dock="Bottom" Background="Red"></ListView>
+
+    </DockPanel>
+
+</DockPanel>

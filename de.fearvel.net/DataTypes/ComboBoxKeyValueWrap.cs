@@ -1,13 +1,19 @@
-﻿using System.Data;
-
-namespace de.fearvel.net.DataTypes
+﻿namespace de.fearvel.net.DataTypes
 {
     /// <summary>
     /// A way to get a hidden key and a visible value for use in a Combobox
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
-    public class ComboBoxKeyValueItem
+    public class ComboBoxKeyValueWrap
     {
-        public DataRow Row { get; private set; }
+        /// <summary>
+        /// Key int
+        /// </summary>
+        public int Key { get; private set; }
+
+        /// <summary>
+        /// ValueString
+        /// </summary>
         public string Value { get; private set; }
 
         /// <summary>
@@ -15,9 +21,9 @@ namespace de.fearvel.net.DataTypes
         /// </summary>
         /// <param name="key"></param>
         /// <param name="val"></param>
-        public ComboBoxKeyValueItem(DataRow row, string val)
+        public ComboBoxKeyValueWrap(int key, string val)
         {
-            Row = row;
+            Key = key;
             Value = val;
         }
        /// <summary>

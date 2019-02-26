@@ -1,18 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace de.fearvel.net.Security.Hash
 {
+    /// <summary>
+    /// Utils for hashes
+    /// <copyright>Andreas Schreiner 2019</copyright>
+    /// </summary>
     public static class Utils
     {
+        /// <summary>
+        /// Transforms a bytearray to hex string
+        /// </summary>
+        /// <param name="bytes">bytearray</param>
+        /// <param name="upperCase">boolean true if hex should be uppercase</param>
+        /// <returns></returns>
         public static string ToHex(byte[] bytes, bool upperCase)
         {
-            StringBuilder result = new StringBuilder(bytes.Length * 2);
-            for (int i = 0; i < bytes.Length; i++)
-                result.Append(bytes[i].ToString(upperCase ? "X2" : "x2"));
+            var result = new StringBuilder(bytes.Length * 2);
+            foreach (var t in bytes)
+                result.Append(t.ToString(upperCase ? "X2" : "x2"));
             return result.ToString();
         }
     }

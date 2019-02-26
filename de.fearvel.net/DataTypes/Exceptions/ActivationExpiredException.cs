@@ -8,6 +8,7 @@ namespace de.fearvel.net.DataTypes.Exceptions
 {
     /// <summary>
     /// Exception for Expired Activations
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     class ActivationExpiredException : Exception
     {

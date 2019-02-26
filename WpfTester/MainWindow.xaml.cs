@@ -37,7 +37,7 @@ namespace WpfTester
 
             try
             {
-                SqliteConnector con = new SqliteConnector(@"C:\Users\schreiner.andreas\test2.db");
+               // SqliteConnector con = new SqliteConnector(@"C:\Users\schreiner.andreas\test2.db");
                 //
                 //DataSet ds = new DataSet();
                 //var da = con.Query("Select * from aaa");
@@ -62,10 +62,17 @@ namespace WpfTester
                 //}
                 //
                 //MainGrid.Children.Add(FnLog.GetInstance().GetViewer().FnLogTable);
-                de.fearvel.net.Gui.wpf.RestrictableTableEditor.SetInstance(con);
+             //  de.fearvel.net.Gui.wpf.RestrictableTableEditor.SetInstance(con);
+             //
+             //  MainGrid.Children.Add(new RestrictableTableEditorManager(con));
 
-                MainGrid.Children.Add(new RestrictableTableEditorManager(con));
+                //var con = new MssqlConnector("FN-MSSQL", "SaphireOffice");
+                //var adapter = con.Query("Select * from [SaphireOffice].[Address].[Salutation]");
+                //var sm = new SetManager(adapter, "Salutation");
+                //MainGrid.Children.Add(sm);
 
+               // var test = new SearchTextBox();
+               // MainGrid.Children.Add(test);
             }
             catch (AccessKeyDeclinedException e)
             {

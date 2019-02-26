@@ -5,6 +5,7 @@ namespace de.fearvel.net.SQL.Connector
 {
     /// <summary>
     /// Connector for SQLite
+    /// <copyright>Andreas Schreiner 2019</copyright>
     /// </summary>
     public class SqliteConnector : SqlConnector
     {
@@ -12,7 +13,7 @@ namespace de.fearvel.net.SQL.Connector
         /// Constructor
         /// Connects to a database with the ConnectToDatabase function
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">Location of the db</param>
         public SqliteConnector(string fileName) =>
             ConnectToDatabase(fileName);
 
@@ -20,8 +21,8 @@ namespace de.fearvel.net.SQL.Connector
         /// Constructor
         /// Connects to a database with the ConnectToDatabase function
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="enckey"></param>
+        /// <param name="fileName">Location of the db</param>
+        /// <param name="enckey">Password</param>
         public SqliteConnector(string fileName, string enckey) =>
             ConnectToDatabase(fileName, enckey);
 
@@ -29,8 +30,8 @@ namespace de.fearvel.net.SQL.Connector
         /// <summary>
         /// Creates A Database Connection
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="enckey"></param>
+        /// <param name="fileName">Location of the db</param>
+        /// <param name="enckey">Password</param>
         public void ConnectToDatabase(string fileName, string enckey = "")
         {
             ConStr = new SQLiteConnectionStringBuilder
@@ -45,7 +46,7 @@ namespace de.fearvel.net.SQL.Connector
         /// <summary>
         /// Sets a Password for the SQLite Database
         /// </summary>
-        /// <param name="pass"></param>
+        /// <param name="pass">Password</param>
         public void SetPassword(string pass)
         {
             ((SQLiteConnection)Connect).Open();
@@ -57,8 +58,8 @@ namespace de.fearvel.net.SQL.Connector
         /// SQL Query
         /// out DataTable
         /// </summary>
-        /// <param name="sqlCmd"></param>
-        /// <param name="dt"></param>
+        /// <param name="sqlCmd">Sql command string</param>
+        /// <param name="dt">out DataTable</param>
         public override void Query(string sqlCmd, out DataTable dt) =>
             base.Query(new SQLiteCommand(sqlCmd), out dt);
 
@@ -66,45 +67,59 @@ namespace de.fearvel.net.SQL.Connector
         /// SQL Query
         /// out DataSet
         /// </summary>
-        /// <param name="sqlCmd"></param>
-        /// <param name="ds"></param>
+        /// <param name="sqlCmd">Sql command string</param>
+        /// <param name="ds">out DataSet</param>
         public override void Query(string sqlCmd, out DataSet ds) =>
             base.Query(new SQLiteCommand(sqlCmd), out ds);
 
+        /// <summary>
+        /// SQL Query
+        /// returns an SQLiteDataAdapter
+        /// </summary>
+        /// <param name="sqlCmd">Sql command string</param>
+        /// <returns>SQLiteDataAdapter</returns>
         public SQLiteDataAdapter Query(string sqlCmd)
         {
             return Query(new SQLiteCommand(sqlCmd));
         }
 
+        /// <summary>
+        /// SQL Query
+        /// returns an SQLiteDataAdapter
+        /// </summary>
+        /// <param name="command">SQLiteCommand</param>
+        /// <returns>SQLiteDataAdapter</returns>
         public SQLiteDataAdapter Query(SQLiteCommand command)
         {
             command.Connection = (SQLiteConnection)Connect;
             return new SQLiteDataAdapter(command);
         }
 
+        /// <summary>
+        /// Updates values in the Database
+        /// </summary>
+        /// <param name="da">SQLiteDataAdapter</param>
+        /// <param name="ds">DataSet</param>
         public void Update(SQLiteDataAdapter da, DataSet ds)
         {
             var changes = ds.GetChanges();
-            if (changes != null)
-            {
-                da.UpdateCommand = new SQLiteCommandBuilder(da).GetUpdateCommand();
-                da.Update(changes);
-                ds.AcceptChanges();
-            }
+            if (changes == null) return;
+            da.UpdateCommand = new SQLiteCommandBuilder(da).GetUpdateCommand();
+            da.Update(changes);
+            ds.AcceptChanges();
         }
-
 
         /// <summary>
         /// SQL NonQuery
         /// </summary>
-        /// <param name="sqlCmd"></param>
+        /// <param name="sqlCmd">Sql command string</param>
         public override void NonQuery(string sqlCmd) =>
             base.NonQuery(new SQLiteCommand(sqlCmd));
 
         /// <summary>
         /// Getter for a SQLiteConnection
         /// </summary>
-        /// <returns></returns>
+        /// <returns>SQLiteConnection</returns>
         public SQLiteConnection GetConnection() => (SQLiteConnection)Connect;
     }
 }
