@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace de.fearvel.net.DataTypes.Exceptions
 {
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 namespace de.fearvel.net.DataTypes.AbstractDataTypes
 {
     /// <summary>

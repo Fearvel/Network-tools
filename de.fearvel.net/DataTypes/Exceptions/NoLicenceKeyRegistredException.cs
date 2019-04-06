@@ -8,9 +8,7 @@ namespace de.fearvel.net.DataTypes.Exceptions
     /// </summary>
     class NoLicenceKeyRegistredException : Exception
     {
-        public NoLicenceKeyRegistredException()
-        {
-        }
+        public NoLicenceKeyRegistredException(){}
 
         /// <summary>
         /// string s -> error message

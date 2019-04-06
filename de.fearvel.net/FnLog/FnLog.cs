@@ -147,7 +147,7 @@ namespace de.fearvel.net.FnLog
                             ProgramName = _fnLogInitPackage.ProgramName,
                             FnLogVersion = FnLogClientVersion.ToString(),
                             ProgramVersion = _fnLogInitPackage.ProgramVersion.ToString(),
-                            Guid = _localLog.Guid.ToString(),
+                            UUID = _localLog.Guid.ToString(),
                             LogType = (int) t,
                             Title = title,
                             Description = description
@@ -276,7 +276,7 @@ namespace de.fearvel.net.FnLog
             /// <summary>
             /// Guid
             /// </summary>
-            public string Guid;
+            public string UUID;
         }
 
         /// <summary>

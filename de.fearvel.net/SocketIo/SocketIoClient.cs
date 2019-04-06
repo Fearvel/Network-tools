@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using de.fearvel.net.DataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
 using Quobject.SocketIoClientDotNet.Client;

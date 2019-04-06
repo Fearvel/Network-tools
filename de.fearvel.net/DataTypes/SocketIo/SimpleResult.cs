@@ -1,4 +1,5 @@
 ﻿using de.fearvel.net.DataTypes.AbstractDataTypes;
+
 namespace de.fearvel.net.DataTypes.SocketIo
 {
     /// <summary>

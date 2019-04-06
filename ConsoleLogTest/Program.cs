@@ -18,15 +18,19 @@ namespace ConsoleLogTest
     {
         static void Main(string[] args)
         {
-            // FnLog.SetInstance(
-            //     new FnLog.FnLogInitPackage("https://192.168.1.60:9024", "TESTERV",new Version(1,1,1,1),FnLog.TelemetryType.LogLocalAndSendErrorsAndWarnings,"fnlog.db","") 
-            //    );
-            // FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
-            // FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
-            // FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
-            // FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
-            // FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
-            // FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+             FnLog.SetInstance(
+                 new FnLog.FnLogInitPackage("https://localhost:9020", "TESTERV",new Version(1,1,1,1),FnLog.TelemetryType.LogLocalAndSendErrorsAndWarnings,"fnlog.db","") 
+                );
+             FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+
+            // de.fearvel.net.SocketIo.SocketIoClient.RetrieveSingleValue<SimpleResult>(@"https://localhost:9020/", "put", "post", "aasd", true);
+
+
+            //FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+            //FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+            //FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+            //FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+            //FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
 
             //var mbs = new ManagementObjectSearcher("Select ProcessorId From Win32_processor");
             //ManagementObjectCollection mbsList = mbs.Get();
@@ -38,20 +42,20 @@ namespace ConsoleLogTest
             //}
             //Console.Out.WriteLine(id);
 
-          //  var eqw = de.fearvel.net.SocketIo.SocketIoClient
-          //  .RetrieveSingleValue<OfferWrapper<ManastoneActivationOffer>>(
-          //  "https://127.0.0.1:9041", "ActivationOffer", "ActivationRequest", new ManastoneActivationRequest("2131212").Serialize());
+            //  var eqw = de.fearvel.net.SocketIo.SocketIoClient
+            //  .RetrieveSingleValue<OfferWrapper<ManastoneActivationOffer>>(
+            //  "https://127.0.0.1:9041", "ActivationOffer", "ActivationRequest", new ManastoneActivationRequest("2131212").Serialize());
 
-            de.fearvel.net.Manastone.ManastoneController.SetInstance("aaaaaa",Guid.NewGuid().ToString());
-            de.fearvel.net.Manastone.ManastoneController.GetInstance().RemoveEncryption();
-           //OfferWrapper<ManastoneActivationOffer> o = new OfferWrapper<ManastoneActivationOffer>(
-           //    new ManastoneActivationOffer("123213", DateTime.Now)
-           //    , new SimpleResult(true));
-           //
-           // //  var a = o.Serialize();
-           // var json =
-           //     "{\r\n  \"Data\": {\r\n    \"ActivationKey\": \"bbbbb\",\r\n    \"ValidUntil\": \"2018-11-3T22:20:2.900+01:00\"\r\n  },\r\n  \"Result\": {\r\n    \"Result\": true\r\n  }\r\n}";
-           // OfferWrapper<ManastoneActivationOffer> offer = OfferWrapper<ManastoneActivationOffer>.DeSerialize(json);
+            //de.fearvel.net.Manastone.ManastoneController.SetInstance("aaaaaa",Guid.NewGuid().ToString());
+            //de.fearvel.net.Manastone.ManastoneController.GetInstance().RemoveEncryption();
+            //OfferWrapper<ManastoneActivationOffer> o = new OfferWrapper<ManastoneActivationOffer>(
+            //    new ManastoneActivationOffer("123213", DateTime.Now)
+            //    , new SimpleResult(true));
+            //
+            // //  var a = o.Serialize();
+            // var json =
+            //     "{\r\n  \"Data\": {\r\n    \"ActivationKey\": \"bbbbb\",\r\n    \"ValidUntil\": \"2018-11-3T22:20:2.900+01:00\"\r\n  },\r\n  \"Result\": {\r\n    \"Result\": true\r\n  }\r\n}";
+            // OfferWrapper<ManastoneActivationOffer> offer = OfferWrapper<ManastoneActivationOffer>.DeSerialize(json);
 
             // byte[] bytes = Encoding.Unicode.GetBytes("aaaaa");
             //

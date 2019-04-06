@@ -43,6 +43,10 @@ namespace de.fearvel.net
         public FnPingResult RangePing(int timeout = 1) =>
             PingThreadControl(CalculateIpRangeIpAddresses(), timeout);
 
+        /// <summary>
+        /// Function to calculate an IP Address range
+        /// </summary>
+        /// <returns>List of IPAddress of the valid range</returns>
         private List<IPAddress> CalculateIpRangeIpAddresses()
         {
             var list = new List<IPAddress>();
