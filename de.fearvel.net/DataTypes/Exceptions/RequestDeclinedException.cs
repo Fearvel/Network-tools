@@ -1,4 +1,5 @@
 ﻿using System;
+using FnLogController = de.fearvel.net.FnLog.FnLog;
 
 namespace de.fearvel.net.DataTypes.Exceptions
 {
@@ -16,9 +17,9 @@ namespace de.fearvel.net.DataTypes.Exceptions
         /// <param name="code"></param>
         public RequestDeclinedException(string message, int code) : base(message + " _ " + code)
         {
-            if (FnLog.FnLog.IsInitialized)
+            if (FnLogController.IsInitialized)
             {
-                FnLog.FnLog.GetInstance().Log(FnLog.FnLog.LogType.Error, "RequestDeclinedException",
+                FnLogController.GetInstance().Log(FnLogController.LogType.Error, "RequestDeclinedException",
                     message + " _ " + code);
             }
         }

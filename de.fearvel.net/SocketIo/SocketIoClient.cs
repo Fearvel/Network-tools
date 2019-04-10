@@ -71,13 +71,14 @@ namespace de.fearvel.net.SocketIo
                         ((Newtonsoft.Json.Linq.JObject) data).ToString().Replace("\r", "").Replace("\n", ""))
                     : DataTypes.AbstractDataTypes.JsonSerializable<T>.DeSerialize((string) data);
                 socket.Disconnect();
+                socket.Close();
             });
             socket.On(Socket.EVENT_DISCONNECT, () => { wait = false; });
             while (wait && delay.Locked)
             {
             }
 
-            if (result.Equals(default(T)))
+            if (wait || result.Equals(default(T)))
                 throw new ResultNullOrNotReceivedException();
             return result;
         }

@@ -103,7 +103,11 @@
     <Compile Include="DataTypes\Exceptions\ActivationExpiredException.cs" />
     <Compile Include="DataTypes\Exceptions\NoLicenceKeyRegistredException.cs" />
     <Compile Include="DataTypes\Exceptions\OfferInvalidException.cs" />
+    <Compile Include="DataTypes\Exceptions\QueryFailedException.cs" />
     <Compile Include="DataTypes\Exceptions\RequestDeclinedException.cs" />
+    <Compile Include="DataTypes\FnLog\Log.cs" />
+    <Compile Include="DataTypes\FnLog\LogRequest.cs" />
+    <Compile Include="DataTypes\FnLog\LogSet.cs" />
     <Compile Include="DataTypes\Manastone\ManastoneActivationOffer.cs" />
     <Compile Include="DataTypes\Manastone\ManastoneActivationRequest.cs" />
     <Compile Include="DataTypes\Manastone\ManastoneActivationWrap.cs" />
@@ -123,7 +127,8 @@
     <Compile Include="DataTypes\Exceptions\AccessKeyDeclinedException.cs" />
     <Compile Include="DataTypes\Exceptions\InstanceNotSetException.cs" />
     <Compile Include="DataTypes\Exceptions\WrongDataTypeReceivedException.cs" />
-    <Compile Include="FnLog\Database\LocalLogger.cs" />
+    <Compile Include="DataTypes\VersionWrapper.cs" />
+    <Compile Include="FnLog\LocalLogger.cs" />
     <Compile Include="FnLog\FnLogClient.cs" />
     <Compile Include="FnLog\FnLog.cs" />
     <Compile Include="FnPing.cs" />

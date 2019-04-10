@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using de.fearvel.net.DataTypes.AbstractDataTypes;
-using Newtonsoft.Json;
 
 namespace de.fearvel.net.DataTypes
 {
-    public class KeyValueWrap : JsonSerializable<KeyValueWrap>
+    public class VersionWrapper: JsonSerializable<VersionWrapper>
     {
-        public string Key;
-        public string Val;
+        public string Version;
+
     }
 }

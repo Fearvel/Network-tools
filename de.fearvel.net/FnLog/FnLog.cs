@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
-using de.fearvel.net.FnLog.Database;
+using de.fearvel.net.DataTypes;
 using de.fearvel.net.DataTypes.AbstractDataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
+using de.fearvel.net.DataTypes.FnLog;
 using de.fearvel.net.Gui.wpf;
 using de.fearvel.net.SQL.Connector;
 
@@ -142,16 +143,15 @@ namespace de.fearvel.net.FnLog
                     )
                     {
                         _localLog.AddLog(t, title, description, true);
-                        FnLogClient.SendLog(new LogWrap()
-                        {
-                            ProgramName = _fnLogInitPackage.ProgramName,
-                            FnLogVersion = FnLogClientVersion.ToString(),
-                            ProgramVersion = _fnLogInitPackage.ProgramVersion.ToString(),
-                            UUID = _localLog.Guid.ToString(),
-                            LogType = (int) t,
-                            Title = title,
-                            Description = description
-                        }, _fnLogInitPackage.LogServer);
+                        FnLogClient.SendLog(new Log(
+                                _fnLogInitPackage.ProgramName,
+                                _fnLogInitPackage.ProgramVersion.ToString(),
+                                FnLogClientVersion.ToString(),
+                                _localLog.UUID.ToString(),
+                                title,
+                                description,
+                                ((int) t))
+                            , _fnLogInitPackage.LogServer);
                     }
                     else
                     {
@@ -236,47 +236,6 @@ namespace de.fearvel.net.FnLog
                 FileName = fileName;
                 EncryptionKey = encryptionKey;
             }
-        }
-
-        /// <summary>
-        /// Wrapper class for FnLog
-        /// </summary>
-        public class LogWrap : JsonSerializable<LogWrap>
-        {
-            /// <summary>
-            /// ProgramName
-            /// </summary>
-            public string ProgramName;
-
-            /// <summary>
-            /// ProgramVersion
-            /// </summary>
-            public string ProgramVersion;
-
-            /// <summary>
-            /// FnLogVersion
-            /// </summary>
-            public string FnLogVersion;
-
-            /// <summary>
-            /// Title
-            /// </summary>
-            public string Title;
-
-            /// <summary>
-            /// Description
-            /// </summary>
-            public string Description;
-
-            /// <summary>
-            /// LogType as int 
-            /// </summary>
-            public int LogType;
-
-            /// <summary>
-            /// Guid
-            /// </summary>
-            public string UUID;
         }
 
         /// <summary>

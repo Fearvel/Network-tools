@@ -11,6 +11,8 @@ using Quobject.SocketIoClientDotNet.Client;
 using de.fearvel.net.DataTypes.SocketIo;
 using de.fearvel.net.DataTypes.Manastone;
 using System.Security.Cryptography;
+using de.fearvel.net.DataTypes.FnLog;
+using de.fearvel.net.SocketIo;
 
 namespace ConsoleLogTest
 {
@@ -18,10 +20,21 @@ namespace ConsoleLogTest
     {
         static void Main(string[] args)
         {
-             FnLog.SetInstance(
-                 new FnLog.FnLogInitPackage("https://localhost:9020", "TESTERV",new Version(1,1,1,1),FnLog.TelemetryType.LogLocalAndSendErrorsAndWarnings,"fnlog.db","") 
-                );
-             FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+            //      FnLog.SetInstance(
+            //          new FnLog.FnLogInitPackage("https://localhost:9020", "TESTERV",new Version(1,1,1,1),FnLog.TelemetryType.LogLocalAndSendErrorsAndWarnings,"fnlog.db","") 
+            //         );
+            //      FnLog.GetInstance().Log(FnLog.LogType.CriticalError, "ProgramInfoeee", "Program Started");
+            //
+            //      LogRequest lr = new LogRequest("AAAAAAAAAAAAAAAAA", "00000000-0000-0000-0000-000000000000");
+            //   var ls =    FnLogClient.RetrieveLog(lr, "https://localhost:9020");
+            //
+            //   var i = 1;
+
+               var a =  SocketIoClient.RetrieveSingleValue<VersionWrapper>("https://localhost:9051", "OidVersion", "OidVersionRequest",null);
+
+            var i = 1;
+
+
 
             // de.fearvel.net.SocketIo.SocketIoClient.RetrieveSingleValue<SimpleResult>(@"https://localhost:9020/", "put", "post", "aasd", true);
 

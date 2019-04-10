@@ -4,7 +4,7 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using de.fearvel.net.SQL.Connector;
 
-namespace de.fearvel.net.FnLog.Database
+namespace de.fearvel.net.FnLog
 {
     /// <summary>
     /// FnLog Local Logging Controller
@@ -18,17 +18,17 @@ namespace de.fearvel.net.FnLog.Database
         internal SqliteConnector Connection { private set; get; }
 
         /// <summary>
-        /// GUID of the Logger (A Random GUID will be generated if none exists)
+        /// UUID of the Logger (A Random UUID will be generated if none exists)
         /// </summary>
-        internal Guid Guid { private set; get; }
+        internal Guid UUID { private set; get; }
 
         /// <summary>
-        /// Getter for the GUID
+        /// Getter for the UUID
         /// </summary>
         /// <returns>GUID</returns>
-        internal Guid GetGuid()
+        internal Guid GetUUID()
         {
-            Connection.Query("Select Val from Directory where Identifier = 'GUID';", out DataTable dt);
+            Connection.Query("Select Val from Directory where Identifier = 'UUID';", out DataTable dt);
             if (dt.Rows.Count == 0 || !Guid.TryParse(dt.Rows[0].Field<string>("Val"), out var res))
                 return Guid.Empty;
             return res;
@@ -51,7 +51,7 @@ namespace de.fearvel.net.FnLog.Database
         {
             Connection = new SqliteConnector(fileName, encKey);
             CreateTables();
-            Guid = GetGuid();
+            UUID = GetUUID();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace de.fearvel.net.FnLog.Database
         {
             Connection = con;
             CreateTables();
-            Guid = GetGuid();
+            UUID = GetUUID();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace de.fearvel.net.FnLog.Database
                                 "'" + FileVersionInfo
                                     .GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)
                                     .ProductVersion + "');");
-            Connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('GUID','" + Guid.NewGuid().ToString() +
+            Connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('UUID','" + Guid.NewGuid().ToString() +
                                 "');");
         }
 
@@ -158,9 +158,9 @@ namespace de.fearvel.net.FnLog.Database
         public DataTable GetErrorsAndWarnings()
         {
             Connection.Query(
-                "Select log.LogType, log.Title, log.Description, log.DateTimeOfIncident, version.Val as Version, guid.Val as GUID from" +
-                " Log log left join Directory version left join Directory guid " +
-                "where version.Identifier = 'LoggerVersion' and guid.Identifier = 'GUID' and log.Reported = 0 and ( LogType = "
+                "Select log.LogType, log.Title, log.Description, log.DateTimeOfIncident, version.Val as Version, UUID.Val as UUID from" +
+                " Log log left join Directory version left join Directory UUID " +
+                "where version.Identifier = 'LoggerVersion' and UUID.Identifier = 'UUID' and log.Reported = 0 and ( LogType = "
                 + (int) FnLog.LogType.CriticalError + " or LogType = "
                 + (int) FnLog.LogType.Error + " or LogType = "
                 + (int) FnLog.LogType.Warning + " or LogType = "
