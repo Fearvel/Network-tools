@@ -18,7 +18,7 @@ namespace de.fearvel.net.FnLog
         /// <summary>
         /// Version of FnLog
         /// </summary>
-        public static Version FnLogClientVersion => Version.Parse("2.0.2.0");
+        public static Version FnLogClientVersion => Version.Parse("2.0.4.0");
 
         /// <summary>
         /// instance for the singleton
@@ -236,15 +236,6 @@ namespace de.fearvel.net.FnLog
                 FileName = fileName;
                 EncryptionKey = encryptionKey;
             }
-        }
-
-        /// <summary>
-        /// Returns an FnLogViewer
-        /// </summary>
-        /// <returns></returns>
-        public FnLogViewer GetViewer()
-        {
-            return new FnLogViewer(_localLog.Connection);
         }
     }
 }

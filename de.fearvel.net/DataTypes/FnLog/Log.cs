@@ -27,7 +27,7 @@ namespace de.fearvel.net.DataTypes.FnLog
         /// <summary>
         /// FnLogVersion
         /// </summary>
-        public string FnLogVersion;
+        public string FnLogClientVersion;
 
         /// <summary>
         /// Title
@@ -49,11 +49,11 @@ namespace de.fearvel.net.DataTypes.FnLog
         /// </summary>
         public string UUID;
 
-        public Log(string programName, string programVersion, string fnLogVersion, string uuid, string title, string description, int logType )
+        public Log(string programName, string programVersion, string fnLogClientVersion, string uuid, string title, string description, int logType )
         {
             ProgramName = programName;
             ProgramVersion = programVersion;
-            FnLogVersion = fnLogVersion;
+            FnLogClientVersion = fnLogClientVersion;
             UUID = uuid;
             Title = title;
             Description = description;

@@ -30,7 +30,7 @@ namespace de.fearvel.net.Tools
         /// </summary>
         /// <typeparam name="T">T</typeparam>
         /// <param name="o">object to be checked of being T or SimpleResult</param>
-        public static void checkDataTypeIncludeSimpleResult<T>(object o)
+        public static void CheckDataTypeIncludeSimpleResult<T>(object o)
         {
             if (o.GetType() != typeof(T) && o.GetType() != typeof(SimpleResult))
                 throw new WrongDataTypeReceivedException(
