@@ -272,7 +272,11 @@ namespace de.fearvel.net.Manastone
         {
             try
             {
-                return CheckToken(new CheckTokenRequest(_database.Token));
+                if (CheckToken(new CheckTokenRequest(_database.Token)))
+                {
+                    RetrieveToken(new TokenRequest(_database.ActivationKey));
+                }
+                return true;
             }
             catch (Exception)
             {
