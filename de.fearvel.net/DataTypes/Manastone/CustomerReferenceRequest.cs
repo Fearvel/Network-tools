@@ -2,11 +2,7 @@
 
 namespace de.fearvel.net.DataTypes.Manastone
 {
-    /// <summary>
-    /// ActivationOffer Class, Wraps an ActivationKey.
-    /// Is used for Serialized transmission of data
-    /// </summary>
-    public sealed class ActivationOffer : JsonSerializable<ActivationOffer>
+    public sealed class CustomerReferenceRequest : JsonSerializable<ActivationOnlineCheckOffer>
     {
         /// <summary>
         /// Contains the ActivationKey
@@ -35,6 +31,15 @@ namespace de.fearvel.net.DataTypes.Manastone
                     _activationKeySet = true;
                 }
             }
+        }
+
+        /// <summary>
+        /// Constructor of CustomerReferenceRequest
+        /// </summary>
+        /// <param name="activationKey"></param>
+        public CustomerReferenceRequest(string activationKey)
+        {
+            ActivationKey = activationKey;
         }
     }
 }

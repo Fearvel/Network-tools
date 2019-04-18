@@ -8,14 +8,33 @@ using System.Runtime.CompilerServices;
 
 namespace de.fearvel.net.Manastone
 {
-    public class ManastoneClient
+    /// <summary>
+    /// Manastone DRM Client Class
+    /// </summary>
+    public sealed class ManastoneClient
     {
         #region "Private"
 
+        /// <summary>
+        /// Url of the Manastone Server
+        /// </summary>
         private readonly string _url;
+
+        /// <summary>
+        /// Instance of ManastoneDatabase
+        /// </summary>
         private readonly ManastoneDatabase _database;
+
+        /// <summary>
+        /// The uuid of the Program, which will be checked
+        /// </summary>
         private readonly string _productUuid;
-        private LicenseCheckType _lCheck;
+
+        /// <summary>
+        /// Enum which determines if:
+        /// The Program will be checked for Activation Online, Offline or Periodically online(Mixed)
+        /// </summary>
+        private readonly LicenseCheckType _licCheck;
 
 
         /// <summary>
@@ -33,21 +52,36 @@ namespace de.fearvel.net.Manastone
             _url = serverUrl;
             _database = new ManastoneDatabase();
             _productUuid = productUUID;
-            _lCheck = lCheck;
+            _licCheck = lCheck;
+            ManastoneServerVersion = RetrieveManastoneServerVersion().ToString();
         }
 
-        public Version RetrieveManastoneServerVersion()
+        /// <summary>
+        /// Returns the Version of the Manastone Server
+        /// </summary>
+        /// <returns></returns>
+        private Version RetrieveManastoneServerVersion()
         {
             return Version.Parse(SocketIoClient.RetrieveSingleValue<VersionWrapper>(_url, "ManastoneVersion",
                 "ManastoneVersionRequest", null).Version);
         }
 
-        public DateTime RetrieveServerTime()
+        /// <summary>
+        /// Returns the DateTime of the Manastone Server
+        /// Currently unused, will be used later for sure
+        /// </summary>
+        /// <returns></returns>
+        private DateTime RetrieveServerTime()
         {
             return SocketIoClient.RetrieveSingleValue<DateTimeWrapper>(_url, "ServerTime", "ServerTimeRequest", null)
                 .Time;
         }
 
+        /// <summary>
+        /// Activates a License
+        /// The License can only be Activated once at the same Time for each SerialNumber 
+        /// </summary>
+        /// <param name="req"></param>
         private void Activate(ActivationRequest req)
         {
             var activationKey =
@@ -56,21 +90,29 @@ namespace de.fearvel.net.Manastone
             if (activationKey.ActivationKey.Length == 0)
                 throw new ActivationFailedException();
 
-
             _database.InsertSerialNumber(req.SerialNumber);
             _database.InsertActivationKey(req.SerialNumber, activationKey.ActivationKey);
             RetrieveToken(new TokenRequest(activationKey.ActivationKey));
-
+            RetrieveCustomerReference(new CustomerReferenceRequest(activationKey.ActivationKey));
         }
 
-
-        public string RetrieveCustomerReference(string activationKey)
+        /// <summary>
+        /// Retrieves the Customer Reference and saves it to the Local database
+        /// </summary>
+        /// <param name="req"></param>
+        private void RetrieveCustomerReference(CustomerReferenceRequest req )
         {
-            throw new NotImplementedException();
+            var offer =
+                SocketIoClient.RetrieveSingleValue<CustomerReferenceOffer>(_url, "CustomerReferenceOffer",
+                    "CustomerReferenceRequest", req.Serialize());
+            _database.InsertCustomerReference(req.ActivationKey, offer.CustomerReference);
         }
 
-
-        public void RetrieveToken(TokenRequest req)
+        /// <summary>
+        /// Retrieves the Token and saves it to the Local database
+        /// </summary>
+        /// <param name="req"></param>
+        private void RetrieveToken(TokenRequest req)
         {
             var token =
                 SocketIoClient.RetrieveSingleValue<TokenOffer>(_url, "TokenOffer", "TokenRequest",
@@ -80,22 +122,73 @@ namespace de.fearvel.net.Manastone
             _database.InsertToken(req.ActivationKey, token.Token);
         }
 
-        public bool CheckLicenseStatusLocally()
+        /// <summary>
+        /// Checks if an entry of an Activation is written to the local encrypted
+        /// Manastone database
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckLicenseStatusLocally()
         {
             return _database.LicenseInstalled();
         }
 
-        public bool CheckLicenseStatusOnline()
+        /// <summary>
+        /// Checks Activation status.
+        /// if valid returns true
+        /// </summary>
+        /// <param name="req">ActivationOnlineCheckRequest</param>
+        /// <returns></returns>
+        private bool CheckLicenseStatusOnline(ActivationOnlineCheckRequest req)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var offer = SocketIoClient.RetrieveSingleValue<ActivationOnlineCheckOffer>(_url, "ActivationOnlineCheckOffer",
+                            "ActivationOnlineCheckRequest", req.Serialize());
+                if (offer.IsActivated)
+                {
+                    RetrieveCustomerReference(new CustomerReferenceRequest(req.ActivationKey));
+                }
+                return offer.IsActivated;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
+        /// <summary>
+        /// Checks if the Token is valid
+        /// </summary>
+        /// <param name="req">CheckTokenRequest</param>
+        /// <returns></returns>
+        public bool CheckToken(CheckTokenRequest req)
+        {
+            var offer = SocketIoClient.RetrieveSingleValue<CheckTokenOffer>(_url, "CheckTokenOffer",
+                "CheckTokenRequest", req.Serialize());
+            return offer.IsValid;
+        }
         #endregion
 
         #region "Public"
 
-        public string ClientVersion => "0.0.1.0";
+        /// <summary>
+        /// The Version of this Manastone Client Class
+        /// Can be used later to determine if this client is outdated 
+        /// </summary>
+        public string ClientVersion => "1.0.0.0";
 
+        /// <summary>
+        /// CustomerReference Property
+        /// Get only
+        /// Gets the CustomerReference for the activated SerialNumber
+        /// </summary>
+        public string CustomerReference => _database.CustomerReference;
+
+        /// <summary>
+        /// The Version of this Manastone Server 
+        /// Can be used later to determine if this client is outdated
+        /// </summary>
+        public string ManastoneServerVersion;
 
         /// <summary>
         /// GetInstance for the Singleton
@@ -112,14 +205,20 @@ namespace de.fearvel.net.Manastone
         /// Used to preset values like the Server URL
         /// </summary>
         /// <param name="serverUrl"></param>
+        /// <param name="productUuid"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void SetInstance(string serverUrl, string productUUID,
-            LicenseCheckType lCheck = LicenseCheckType.Online)
+        public static void SetInstance(string serverUrl, string productUuid,
+            LicenseCheckType licCheck = LicenseCheckType.Online)
         {
-            _instance = new ManastoneClient(serverUrl, productUUID, lCheck);
+            _instance = new ManastoneClient(serverUrl, productUuid, licCheck);
         }
 
+        /// <summary>
+        /// Activates a License
+        /// The License can only be Activated once at the same Time for each SerialNumber 
+        /// </summary>
+        /// <returns></returns>
         public bool Activate(string serialNumber)
         {
             try
@@ -133,37 +232,57 @@ namespace de.fearvel.net.Manastone
             }
         }
 
+        /// <summary>
+        /// Checks the ActivationKey
+        /// The LicenseCheckType determines if this will be
+        /// online only, offline only, or mixed
+        /// Mixed 1 in 7 chance to check online
+        /// </summary>
+        /// <returns></returns>
         public bool CheckActivation()
         {
-            switch (_lCheck)
+            try
             {
-                case LicenseCheckType.Online:
-                    return CheckLicenseStatusOnline();
-                case LicenseCheckType.Offline:
-                    return CheckLicenseStatusLocally();
-                case LicenseCheckType.Mixed:
-                    var rand = new Random();
-                    if (rand.Next(100) % 7 == 1)
-                    {
-                        return CheckLicenseStatusOnline();
-                    }
-                    else
-                    {
+                switch (_licCheck)
+                {
+                    case LicenseCheckType.Online:
+                        return CheckLicenseStatusOnline(new ActivationOnlineCheckRequest(_database.ActivationKey));
+                    case LicenseCheckType.Offline:
                         return CheckLicenseStatusLocally();
-                    }
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    case LicenseCheckType.Mixed:
+                        var rand = new Random();
+                        return rand.Next(100) % 7 == 0 ?
+                            CheckLicenseStatusOnline(new ActivationOnlineCheckRequest(_database.ActivationKey))
+                            : CheckLicenseStatusLocally();
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
+        /// <summary>
+        /// Checks if the Token is valid
+        /// </summary>
+        /// <returns></returns>
         public bool CheckToken()
         {
-            throw new NotImplementedException();
-
-
+            try
+            {
+                return CheckToken(new CheckTokenRequest(_database.Token));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-
+        /// <summary>
+        /// Enum for the ActivationCheck type that will be used
+        /// </summary>
         public enum LicenseCheckType
         {
             Online,

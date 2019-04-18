@@ -103,6 +103,8 @@
     <Compile Include="DataTypes\DateTimeWrapper.cs" />
     <Compile Include="DataTypes\Exceptions\ActivationExpiredException.cs" />
     <Compile Include="DataTypes\Exceptions\Manastone\ActivationFailedException.cs" />
+    <Compile Include="DataTypes\Manastone\ActivationOnlineCheckOffer.cs" />
+    <Compile Include="DataTypes\Manastone\ActivationOnlineCheckRequest.cs" />
     <Compile Include="DataTypes\Exceptions\Manastone\FailedToRetrieveTokenException.cs" />
     <Compile Include="DataTypes\Exceptions\Manastone\ManastoneException.cs" />
     <Compile Include="DataTypes\Exceptions\NoLicenceKeyRegistredException.cs" />
@@ -115,6 +117,10 @@
     <Compile Include="DataTypes\Interfaces\IReloadable.cs" />
     <Compile Include="DataTypes\Manastone\ActivationOffer.cs" />
     <Compile Include="DataTypes\Manastone\ActivationRequest.cs" />
+    <Compile Include="DataTypes\Manastone\CheckTokenOffer.cs" />
+    <Compile Include="DataTypes\Manastone\CheckTokenRequest.cs" />
+    <Compile Include="DataTypes\Manastone\CustomerReferenceOffer.cs" />
+    <Compile Include="DataTypes\Manastone\CustomerReferenceRequest.cs" />
     <Compile Include="DataTypes\Manastone\TokenOffer.cs" />
     <Compile Include="DataTypes\Manastone\TokenRequest.cs" />
     <Compile Include="DataTypes\SocketIo\CommonResult.cs" />

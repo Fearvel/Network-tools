@@ -2,7 +2,7 @@
 
 namespace de.fearvel.net.DataTypes.Manastone
 {
-    public sealed class TokenOffer : JsonSerializable<TokenOffer>
+    public sealed class CheckTokenRequest : JsonSerializable<CheckTokenRequest>
     {
         /// <summary>
         /// Contains the Token
@@ -31,6 +31,15 @@ namespace de.fearvel.net.DataTypes.Manastone
                     _tokenSet = true;
                 }
             }
+        }
+
+        /// <summary>
+        /// Constructor of CheckTokenRequest
+        /// </summary>
+        /// <param name="token"></param>
+        public CheckTokenRequest(string token)
+        {
+            Token = token;
         }
     }
 }

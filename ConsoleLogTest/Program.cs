@@ -21,13 +21,18 @@ namespace ConsoleLogTest
     {
         static void Main(string[] args)
         {
-             ManastoneClient.SetInstance("https://localhost:9060", "00000000-0000-0000-0000-000000000000");
-     //        ManastoneClient.GetInstance().Activate("2ad31edc-5efb-11e9-b74a-000c2910963e");
-
+            ManastoneClient.SetInstance("https://localhost:9060", "00000000-0000-0000-0000-000000000000",ManastoneClient.LicenseCheckType.Mixed);
+            //ManastoneClient.GetInstance().Activate("ebdd0116-620d-11e9-b74a-000c2910963e");
+            //var e = ManastoneClient.GetInstance().CustomerReference;
+            //  var c = ManastoneClient.GetInstance()
+            //    .CheckLicenseStatusOnline(new ActivationOnlineCheckRequest("810c2124-6143-11e9-b74a-000c2910963e"));
+            //ManastoneClient.GetInstance().RetrieveCustomerReference(new CustomerReferenceRequest("810c2124-6143-11e9-b74a-000c2910963e"));
+            var v = ManastoneClient.GetInstance().CheckToken();
+            var l = ManastoneClient.GetInstance().CheckActivation();
+            var f = ManastoneClient.GetInstance().ManastoneServerVersion;
 
 
             var a = 1; //DEBUG
         }
-
     }
 }
