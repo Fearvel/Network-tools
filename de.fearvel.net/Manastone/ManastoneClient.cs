@@ -54,6 +54,7 @@ namespace de.fearvel.net.Manastone
             _productUuid = productUUID;
             _licCheck = lCheck;
             ManastoneServerVersion = RetrieveManastoneServerVersion().ToString();
+            RetrieveCustomerReference(new CustomerReferenceRequest(_database.ActivationKey));
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace de.fearvel.net.Manastone
         private Version RetrieveManastoneServerVersion()
         {
             return Version.Parse(SocketIoClient.RetrieveSingleValue<VersionWrapper>(_url, "ManastoneVersion",
-                "ManastoneVersionRequest", null).Version);
+                "ManastoneVersionRequest", null, timeout: 30000).Version);
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace de.fearvel.net.Manastone
         {
             var activationKey =
                 SocketIoClient.RetrieveSingleValue<ActivationOffer>(_url, "ActivationOffer", "ActivationRequest",
-                    req.Serialize());
+                    req.Serialize(), timeout: 30000);
             if (activationKey.ActivationKey.Length == 0)
                 throw new ActivationFailedException();
 
@@ -104,7 +105,7 @@ namespace de.fearvel.net.Manastone
         {
             var offer =
                 SocketIoClient.RetrieveSingleValue<CustomerReferenceOffer>(_url, "CustomerReferenceOffer",
-                    "CustomerReferenceRequest", req.Serialize());
+                    "CustomerReferenceRequest", req.Serialize(), timeout: 30000);
             _database.InsertCustomerReference(req.ActivationKey, offer.CustomerReference);
         }
 
@@ -116,7 +117,7 @@ namespace de.fearvel.net.Manastone
         {
             var token =
                 SocketIoClient.RetrieveSingleValue<TokenOffer>(_url, "TokenOffer", "TokenRequest",
-                    req.Serialize());
+                    req.Serialize(), timeout: 30000);
             if (token.Token.Length == 0)
                 throw new FailedToRetrieveTokenException();
             _database.InsertToken(req.ActivationKey, token.Token);
@@ -143,7 +144,7 @@ namespace de.fearvel.net.Manastone
             try
             {
                 var offer = SocketIoClient.RetrieveSingleValue<ActivationOnlineCheckOffer>(_url, "ActivationOnlineCheckOffer",
-                            "ActivationOnlineCheckRequest", req.Serialize());
+                            "ActivationOnlineCheckRequest", req.Serialize(), timeout: 30000);
                 if (offer.IsActivated)
                 {
                     RetrieveCustomerReference(new CustomerReferenceRequest(req.ActivationKey));
@@ -164,7 +165,7 @@ namespace de.fearvel.net.Manastone
         public bool CheckToken(CheckTokenRequest req)
         {
             var offer = SocketIoClient.RetrieveSingleValue<CheckTokenOffer>(_url, "CheckTokenOffer",
-                "CheckTokenRequest", req.Serialize());
+                "CheckTokenRequest", req.Serialize(), timeout: 30000);
             return offer.IsValid;
         }
         #endregion
@@ -185,6 +186,13 @@ namespace de.fearvel.net.Manastone
         public string CustomerReference => _database.CustomerReference;
 
         /// <summary>
+        /// Token Property
+        /// Get only
+        /// Gets the Token for the activated SerialNumber
+        /// </summary>
+        public string Token => _database.Token;
+
+        /// <summary>
         /// The Version of this Manastone Server 
         /// Can be used later to determine if this client is outdated
         /// </summary>
@@ -197,7 +205,7 @@ namespace de.fearvel.net.Manastone
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static ManastoneClient GetInstance()
         {
-            return _instance ?? throw new InstanceNotSetException();
+           return _instance ?? throw new InstanceNotSetException();
         }
 
         /// <summary>

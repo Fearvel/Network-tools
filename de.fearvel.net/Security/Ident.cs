@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Windows.Controls;
 
 namespace de.fearvel.net.Security
 {
-    class Ident
+   public class Ident
     {
 
         // ReSharper disable once InconsistentNaming
@@ -27,5 +28,15 @@ namespace de.fearvel.net.Security
             }
             return cpuid;
         }
+
+
+        public static Version GetFileVersion()
+        {
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            return Version.Parse(version);
+        }
+
     }
 }

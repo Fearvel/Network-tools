@@ -28,8 +28,8 @@ namespace de.fearvel.net.FnLog
         /// <returns>GUID</returns>
         internal Guid GetUUID()
         {
-            Connection.Query("Select Val from Directory where Identifier = 'UUID';", out DataTable dt);
-            if (dt.Rows.Count == 0 || !Guid.TryParse(dt.Rows[0].Field<string>("Val"), out var res))
+            Connection.Query("Select DVal from Directory where DKey = 'LoggerUUID';", out DataTable dt);
+            if (dt.Rows.Count == 0 || !Guid.TryParse(dt.Rows[0].Field<string>("DVal"), out var res))
                 return Guid.Empty;
             return res;
         }
@@ -81,16 +81,25 @@ namespace de.fearvel.net.FnLog
         private void CreateInformationTable()
         {
             Connection.NonQuery("CREATE TABLE IF NOT EXISTS Directory" +
-                                " (Identifier varchar(200),val Text," +
+                                " (DKey varchar(200),DVal Text," +
                                 " CONSTRAINT uq_Version_Identifier UNIQUE (Identifier));");
-            Connection.Query("SELECT * FROM Directory", out DataTable dt);
-            if (dt.Rows.Count != 0) return;
-            Connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('LoggerVersion'," +
-                                "'" + FileVersionInfo
-                                    .GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)
-                                    .ProductVersion + "');");
-            Connection.NonQuery("INSERT INTO Directory (Identifier,val) VALUES ('UUID','" + Guid.NewGuid().ToString() +
-                                "');");
+
+            Connection.Query("Select * from Directory where DKey = 'LoggerVersion'", out DataTable dtVersion);
+            if (dtVersion.Rows.Count == 0)
+            {
+                Connection.NonQuery("INSERT INTO Directory (DKey,DVal) VALUES ('LoggerVersion'," +
+                                    "'" + FileVersionInfo
+                                        .GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)
+                                        .ProductVersion + "');");
+            }
+
+            Connection.Query("Select * from Directory where DKey = 'LoggerUUID'", out DataTable dtUuid);
+            if (dtUuid.Rows.Count == 0)
+            {
+                Connection.NonQuery("INSERT INTO Directory (DKey,DVal) VALUES ('LoggerUUID','" +
+                                    Guid.NewGuid().ToString() +
+                                    "');");
+            }
         }
 
         /// <summary>
@@ -158,9 +167,9 @@ namespace de.fearvel.net.FnLog
         public DataTable GetErrorsAndWarnings()
         {
             Connection.Query(
-                "Select log.LogType, log.Title, log.Description, log.DateTimeOfIncident, version.Val as Version, UUID.Val as UUID from" +
+                "Select log.LogType, log.Title, log.Description, log.DateTimeOfIncident, version.DVal as Version, UUID.DVal as UUID from" +
                 " Log log left join Directory version left join Directory UUID " +
-                "where version.Identifier = 'LoggerVersion' and UUID.Identifier = 'UUID' and log.Reported = 0 and ( LogType = "
+                "where version.Identifier = 'LoggerVersion' and UUID.DKey = 'LoggerUUID' and ( LogType = "
                 + (int) FnLog.LogType.CriticalError + " or LogType = "
                 + (int) FnLog.LogType.Error + " or LogType = "
                 + (int) FnLog.LogType.Warning + " or LogType = "

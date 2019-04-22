@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
 
 namespace de.fearvel.net.SQL.Connector
 {
@@ -54,6 +55,7 @@ namespace de.fearvel.net.SQL.Connector
         /// </summary>
         /// <param name="com">DbCommand</param>
         /// <param name="dt">out DataTable</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Query(DbCommand com, out DataTable dt)
         {
             if (Connect.State == ConnectionState.Closed)

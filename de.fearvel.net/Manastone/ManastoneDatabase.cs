@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SQLite;
+using de.fearvel.net.Security;
 using de.fearvel.net.SQL.Connector;
 
 namespace de.fearvel.net.Manastone
@@ -36,8 +37,8 @@ namespace de.fearvel.net.Manastone
         /// </summary>
         internal ManastoneDatabase()
         {
-            _con = new SqliteConnector("Manastone.db"); //DEBUG
-            //    _con = new SqliteConnector("Manastone.db", Ident.GetCPUId());
+            // _con = new SqliteConnector("Manastone.db"); //DEBUG
+            _con = new SqliteConnector("Manastone.db", Ident.GetCPUId());
             CreateTables();
             LoadLicenseInformation();
         }
@@ -63,7 +64,6 @@ namespace de.fearvel.net.Manastone
                 Token = "";
                 CustomerReference = "";
             }
-           
         }
 
         /// <summary>
@@ -108,7 +108,9 @@ namespace de.fearvel.net.Manastone
         /// <param name="activationKey"></param>
         internal void InsertActivationKey(string serialNumber, string activationKey)
         {
-            var command = new SQLiteCommand("UPDATE `License` set `ActivationKey` = @ActivationKey where `SerialNumber` = @SerialNumber;");
+            var command =
+                new SQLiteCommand(
+                    "UPDATE `License` set `ActivationKey` = @ActivationKey where `SerialNumber` = @SerialNumber;");
             command.Parameters.AddWithValue("@ActivationKey", activationKey);
             command.Parameters.AddWithValue("@SerialNumber", serialNumber);
             command.Prepare();
@@ -124,7 +126,8 @@ namespace de.fearvel.net.Manastone
         /// <param name="token"></param>
         internal void InsertToken(string activationKey, string token)
         {
-            var command = new SQLiteCommand("UPDATE `License` set `Token` = @Token where `ActivationKey` = @ActivationKey;");
+            var command =
+                new SQLiteCommand("UPDATE `License` set `Token` = @Token where `ActivationKey` = @ActivationKey;");
             command.Parameters.AddWithValue("@Token", token);
             command.Parameters.AddWithValue("@ActivationKey", activationKey);
             command.Prepare();
@@ -170,18 +173,19 @@ namespace de.fearvel.net.Manastone
                           " `DVal` Text," +
                           " CONSTRAINT uq_Version_Identifier UNIQUE (`DKey`));");
         }
+
         /// <summary>
         /// Creates the License Table
         /// </summary>
         private void CreateLicenseTable()
         {
             _con.NonQuery("CREATE TABLE IF NOT EXISTS `License` (" +
-            "	`Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,             " +
-                "	`SerialNumber`	varchar(36) NOT NULL DEFAULT '',             " +
-                "	`ActivationKey`	varchar(36) NOT NULL DEFAULT '',             " +
-                "	`Token`	varchar(36) NOT NULL DEFAULT '',                     " +
-                "	`CustomerReference`	varchar(100) NOT NULL DEFAULT ''         " +
-                ");");
+                          "	`Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,             " +
+                          "	`SerialNumber`	varchar(36) NOT NULL DEFAULT '',             " +
+                          "	`ActivationKey`	varchar(36) NOT NULL DEFAULT '',             " +
+                          "	`Token`	varchar(36) NOT NULL DEFAULT '',                     " +
+                          "	`CustomerReference`	varchar(100) NOT NULL DEFAULT ''         " +
+                          ");");
         }
     }
 }

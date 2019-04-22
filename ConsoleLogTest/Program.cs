@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 using de.fearvel.net.DataTypes.FnLog;
 using de.fearvel.net.Manastone;
 using de.fearvel.net.SocketIo;
+using de.fearvel.net.Security;
 
 namespace ConsoleLogTest
 {
@@ -21,18 +22,34 @@ namespace ConsoleLogTest
     {
         static void Main(string[] args)
         {
-            ManastoneClient.SetInstance("https://localhost:9060", "00000000-0000-0000-0000-000000000000",ManastoneClient.LicenseCheckType.Mixed);
-            //ManastoneClient.GetInstance().Activate("ebdd0116-620d-11e9-b74a-000c2910963e");
-            //var e = ManastoneClient.GetInstance().CustomerReference;
-            //  var c = ManastoneClient.GetInstance()
-            //    .CheckLicenseStatusOnline(new ActivationOnlineCheckRequest("810c2124-6143-11e9-b74a-000c2910963e"));
-            //ManastoneClient.GetInstance().RetrieveCustomerReference(new CustomerReferenceRequest("810c2124-6143-11e9-b74a-000c2910963e"));
-            var v = ManastoneClient.GetInstance().CheckToken();
-            var l = ManastoneClient.GetInstance().CheckActivation();
-            var f = ManastoneClient.GetInstance().ManastoneServerVersion;
-
+            // ManastoneClient.SetInstance("https://localhost:9060", "00000000-0000-0000-0000-000000000000",ManastoneClient.LicenseCheckType.Online);
+            // //ManastoneClient.GetInstance().Activate("ebdd0116-620d-11e9-b74a-000c2910963e");
+            // var l = ManastoneClient.GetInstance().CheckActivation();
+            // var v = ManastoneClient.GetInstance().CheckToken();
+            //
+            // var e = ManastoneClient.GetInstance().CustomerReference;
+            // var f = ManastoneClient.GetInstance().ManastoneServerVersion;
+            // var l = new List<ActivationOffer>();
+            //  var j = JsonConvert.SerializeObject(l, Formatting.Indented).Trim().
+            //      Replace(System.Environment.NewLine, "");
+            //
+            var ver = SocketIoClient.RetrieveSingleValue<VersionWrapper>("https://localhost:9051",
+                "MPSMinClientVersionOffer", "MPSMinClientVersionRequest", null);
+            var ab = Ident.GetFileVersion();
+            var ac =      System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             var a = 1; //DEBUG
+
+            
+
+
+
         }
+
+
+
+        
+            
+        
     }
 }
