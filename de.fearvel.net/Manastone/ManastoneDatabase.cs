@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SQLite;
 using de.fearvel.net.Security;
 using de.fearvel.net.SQL.Connector;
@@ -16,6 +17,9 @@ namespace de.fearvel.net.Manastone
         /// SerialNumber Property
         /// </summary>
         internal string SerialNumber { get; private set; }
+
+
+        internal FnLog.FnLog Log {get; private set;}
 
         /// <summary>
         /// ActivationKey Property
@@ -39,8 +43,13 @@ namespace de.fearvel.net.Manastone
         {
             // _con = new SqliteConnector("Manastone.db"); //DEBUG
             _con = new SqliteConnector("Manastone.db", Ident.GetCPUId());
+            Log = new FnLog.FnLog(new FnLog.FnLog.FnLogInitPackage("https://log.fearvel.de",
+                    "MANASTONE", Version.Parse(ManastoneClient.ClientVersion), FnLog.FnLog.TelemetryType.LogLocalSendAll, "", ""),
+                _con);
             CreateTables();
             LoadLicenseInformation();
+           
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo,"Manastone DB INIT Complete","");
         }
 
         /// <summary>
@@ -48,8 +57,10 @@ namespace de.fearvel.net.Manastone
         /// </summary>
         private void LoadLicenseInformation()
         {
+            
             if (LicenseInstalled())
             {
+                Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "LoadLicenseInformation", "License Found");
                 _con.Query("SELECT * FROM `License`;", out DataTable dt);
                 var row = dt.Rows[0];
                 SerialNumber = row.Field<string>("SerialNumber");
@@ -59,6 +70,7 @@ namespace de.fearvel.net.Manastone
             }
             else
             {
+                Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "LoadLicenseInformation", "License NOT Found");
                 SerialNumber = "";
                 ActivationKey = "";
                 Token = "";
@@ -73,7 +85,9 @@ namespace de.fearvel.net.Manastone
         internal bool LicenseInstalled()
         {
             _con.Query("SELECT EXISTS (SELECT * FROM `License`) as LicenseInstalled;", out DataTable dt);
-            return dt.Rows[0].Field<long>("LicenseInstalled") == 1 ? true : false;
+            var licInst = dt.Rows[0].Field<long>("LicenseInstalled") == 1;
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "LoadLicenseInformation", licInst.ToString());
+            return licInst;
         }
 
         /// <summary>
@@ -81,6 +95,7 @@ namespace de.fearvel.net.Manastone
         /// </summary>
         private void DeleteFromLicense()
         {
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "DeleteFromLicense", "");
             _con.NonQuery("DELETE FROM `License`;");
         }
 
@@ -91,6 +106,7 @@ namespace de.fearvel.net.Manastone
         /// <param name="serialNumber"></param>
         internal void InsertSerialNumber(string serialNumber)
         {
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertSerialNumber", "Start");
             if (LicenseInstalled())
                 DeleteFromLicense();
             var command = new SQLiteCommand("INSERT INTO `License` (`SerialNumber`) VALUES (@SerialNumber);");
@@ -98,7 +114,8 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
-        }
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertSerialNumber", "Complete");
+            }
 
         /// <summary>
         /// Inserts a ActivationKey into the Database
@@ -108,6 +125,7 @@ namespace de.fearvel.net.Manastone
         /// <param name="activationKey"></param>
         internal void InsertActivationKey(string serialNumber, string activationKey)
         {
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertActivationKey", "Start");
             var command =
                 new SQLiteCommand(
                     "UPDATE `License` set `ActivationKey` = @ActivationKey where `SerialNumber` = @SerialNumber;");
@@ -116,6 +134,7 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertActivationKey", "Complete");
         }
 
         /// <summary>
@@ -126,6 +145,7 @@ namespace de.fearvel.net.Manastone
         /// <param name="token"></param>
         internal void InsertToken(string activationKey, string token)
         {
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertToken", "Start");
             var command =
                 new SQLiteCommand("UPDATE `License` set `Token` = @Token where `ActivationKey` = @ActivationKey;");
             command.Parameters.AddWithValue("@Token", token);
@@ -133,6 +153,7 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertToken", "Complete");
         }
 
         /// <summary>
@@ -143,6 +164,7 @@ namespace de.fearvel.net.Manastone
         /// <param name="customerReference"></param>
         internal void InsertCustomerReference(string activationKey, string customerReference)
         {
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertCustomerReference", "Start");
             var command = new SQLiteCommand("UPDATE `License` set `CustomerReference` = @CustomerReference" +
                                             " where `ActivationKey` = @ActivationKey;");
             command.Parameters.AddWithValue("@CustomerReference", customerReference);
@@ -150,6 +172,7 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertCustomerReference", "Complete");
         }
 
 
@@ -158,8 +181,11 @@ namespace de.fearvel.net.Manastone
         /// </summary>
         private void CreateTables()
         {
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CreateTables", "Start");
             CreateDirectoryTable();
             CreateLicenseTable();
+            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CreateTables", "Complete");
+
         }
 
         /// <summary>

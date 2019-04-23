@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -33,10 +34,10 @@ namespace ConsoleLogTest
             //  var j = JsonConvert.SerializeObject(l, Formatting.Indented).Trim().
             //      Replace(System.Environment.NewLine, "");
             //
-            var ver = SocketIoClient.RetrieveSingleValue<VersionWrapper>("https://localhost:9051",
-                "MPSMinClientVersionOffer", "MPSMinClientVersionRequest", null);
-            var ab = Ident.GetFileVersion();
-            var ac =      System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+          
+          
+          
+          
 
             var a = 1; //DEBUG
 

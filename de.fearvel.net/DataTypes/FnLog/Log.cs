@@ -1,11 +1,12 @@
-﻿using de.fearvel.net.DataTypes.AbstractDataTypes;
+﻿using System;
+using de.fearvel.net.DataTypes.AbstractDataTypes;
 
 namespace de.fearvel.net.DataTypes.FnLog
 {
     /// <summary>
     /// Wrapper class for FnLog
     /// </summary>
-    public class Log : JsonSerializable<Log>
+    public class Log : JsonSerializable<Log>, ICloneable
     {
         /// <summary>
         /// Id of the Log
@@ -60,5 +61,9 @@ namespace de.fearvel.net.DataTypes.FnLog
             LogType = logType;          
         }
         public Log() {}
+        public object Clone()
+        {
+            return new Log(this.ProgramName,this.ProgramVersion,this.FnLogClientVersion,this.UUID, this.Title, this.Description,this.LogType);
+        }
     }
 }

@@ -104,6 +104,7 @@
     <Compile Include="DataTypes\DateTimeWrapper.cs" />
     <Compile Include="DataTypes\Exceptions\ActivationExpiredException.cs" />
     <Compile Include="DataTypes\Exceptions\Manastone\ActivationFailedException.cs" />
+    <Compile Include="DataTypes\Exceptions\Manastone\ManastoneOfferNotRecievedCorrectlyException.cs" />
     <Compile Include="DataTypes\Manastone\ActivationOnlineCheckOffer.cs" />
     <Compile Include="DataTypes\Manastone\ActivationOnlineCheckRequest.cs" />
     <Compile Include="DataTypes\Exceptions\Manastone\FailedToRetrieveTokenException.cs" />

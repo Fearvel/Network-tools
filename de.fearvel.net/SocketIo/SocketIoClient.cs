@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using de.fearvel.net.DataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
 using Quobject.SocketIoClientDotNet.Client;
@@ -56,6 +57,7 @@ namespace de.fearvel.net.SocketIo
         /// <param name="acceptSelfSigned">acceptSelfSigned</param>
         /// <param name="timeout">timeout in ms</param>
         /// <returns></returns>
+
         public static T RetrieveSingleValue<T>(string serverUrl, string receiverEventName, string senderEventName,
             string senderEventValue, bool acceptSelfSigned = true, int timeout = 5000)
         {

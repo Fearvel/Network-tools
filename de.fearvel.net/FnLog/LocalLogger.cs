@@ -82,7 +82,7 @@ namespace de.fearvel.net.FnLog
         {
             Connection.NonQuery("CREATE TABLE IF NOT EXISTS Directory" +
                                 " (DKey varchar(200),DVal Text," +
-                                " CONSTRAINT uq_Version_Identifier UNIQUE (Identifier));");
+                                " CONSTRAINT uq_Version_Identifier UNIQUE (DKey));");
 
             Connection.Query("Select * from Directory where DKey = 'LoggerVersion'", out DataTable dtVersion);
             if (dtVersion.Rows.Count == 0)
@@ -113,12 +113,9 @@ namespace de.fearvel.net.FnLog
                                 " LogType int NOT NULL," +
                                 " Title varchar(200) NOT NULL DEFAULT ''," +
                                 " Description text NOT NULL DEFAULT ''," +
-                                " DateTimeOfIncident Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP," +
-                                " Reported boolean NOT NULL DEFAULT 0);");
+                                " DateTimeOfIncident Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP);");
             Connection.NonQuery("CREATE TRIGGER IF NOT EXISTS removeOldRuntimeInfoOnInsert After INSERT ON Log" +
                                 " BEGIN Delete from Log where DateTimeOfIncident <= date('now','-30 day'); END");
-            Connection.NonQuery("CREATE TRIGGER IF NOT EXISTS removeReportedRuntimeInfo After INSERT ON Log" +
-                                " BEGIN Delete from Log where DateTimeOfIncident <= date('now','-3 day') and Reported =1; END");
         }
 
         /// <summary>
@@ -127,17 +124,15 @@ namespace de.fearvel.net.FnLog
         /// <param name="logType">logType</param>
         /// <param name="title">title</param>
         /// <param name="description">description</param>
-        /// <param name="reported">reported</param>
-        public void AddLog(FnLog.LogType logType, string title, string description, bool reported)
+        public void AddLog(int logType, string title, string description)
         {
             using (var command = new SQLiteCommand(
-                "Insert Into Log(LogType,Title,Description, Reported) values (@LogType,@Title,@Description, @Reported)")
+                "Insert Into Log(LogType,Title,Description) values (@LogType,@Title,@Description)")
             )
             {
                 command.Parameters.AddWithValue("@LogType", logType);
                 command.Parameters.AddWithValue("@Title", title);
                 command.Parameters.AddWithValue("@Description", description);
-                command.Parameters.AddWithValue("@Reported", BoolToInt(reported));
                 command.Prepare();
                 Connection.NonQuery(command);
             }
@@ -157,7 +152,7 @@ namespace de.fearvel.net.FnLog
         /// <param name="title">title</param>
         /// <param name="description">description</param>
         public void AddLog(FnLog.LogType logType, string title, string description) =>
-            AddLog(logType, title, description, false);
+            AddLog((int)logType, title, description);
 
 
         /// <summary>
@@ -169,17 +164,12 @@ namespace de.fearvel.net.FnLog
             Connection.Query(
                 "Select log.LogType, log.Title, log.Description, log.DateTimeOfIncident, version.DVal as Version, UUID.DVal as UUID from" +
                 " Log log left join Directory version left join Directory UUID " +
-                "where version.Identifier = 'LoggerVersion' and UUID.DKey = 'LoggerUUID' and ( LogType = "
+                "where version.DKey = 'LoggerVersion' and UUID.DKey = 'LoggerUUID' and ( LogType = "
                 + (int) FnLog.LogType.CriticalError + " or LogType = "
                 + (int) FnLog.LogType.Error + " or LogType = "
                 + (int) FnLog.LogType.Warning + " or LogType = "
                 + (int) FnLog.LogType.Notice + ");", out DataTable dt);
-            Connection.NonQuery("Update Log set Reported = 1 where Reported = 0 and ( LogType = "
-                                + (int) FnLog.LogType.CriticalError + " or LogType = "
-                                + (int) FnLog.LogType.Error + " or LogType = "
-                                + (int) FnLog.LogType.Warning + " or LogType = "
-                                + (int) FnLog.LogType.Notice + ");");
-            return dt;
+        return dt;
         }
 
         /// <summary>

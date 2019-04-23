@@ -51,6 +51,7 @@ namespace de.fearvel.net.Manastone
         {
             _url = serverUrl;
             _database = new ManastoneDatabase();
+            _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "MANASTONE STARTED", "");
             _productUuid = productUUID;
             _licCheck = lCheck;
             ManastoneServerVersion = RetrieveManastoneServerVersion().ToString();
@@ -63,8 +64,21 @@ namespace de.fearvel.net.Manastone
         /// <returns></returns>
         private Version RetrieveManastoneServerVersion()
         {
-            return Version.Parse(SocketIoClient.RetrieveSingleValue<VersionWrapper>(_url, "ManastoneVersion",
-                "ManastoneVersionRequest", null, timeout: 30000).Version);
+            try
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveManastoneServerVersion", "Start");
+                var serVer = Version.Parse(SocketIoClient.RetrieveSingleValue<VersionWrapper>(_url, "ManastoneVersion",
+                    "ManastoneVersionRequest", null, timeout: 30000).Version);
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveManastoneServerVersion", "Complete");
+                _database.Log.ProcessLogList();
+                return serVer;
+            }
+            catch (Exception e)
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.Error, "ERROR on RetrieveManastoneServerVersion", e.Message);
+                _database.Log.ProcessLogList();
+                throw new ManastoneOfferNotRecievedCorrectlyException();
+            }
         }
 
         /// <summary>
@@ -74,8 +88,22 @@ namespace de.fearvel.net.Manastone
         /// <returns></returns>
         private DateTime RetrieveServerTime()
         {
-            return SocketIoClient.RetrieveSingleValue<DateTimeWrapper>(_url, "ServerTime", "ServerTimeRequest", null)
-                .Time;
+            try
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveServerTime", "Start");
+                var serTime = SocketIoClient
+                    .RetrieveSingleValue<DateTimeWrapper>(_url, "ServerTime", "ServerTimeRequest", null)
+                    .Time;
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveServerTime", "Complete");
+                _database.Log.ProcessLogList();
+                return serTime;
+            }
+            catch (Exception e)
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.Error, "ERROR on RetrieveServerTime", e.Message);
+                _database.Log.ProcessLogList();
+                throw new ManastoneOfferNotRecievedCorrectlyException();
+            }
         }
 
         /// <summary>
@@ -85,28 +113,52 @@ namespace de.fearvel.net.Manastone
         /// <param name="req"></param>
         private void Activate(ActivationRequest req)
         {
-            var activationKey =
-                SocketIoClient.RetrieveSingleValue<ActivationOffer>(_url, "ActivationOffer", "ActivationRequest",
-                    req.Serialize(), timeout: 30000);
-            if (activationKey.ActivationKey.Length == 0)
-                throw new ActivationFailedException();
+            try
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "Activate", "Start");
+                var activationKey =
+                    SocketIoClient.RetrieveSingleValue<ActivationOffer>(_url, "ActivationOffer", "ActivationRequest",
+                        req.Serialize(), timeout: 30000);
+                if (activationKey.ActivationKey.Length == 0)
+                {
+                    throw new ActivationFailedException("Length == 0");
+                }
 
-            _database.InsertSerialNumber(req.SerialNumber);
-            _database.InsertActivationKey(req.SerialNumber, activationKey.ActivationKey);
-            RetrieveToken(new TokenRequest(activationKey.ActivationKey));
-            RetrieveCustomerReference(new CustomerReferenceRequest(activationKey.ActivationKey));
+                _database.InsertSerialNumber(req.SerialNumber);
+                _database.InsertActivationKey(req.SerialNumber, activationKey.ActivationKey);
+                RetrieveToken(new TokenRequest(activationKey.ActivationKey));
+                RetrieveCustomerReference(new CustomerReferenceRequest(activationKey.ActivationKey));
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "Activate", "Complete");
+                _database.Log.ProcessLogList();
+            }
+            catch (Exception e)
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.Error, "ERROR on ACTIVATE", e.Message);
+                _database.Log.ProcessLogList();
+                throw new ActivationFailedException();
+            }
         }
 
         /// <summary>
         /// Retrieves the Customer Reference and saves it to the Local database
         /// </summary>
         /// <param name="req"></param>
-        private void RetrieveCustomerReference(CustomerReferenceRequest req )
+        private void RetrieveCustomerReference(CustomerReferenceRequest req)
         {
-            var offer =
-                SocketIoClient.RetrieveSingleValue<CustomerReferenceOffer>(_url, "CustomerReferenceOffer",
-                    "CustomerReferenceRequest", req.Serialize(), timeout: 30000);
-            _database.InsertCustomerReference(req.ActivationKey, offer.CustomerReference);
+            try
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveCustomerReference", "Start");
+                var offer =
+                    SocketIoClient.RetrieveSingleValue<CustomerReferenceOffer>(_url, "CustomerReferenceOffer",
+                        "CustomerReferenceRequest", req.Serialize(), timeout: 30000);
+                _database.InsertCustomerReference(req.ActivationKey, offer.CustomerReference);
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveCustomerReference", "Complete");
+            }
+            catch (Exception e)
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.Error, "ERROR on RetrieveCustomerReference", e.Message);
+                throw new ManastoneOfferNotRecievedCorrectlyException();
+            }
         }
 
         /// <summary>
@@ -115,12 +167,24 @@ namespace de.fearvel.net.Manastone
         /// <param name="req"></param>
         private void RetrieveToken(TokenRequest req)
         {
-            var token =
-                SocketIoClient.RetrieveSingleValue<TokenOffer>(_url, "TokenOffer", "TokenRequest",
-                    req.Serialize(), timeout: 30000);
-            if (token.Token.Length == 0)
-                throw new FailedToRetrieveTokenException();
-            _database.InsertToken(req.ActivationKey, token.Token);
+            try
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveToken", "Start");
+                var token =
+                    SocketIoClient.RetrieveSingleValue<TokenOffer>(_url, "TokenOffer", "TokenRequest",
+                        req.Serialize(), timeout: 30000);
+                if (token.Token.Length == 0)
+                    throw new FailedToRetrieveTokenException();
+                _database.InsertToken(req.ActivationKey, token.Token);
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "RetrieveToken", "Complete");
+                _database.Log.ProcessLogList();
+            }
+            catch (Exception e)
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.Error, "ERROR on RetrieveToken", e.Message);
+                _database.Log.ProcessLogList();
+                throw new ManastoneOfferNotRecievedCorrectlyException();
+            }
         }
 
         /// <summary>
@@ -130,7 +194,10 @@ namespace de.fearvel.net.Manastone
         /// <returns></returns>
         private bool CheckLicenseStatusLocally()
         {
-            return _database.LicenseInstalled();
+            var status= _database.LicenseInstalled();
+            _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CheckLicenseStatusLocally", status.ToString());
+            _database.Log.ProcessLogList();
+            return status;
         }
 
         /// <summary>
@@ -143,16 +210,23 @@ namespace de.fearvel.net.Manastone
         {
             try
             {
-                var offer = SocketIoClient.RetrieveSingleValue<ActivationOnlineCheckOffer>(_url, "ActivationOnlineCheckOffer",
-                            "ActivationOnlineCheckRequest", req.Serialize(), timeout: 30000);
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CheckLicenseStatusOnline", "Start");
+                var offer = SocketIoClient.RetrieveSingleValue<ActivationOnlineCheckOffer>(_url,
+                    "ActivationOnlineCheckOffer",
+                    "ActivationOnlineCheckRequest", req.Serialize(), timeout: 30000);
                 if (offer.IsActivated)
                 {
+                    _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CheckLicenseStatusOnline", "ACTIVATION Confirmed");
                     RetrieveCustomerReference(new CustomerReferenceRequest(req.ActivationKey));
                 }
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CheckLicenseStatusOnline", "Complete");
+                _database.Log.ProcessLogList();
                 return offer.IsActivated;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.Error, "ERROR on CheckLicenseStatusOnline", e.Message);
+                _database.Log.ProcessLogList();
                 return false;
             }
         }
@@ -164,10 +238,23 @@ namespace de.fearvel.net.Manastone
         /// <returns></returns>
         public bool CheckToken(CheckTokenRequest req)
         {
-            var offer = SocketIoClient.RetrieveSingleValue<CheckTokenOffer>(_url, "CheckTokenOffer",
-                "CheckTokenRequest", req.Serialize(), timeout: 30000);
-            return offer.IsValid;
+            try
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CheckToken", "Start");
+                var offer = SocketIoClient.RetrieveSingleValue<CheckTokenOffer>(_url, "CheckTokenOffer",
+                    "CheckTokenRequest", req.Serialize(), timeout: 30000);
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CheckToken", "Complete");
+                _database.Log.ProcessLogList();
+                return offer.IsValid;
+            }
+            catch (Exception e)
+            {
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.Error, "ERROR on CheckToken", e.Message);
+                _database.Log.ProcessLogList();
+                throw new ManastoneOfferNotRecievedCorrectlyException();
+            }
         }
+
         #endregion
 
         #region "Public"
@@ -176,7 +263,7 @@ namespace de.fearvel.net.Manastone
         /// The Version of this Manastone Client Class
         /// Can be used later to determine if this client is outdated 
         /// </summary>
-        public string ClientVersion => "1.0.0.0";
+        public static string ClientVersion => "1.000.0001.0000";
 
         /// <summary>
         /// CustomerReference Property
@@ -205,7 +292,7 @@ namespace de.fearvel.net.Manastone
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static ManastoneClient GetInstance()
         {
-           return _instance ?? throw new InstanceNotSetException();
+            return _instance ?? throw new InstanceNotSetException();
         }
 
         /// <summary>
@@ -259,8 +346,8 @@ namespace de.fearvel.net.Manastone
                         return CheckLicenseStatusLocally();
                     case LicenseCheckType.Mixed:
                         var rand = new Random();
-                        return rand.Next(100) % 7 == 0 ?
-                            CheckLicenseStatusOnline(new ActivationOnlineCheckRequest(_database.ActivationKey))
+                        return rand.Next(100) % 7 == 0
+                            ? CheckLicenseStatusOnline(new ActivationOnlineCheckRequest(_database.ActivationKey))
                             : CheckLicenseStatusLocally();
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -284,6 +371,7 @@ namespace de.fearvel.net.Manastone
                 {
                     RetrieveToken(new TokenRequest(_database.ActivationKey));
                 }
+
                 return true;
             }
             catch (Exception)

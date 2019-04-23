@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using de.fearvel.net.DataTypes;
+using de.fearvel.net.DataTypes.AbstractDataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
 using de.fearvel.net.DataTypes.FnLog;
 using de.fearvel.net.DataTypes.SocketIo;
@@ -29,7 +30,7 @@ namespace de.fearvel.net.FnLog
             /// <summary>
             /// FnLog.LogWrap
             /// </summary>
-            private readonly Log _log;
+            private readonly string _logSerialized;
 
             /// <summary>
             /// Server URL
@@ -46,11 +47,14 @@ namespace de.fearvel.net.FnLog
             /// </summary>
             private readonly int _timeout;
 
-            public ThreadedLogSender(Log log, string serverUrl, bool acceptSelfSigned = true,
-                int timeout = 20000)
+            private readonly string _senderEventName;
+
+            public ThreadedLogSender(string log, string serverUrl, bool acceptSelfSigned = true,
+                int timeout = 20000, string senderEventName = "log")
             {
-                this._log = log;
+                this._logSerialized = log;
                 this._serverUrl = serverUrl;
+                _senderEventName = senderEventName;
                 _timeout = timeout;
                 _acceptSelfSigned = acceptSelfSigned;
             }
@@ -71,14 +75,15 @@ namespace de.fearvel.net.FnLog
                 try
                 {
                     SocketIoClient.RetrieveSingleValue<SimpleResult>(_serverUrl,
-                  "closer", "log", _log.Serialize());
+                  "closer", _senderEventName, _logSerialized);
 
                 }
-                catch (System.Exception)
+                catch (System.Exception e)
                 {
                     // ignored
                 }
             }
+
         }
 
         /// <summary>
@@ -89,7 +94,14 @@ namespace de.fearvel.net.FnLog
         /// <param name="acceptSelfSigned">acceptSelfSigned</param>
         public static void SendLog(Log log, string serverUrl, bool acceptSelfSigned = true)
         {
-            var threadedLogSender = new ThreadedLogSender(log, serverUrl, acceptSelfSigned);
+            var threadedLogSender = new ThreadedLogSender(log.Serialize(), serverUrl, acceptSelfSigned);
+            threadedLogSender.Send();
+        }
+        public static void SendLogPackage(List<Log> logs, string serverUrl, bool acceptSelfSigned = true)
+        {
+             var logPak = JsonConvert.SerializeObject(logs, Formatting.Indented).Trim().
+                 Replace(System.Environment.NewLine, "");
+            var threadedLogSender = new ThreadedLogSender(logPak, serverUrl, acceptSelfSigned, senderEventName: "logPak");
             threadedLogSender.Send();
         }
 

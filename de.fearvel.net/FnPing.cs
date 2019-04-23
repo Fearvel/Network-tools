@@ -40,7 +40,7 @@ namespace de.fearvel.net
         /// </summary>
         /// <param name="timeout">timeout in ms</param>
         /// <returns></returns>           
-        public FnPingResult RangePing(int timeout = 1) =>
+        public FnPingResult RangePing(int timeout = 3000) =>
             PingThreadControl(CalculateIpRangeIpAddresses(), timeout);
 
         /// <summary>

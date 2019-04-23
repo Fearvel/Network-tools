@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Runtime.CompilerServices;
 using de.fearvel.net.DataTypes;
 using de.fearvel.net.DataTypes.AbstractDataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
@@ -18,7 +20,7 @@ namespace de.fearvel.net.FnLog
         /// <summary>
         /// Version of FnLog
         /// </summary>
-        public static Version FnLogClientVersion => Version.Parse("2.0.4.0");
+        public static Version FnLogClientVersion => Version.Parse("2.000.0005.0000");
 
         /// <summary>
         /// instance for the singleton
@@ -38,7 +40,7 @@ namespace de.fearvel.net.FnLog
         /// <summary>
         /// LocalLogger
         /// </summary>
-        private static LocalLogger _localLog;
+        private LocalLogger _localLog;
 
         /// <summary>
         /// LogType enum
@@ -49,7 +51,15 @@ namespace de.fearvel.net.FnLog
             Error,
             Warning,
             Notice,
-            RuntimeInfo
+            RuntimeInfo,
+            MinorRuntimeInfo,
+            MajorRuntimeInfo,
+            StartupLog,
+            MinorStartupLog,
+            MajorStartupLog,
+            DrmLog,
+            MinorDrmLog,
+            MajorDrmLog
         };
 
         /// <summary>
@@ -61,6 +71,9 @@ namespace de.fearvel.net.FnLog
             LogLocalAndSendErrorsAndWarnings,
             LogLocalSendAll
         }
+
+        private List<Log> _logs;
+
 
         /// <summary>
         /// Set Instance for the singleton
@@ -104,24 +117,32 @@ namespace de.fearvel.net.FnLog
         /// Constructor
         /// </summary>
         /// <param name="fip">FnLogInitPackage</param>
-        protected FnLog(FnLogInitPackage fip)
+        internal FnLog(FnLogInitPackage fip)
         {
+            _logs = new List<Log>();
             _fnLogInitPackage = fip;
             _localLog = new LocalLogger(
                 _fnLogInitPackage.FileName, _fnLogInitPackage.EncryptionKey);
         }
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="fip">FnLogInitPackage</param>
         /// <param name="con">for integration in a existing sqlite db</param>
-        protected FnLog(FnLogInitPackage fip, SqliteConnector con)
+        internal FnLog(FnLogInitPackage fip, SqliteConnector con)
         {
+            _logs = new List<Log>();
             _fnLogInitPackage = fip;
             fip.FileName = "";
             _localLog = new LocalLogger(con);
         }
+
+        ~FnLog()
+        {
+            ProcessLogList();
+        }        
 
         /// <summary>
         /// writes and or sends a log
@@ -142,7 +163,7 @@ namespace de.fearvel.net.FnLog
                         _fnLogInitPackage.Telemetry == TelemetryType.LogLocalSendAll
                     )
                     {
-                        _localLog.AddLog(t, title, description, true);
+                        _localLog.AddLog(t, title, description);
                         FnLogClient.SendLog(new Log(
                                 _fnLogInitPackage.ProgramName,
                                 _fnLogInitPackage.ProgramVersion.ToString(),
@@ -155,16 +176,86 @@ namespace de.fearvel.net.FnLog
                     }
                     else
                     {
-                        _localLog.AddLog(t, title, description, false);
+                        _localLog.AddLog(t, title, description);
                     }
                 }
                 else _localLog.AddLog(t, title, description);
             }
             catch (Exception e)
             {
-                _localLog.AddLog(LogType.Error, "SimpleLogSenderException", e.Message + e.StackTrace, false);
+                _localLog.AddLog(LogType.Error, "SimpleLogSenderException", e.Message + e.StackTrace);
             }
         }
+
+
+        public void AddToLogList(LogType t, string title, string description)
+        {
+            _localLog.AddLog(t, title, description);
+            _logs.Add(new Log(_fnLogInitPackage.ProgramName, _fnLogInitPackage.ProgramVersion.ToString(),
+                FnLogClientVersion.ToString(), _localLog.UUID.ToString(), title, description, ((int) t)));
+            if (_logs.Count == 40)
+            {
+                ProcessLogList();
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void ProcessLogList()
+        {
+            var cloneList = new List<Log>();
+
+            foreach (var log in _logs)
+            {
+                cloneList.Add((Log) log.Clone());
+            }
+
+            _logs.Clear();
+
+            if (cloneList.Count > 0)
+            {
+                LogPackage(cloneList);
+            }
+        }
+
+        private void LogPackage(List<Log> logs)
+        {
+            List<Log> logsToSend = FilterPackage(logs);
+            if (logsToSend.Count > 0)
+            {
+                FnLogClient.SendLogPackage(logs, _fnLogInitPackage.LogServer);
+            }
+        }
+
+        private List<Log> FilterPackage(List<Log> logs)
+        {
+            var logsToSend = new List<Log>();
+            foreach (var log in logs)
+            {
+                if (_fnLogInitPackage.Telemetry != TelemetryType.LogLocalOnly)
+                {
+                    if ((
+                            log.LogType == (int) LogType.CriticalError ||
+                            log.LogType == (int) LogType.Error ||
+                            log.LogType == (int) LogType.Warning) ||
+                        _fnLogInitPackage.Telemetry == TelemetryType.LogLocalSendAll
+                    )
+                    {
+                        logsToSend.Add(log);
+                    }
+                }
+            }
+
+            return logsToSend;
+        }
+
+        private void LogPackLocal(List<Log> logs)
+        {
+            foreach (var log in logs)
+            {
+                _localLog.AddLog(log.LogType, log.Title, log.Description);
+            }
+        }
+
 
         /// <summary>
         /// Gets all logs of a LogType
