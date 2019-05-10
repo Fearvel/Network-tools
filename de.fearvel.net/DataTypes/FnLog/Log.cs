@@ -50,7 +50,18 @@ namespace de.fearvel.net.DataTypes.FnLog
         /// </summary>
         public string UUID;
 
-        public Log(string programName, string programVersion, string fnLogClientVersion, string uuid, string title, string description, int logType )
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="programName"></param>
+        /// <param name="programVersion"></param>
+        /// <param name="fnLogClientVersion"></param>
+        /// <param name="uuid"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="logType"></param>
+        public Log(string programName, string programVersion, string fnLogClientVersion, string uuid, string title,
+            string description, int logType)
         {
             ProgramName = programName;
             ProgramVersion = programVersion;
@@ -58,12 +69,24 @@ namespace de.fearvel.net.DataTypes.FnLog
             UUID = uuid;
             Title = title;
             Description = description;
-            LogType = logType;          
+            LogType = logType;
         }
-        public Log() {}
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        public Log()
+        {
+        }
+
+        /// <summary>
+        /// clone function
+        /// </summary>
+        /// <returns></returns>
         public object Clone()
         {
-            return new Log(this.ProgramName,this.ProgramVersion,this.FnLogClientVersion,this.UUID, this.Title, this.Description,this.LogType);
+            return new Log(this.ProgramName, this.ProgramVersion, this.FnLogClientVersion, this.UUID, this.Title,
+                this.Description, this.LogType);
         }
     }
 }

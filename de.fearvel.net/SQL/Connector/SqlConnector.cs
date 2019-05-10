@@ -13,7 +13,7 @@ namespace de.fearvel.net.SQL.Connector
     public abstract class SqlConnector
     {
         /// <summary>
-        /// DB Connection
+        /// DB Connection       
         /// </summary>
         protected DbConnection Connect = null;
 

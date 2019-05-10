@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using de.fearvel.net.DataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
 using Quobject.SocketIoClientDotNet.Client;
@@ -13,7 +12,7 @@ namespace de.fearvel.net.SocketIo
     public static class SocketIoClient
     {
         /// <summary>
-        /// Sends request and receives a serialized DataType async
+        /// Sends a request to the SocketIo and receives a Task containing a JSON string that can be deserialized to Type T
         /// </summary>
         /// <typeparam name="T">T</typeparam>
         /// <param name="serverUrl">serverUrl</param>
@@ -30,7 +29,7 @@ namespace de.fearvel.net.SocketIo
                 acceptSelfSigned, timeout);
 
         /// <summary>
-        /// Sends request and receives a serialized DataType async
+        /// Sends a request  to the SocketIo and receives a Task containing a JSON string that can be deserialized to Type T
         /// </summary>
         /// <typeparam name="T">T</typeparam>
         /// <param name="serverUrl">serverUrl</param>
@@ -47,7 +46,7 @@ namespace de.fearvel.net.SocketIo
                 acceptSelfSigned, timeout));
 
         /// <summary>
-        /// Sends request and receives a serialized DataType
+        /// Sends a request to the SocketIo Server and receives a JSON string that can be deserialized to Type T
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="serverUrl">serverUrl</param>
@@ -87,6 +86,7 @@ namespace de.fearvel.net.SocketIo
 
         /// <summary>
         /// Creates a Socket
+        /// if accept acceptSelfSigned is true certificate validity will be ignored 
         /// </summary>
         /// <param name="serverUrl">URL</param>
         /// <param name="acceptSelfSigned">boolean</param>

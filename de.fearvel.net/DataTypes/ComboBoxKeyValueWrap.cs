@@ -13,11 +13,13 @@
 
         /// <summary>
         /// ValueString
+        /// this will be shown in the ComboBox
         /// </summary>
         public string Value { get; private set; }
 
         /// <summary>
         /// Constructor
+        /// sets the Key and Value Properties
         /// </summary>
         /// <param name="key"></param>
         /// <param name="val"></param>
@@ -26,9 +28,10 @@
             Key = key;
             Value = val;
         }
+
        /// <summary>
-       /// ToString()
-       /// used to only display the value in the ComboBox
+       /// This ToString function is the reason why
+       /// something else than the ClassName will be displayed in the ComboBox 
        /// </summary>
        /// <returns></returns>
         public override string ToString()

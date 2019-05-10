@@ -8,21 +8,24 @@ namespace de.fearvel.net.Manastone
 {
     /// <summary>
     /// Manastone Database management class
+    /// used for the local storage of the License information
     /// </summary>
     internal sealed class ManastoneDatabase
     {
         private readonly SqliteConnector _con;
 
         /// <summary>
-        /// SerialNumber Property
+        /// the SerialNumber Key can by accessed by this property if an SerialNumber key exists 
         /// </summary>
         internal string SerialNumber { get; private set; }
 
-
+        /// <summary>
+        /// internal FnLog 
+        /// </summary>
         internal FnLog.FnLog Log {get; private set;}
 
         /// <summary>
-        /// ActivationKey Property
+        /// the ActivationKey can by accessed by this property if an ActivationKey exists 
         /// </summary>
         internal string ActivationKey { get; private set; }
 
@@ -32,35 +35,38 @@ namespace de.fearvel.net.Manastone
         internal string Token { get; private set; }
 
         /// <summary>
-        /// CustomerReference Property
+        /// the CustomerReference Key can by accessed by this property if an CustomerReference exists 
         /// </summary>
         internal string CustomerReference { get; private set; }
 
         /// <summary>
         /// public constructor
+        /// Creates or opens the *.db
+        /// May create missing tables
+        /// Uses the Cpu1 id for encryption
         /// </summary>
         internal ManastoneDatabase()
         {
             // _con = new SqliteConnector("Manastone.db"); //DEBUG
             _con = new SqliteConnector("Manastone.db", Ident.GetCPUId());
-            Log = new FnLog.FnLog(new FnLog.FnLog.FnLogInitPackage("https://log.fearvel.de",
+            Log = new FnLog.FnLog(new FnLog.FnLog.FnLogInitPackage("https://app.fearvel.de:9020/",
                     "MANASTONE", Version.Parse(ManastoneClient.ClientVersion), FnLog.FnLog.TelemetryType.LogLocalSendAll, "", ""),
                 _con);
             CreateTables();
             LoadLicenseInformation();
            
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo,"Manastone DB INIT Complete","");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "Manastone DB INIT Complete","");
         }
 
         /// <summary>
-        /// Reads the License Information from the Database
+        /// Reads the License Information from the Database and fills the properties with it
         /// </summary>
         private void LoadLicenseInformation()
         {
             
             if (LicenseInstalled())
             {
-                Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "LoadLicenseInformation", "License Found");
+                Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "LoadLicenseInformation", "License Found");
                 _con.Query("SELECT * FROM `License`;", out DataTable dt);
                 var row = dt.Rows[0];
                 SerialNumber = row.Field<string>("SerialNumber");
@@ -70,7 +76,7 @@ namespace de.fearvel.net.Manastone
             }
             else
             {
-                Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "LoadLicenseInformation", "License NOT Found");
+                Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "LoadLicenseInformation", "License NOT Found");
                 SerialNumber = "";
                 ActivationKey = "";
                 Token = "";
@@ -81,12 +87,12 @@ namespace de.fearvel.net.Manastone
         /// <summary>
         /// bool which reflects if a license is installed
         /// </summary>
-        /// <returns></returns>
+        /// <returns>a bool true if license existent</returns>
         internal bool LicenseInstalled()
         {
             _con.Query("SELECT EXISTS (SELECT * FROM `License`) as LicenseInstalled;", out DataTable dt);
             var licInst = dt.Rows[0].Field<long>("LicenseInstalled") == 1;
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "LoadLicenseInformation", licInst.ToString());
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "LoadLicenseInformation", licInst.ToString());
             return licInst;
         }
 
@@ -95,7 +101,7 @@ namespace de.fearvel.net.Manastone
         /// </summary>
         private void DeleteFromLicense()
         {
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "DeleteFromLicense", "");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "DeleteFromLicense", "");
             _con.NonQuery("DELETE FROM `License`;");
         }
 
@@ -106,7 +112,7 @@ namespace de.fearvel.net.Manastone
         /// <param name="serialNumber"></param>
         internal void InsertSerialNumber(string serialNumber)
         {
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertSerialNumber", "Start");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertSerialNumber", "Start");
             if (LicenseInstalled())
                 DeleteFromLicense();
             var command = new SQLiteCommand("INSERT INTO `License` (`SerialNumber`) VALUES (@SerialNumber);");
@@ -114,18 +120,18 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertSerialNumber", "Complete");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertSerialNumber", "Complete");
             }
 
         /// <summary>
         /// Inserts a ActivationKey into the Database
         /// also triggers LoadLicenseInformation();
         /// </summary>
-        /// <param name="serialNumber"></param>
-        /// <param name="activationKey"></param>
+        /// <param name="serialNumber">the serialNumber for identification of the row to be used</param>
+        /// <param name="activationKey">the activationKey which will be updated</param>
         internal void InsertActivationKey(string serialNumber, string activationKey)
         {
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertActivationKey", "Start");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertActivationKey", "Start");
             var command =
                 new SQLiteCommand(
                     "UPDATE `License` set `ActivationKey` = @ActivationKey where `SerialNumber` = @SerialNumber;");
@@ -134,18 +140,18 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertActivationKey", "Complete");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertActivationKey", "Complete");
         }
 
         /// <summary>
         /// Inserts a Token into the Database
         /// also triggers LoadLicenseInformation();
         /// </summary>
-        /// <param name="activationKey"></param>
-        /// <param name="token"></param>
+        /// <param name="activationKey">the activationKey for identification of the row to be used</param>
+        /// <param name="token">the token which will be updated</param>
         internal void InsertToken(string activationKey, string token)
         {
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertToken", "Start");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertToken", "Start");
             var command =
                 new SQLiteCommand("UPDATE `License` set `Token` = @Token where `ActivationKey` = @ActivationKey;");
             command.Parameters.AddWithValue("@Token", token);
@@ -153,18 +159,18 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertToken", "Complete");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertToken", "Complete");
         }
 
         /// <summary>
         /// Inserts a CustomerReference into the Database
         /// also triggers LoadLicenseInformation();
         /// </summary>
-        /// <param name="activationKey"></param>
-        /// <param name="customerReference"></param>
+        /// <param name="activationKey">the activationKey for identification of the row to be used</param>
+        /// <param name="customerReference">the customerReference which will be updated</param>
         internal void InsertCustomerReference(string activationKey, string customerReference)
         {
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertCustomerReference", "Start");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertCustomerReference", "Start");
             var command = new SQLiteCommand("UPDATE `License` set `CustomerReference` = @CustomerReference" +
                                             " where `ActivationKey` = @ActivationKey;");
             command.Parameters.AddWithValue("@CustomerReference", customerReference);
@@ -172,24 +178,25 @@ namespace de.fearvel.net.Manastone
             command.Prepare();
             _con.NonQuery(command);
             LoadLicenseInformation();
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "InsertCustomerReference", "Complete");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "InsertCustomerReference", "Complete");
         }
 
 
         /// <summary>
         /// function to create the Tables
+        /// creates the basic tables if they are not existent
         /// </summary>
         private void CreateTables()
         {
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CreateTables", "Start");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "CreateTables", "Start");
             CreateDirectoryTable();
             CreateLicenseTable();
-            Log.AddToLogList(FnLog.FnLog.LogType.RuntimeInfo, "CreateTables", "Complete");
+            Log.AddToLogList(FnLog.FnLog.LogType.DrmDatabaseLog, "CreateTables", "Complete");
 
         }
 
         /// <summary>
-        /// Creates the Directory Table
+        /// Creates the Directory Table if not exists
         /// which is there for later use
         /// </summary>
         private void CreateDirectoryTable()
@@ -201,7 +208,7 @@ namespace de.fearvel.net.Manastone
         }
 
         /// <summary>
-        /// Creates the License Table
+        /// Creates the License Table if not exists
         /// </summary>
         private void CreateLicenseTable()
         {

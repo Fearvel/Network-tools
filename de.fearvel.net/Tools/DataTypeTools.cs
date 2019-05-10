@@ -11,10 +11,11 @@ namespace de.fearvel.net.Tools
     {
         /// <summary>
         /// Simple check for a data type
+        /// checks if o is of Type t
         /// if data types wont match throws WrongDataTypeReceivedException
         /// </summary>
-        /// <typeparam name="T">T</typeparam>
-        /// <param name="o">object to be checked of being T</param>
+        /// <typeparam name="T">Type T</typeparam>
+        /// <param name="o">object to be checked of being Type T</param>
         public static void CheckDataType<T>(object o)
         {
             if (o.GetType() != typeof(T))
@@ -25,11 +26,11 @@ namespace de.fearvel.net.Tools
 
         /// <summary>
         /// Simple check for a data type
-        /// if the specified data type wont match it compares to a SimpleResult
+        /// checks if o is of Type t or SimpleResult
         /// if both data types wont match throws WrongDataTypeReceivedException
         /// </summary>
         /// <typeparam name="T">T</typeparam>
-        /// <param name="o">object to be checked of being T or SimpleResult</param>
+        /// <param name="o">object to be checked of being Type T or Type SimpleResult</param>
         public static void CheckDataTypeIncludeSimpleResult<T>(object o)
         {
             if (o.GetType() != typeof(T) && o.GetType() != typeof(SimpleResult))

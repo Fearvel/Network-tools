@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using de.fearvel.net.DataTypes.AbstractDataTypes;
+﻿using de.fearvel.net.DataTypes.AbstractDataTypes;
 
 namespace de.fearvel.net.DataTypes
 {
+    /// <summary>
+    /// Simple wrapper for a version(string)
+    /// used for serialization
+    /// </summary>
     public class VersionWrapper: JsonSerializable<VersionWrapper>
     {
+        /// <summary>
+        /// the Version string
+        /// </summary>
         public string Version;
-
-    }
+        }
 }

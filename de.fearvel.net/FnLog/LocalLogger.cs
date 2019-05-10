@@ -25,7 +25,7 @@ namespace de.fearvel.net.FnLog
         /// <summary>
         /// Getter for the UUID
         /// </summary>
-        /// <returns>GUID</returns>
+        /// <returns>UUID</returns>
         internal Guid GetUUID()
         {
             Connection.Query("Select DVal from Directory where DKey = 'LoggerUUID';", out DataTable dt);
@@ -36,6 +36,7 @@ namespace de.fearvel.net.FnLog
 
         /// <summary>
         /// Constructor
+        /// calls the LocalLogger(string fileName, string encKey) constructor with encKey = ""
         /// </summary>
         /// <param name="fileName"></param>
         public LocalLogger(string fileName) : this(fileName, "")
@@ -44,6 +45,9 @@ namespace de.fearvel.net.FnLog
 
         /// <summary>
         /// Constructor
+        /// Creates a Database Connection
+        /// Creates Tables if not Exists
+        /// fills the UUID property
         /// </summary>
         /// <param name="fileName">FileLocation</param>
         /// <param name="encKey">Password</param>
@@ -55,7 +59,10 @@ namespace de.fearvel.net.FnLog
         }
 
         /// <summary>
-        /// Constructor TESTING
+        /// Constructor
+        /// uses an Existent database connection
+        /// Creates Tables if not Exists
+        /// fills the UUID property
         /// </summary>
         /// <param name="con">DB connection</param>
         public LocalLogger(SqliteConnector con)
@@ -119,7 +126,7 @@ namespace de.fearvel.net.FnLog
         }
 
         /// <summary>
-        /// Adds a log
+        /// Adds a log to the Databases
         /// </summary>
         /// <param name="logType">logType</param>
         /// <param name="title">title</param>
@@ -139,14 +146,14 @@ namespace de.fearvel.net.FnLog
         }
 
         /// <summary>
-        /// BoolToInt
+        /// BoolToInt conversion
         /// </summary>
         /// <param name="b">bool</param>
         /// <returns>int</returns>
         private int BoolToInt(bool b) => b ? 1 : 0;
 
         /// <summary>
-        /// Adds a log
+        /// Adds a log to the Databases
         /// </summary>
         /// <param name="logType">logType</param>
         /// <param name="title">title</param>
@@ -156,7 +163,7 @@ namespace de.fearvel.net.FnLog
 
 
         /// <summary>
-        /// Returns Errors and Warnings
+        /// Returns a DataTable containing Errors and Warnings
         /// </summary>
         /// <returns>DataTable</returns>
         public DataTable GetErrorsAndWarnings()
@@ -173,7 +180,7 @@ namespace de.fearvel.net.FnLog
         }
 
         /// <summary>
-        /// Gets Logs of a specific Type
+        /// Returns Logs of a specific Type as DataTable
         /// </summary>
         /// <param name="t">FnLog.LogType</param>
         /// <returns>DataTable</returns>
@@ -184,12 +191,12 @@ namespace de.fearvel.net.FnLog
         }
 
         /// <summary>
-        /// Return the whole table
+        /// Returns all logs as DataTable
         /// </summary>
         /// <returns>DataTable</returns>
-        internal DataTable DumpLog()
+        public DataTable GetLog()
         {
-            Connection.Query("Select * from Log;", out DataTable dt);
+            Connection.Query("Select * from Log order by Id desc;", out DataTable dt);
             return dt;
         }
     }

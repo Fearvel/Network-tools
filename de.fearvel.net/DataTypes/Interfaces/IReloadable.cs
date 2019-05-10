@@ -6,6 +6,9 @@
     /// </summary>
     public interface IReloadable
     {
+        /// <summary>
+        /// Reload function, which needs to be implemented
+        /// </summary>
         void Reload();
     }
 }

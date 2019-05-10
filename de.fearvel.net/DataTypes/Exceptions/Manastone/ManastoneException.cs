@@ -7,10 +7,16 @@ namespace de.fearvel.net.DataTypes.Exceptions.Manastone
     /// </summary>
     public abstract class ManastoneException : Exception
     {
+        /// <summary>
+        /// constructor
+        /// </summary>
         protected ManastoneException() : base()
         {
         }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         protected ManastoneException(string message) : base(message)
         {
         }

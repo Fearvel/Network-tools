@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using de.fearvel.net.DataTypes.AbstractDataTypes;
+﻿using de.fearvel.net.DataTypes.AbstractDataTypes;
 
 namespace de.fearvel.net.DataTypes
 {
+    /// <summary>
+    /// testing
+    /// </summary>
    public class CustomInit : JsonSerializable<CustomInit>
    {
-       public string FnLogUrl;
-       public string ManastoneUrl;
+        /// <summary>
+        /// the FnLog Server Url as string
+        /// </summary>
+        public string FnLogUrl;
+        /// <summary>
+        /// the Manastone Server Url as string
+        /// </summary>
+        public string ManastoneUrl;
    }
 }

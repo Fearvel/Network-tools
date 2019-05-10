@@ -1,25 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace de.fearvel.net.Security
 {
+    /// <summary>
+    /// Class for identifying devices and more
+    /// </summary>
    public class Ident
     {
 
+        /// <summary>
+        /// Returns the first CPU ID of the installed processer
+        /// uses System.Management to get this information
+        /// </summary>
+        /// <returns>cpu1 id as string</returns>
         // ReSharper disable once InconsistentNaming
         public static string GetCPUId()
         {
             string cpuid = string.Empty;
             ManagementClass man = new ManagementClass("win32_processor");
             ManagementObjectCollection moc = man.GetInstances();
-            foreach (ManagementObject mob in moc)
+            foreach (var o in moc)
             {
+                var mob = (ManagementObject) o;
                 if (cpuid == "")
                 {
                     cpuid = mob.Properties["processorID"].Value.ToString();
@@ -29,7 +33,11 @@ namespace de.fearvel.net.Security
             return cpuid;
         }
 
-
+        /// <summary>
+        /// Returns the fileVersion of this assembly
+        /// uses System.Diagnostics
+        /// </summary>
+        /// <returns>file version of this assembly</returns>
         public static Version GetFileVersion()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();

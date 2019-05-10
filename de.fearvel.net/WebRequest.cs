@@ -17,7 +17,7 @@ namespace de.fearvel.net
         /// <summary>
         /// Downloads file to MemoryStream
         /// </summary>
-        /// <param name="url">URL</param>
+        /// <param name="url">URL of the File on the Web-server</param>
         /// <returns>Memory Stream containing a file</returns>
         public static MemoryStream Download(string url)
         {
@@ -50,7 +50,7 @@ namespace de.fearvel.net
         }
 
         /// <summary>
-        /// Sends a Post Request
+        /// Sends a Post Request to a for example php script on a webserver
         /// </summary>
         /// <param name="data">Dictionary of string string containing form keys and Content </param>
         /// <param name="serverUrl">URL</param>
@@ -75,6 +75,7 @@ namespace de.fearvel.net
 
         /// <summary>
         /// Function to bypass certificate validity checks
+        /// used for socketio Client
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="x509Certificate"></param>

@@ -13,7 +13,8 @@ namespace de.fearvel.net.Security.Crypto
     public static class SimpleDES
     {
         /// <summary>
-        /// Encrypts string
+        /// Encrypts a string
+        /// uses System.Security.Cryptography
         /// </summary>
         /// <param name="source">string to be encrypted</param>
         /// <param name="key">password</param>
@@ -43,7 +44,8 @@ namespace de.fearvel.net.Security.Crypto
         }
 
         /// <summary>
-        /// Decrypts string
+        /// Decrypts a string
+        /// uses System.Security.Cryptography
         /// </summary>
         /// <param name="encryptedText"> encryptedText</param>
         /// <param name="key">password</param>

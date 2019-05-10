@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
-using de.fearvel.net.DataTypes;
+using System.Threading;
 using de.fearvel.net.DataTypes.AbstractDataTypes;
 using de.fearvel.net.DataTypes.Exceptions;
 using de.fearvel.net.DataTypes.FnLog;
-using de.fearvel.net.Gui.wpf;
 using de.fearvel.net.SQL.Connector;
 
 namespace de.fearvel.net.FnLog
@@ -18,7 +17,7 @@ namespace de.fearvel.net.FnLog
     public class FnLog
     {
         /// <summary>
-        /// Version of FnLog
+        /// Version of FnLog Client
         /// </summary>
         public static Version FnLogClientVersion => Version.Parse("2.000.0005.0000");
 
@@ -38,9 +37,9 @@ namespace de.fearvel.net.FnLog
         private readonly FnLogInitPackage _fnLogInitPackage;
 
         /// <summary>
-        /// LocalLogger
+        /// LocalLogger instance
         /// </summary>
-        private LocalLogger _localLog;
+        private readonly LocalLogger _localLog;
 
         /// <summary>
         /// LogType enum
@@ -57,13 +56,17 @@ namespace de.fearvel.net.FnLog
             StartupLog,
             MinorStartupLog,
             MajorStartupLog,
+            StartupError,
             DrmLog,
             MinorDrmLog,
-            MajorDrmLog
+            MajorDrmLog,
+            DrmDatabaseLog,
+            DrmError
         };
 
         /// <summary>
         /// TelemetryType enum
+        /// determines if and how much logs will be transmitted
         /// </summary>
         public enum TelemetryType : int
         {
@@ -72,11 +75,13 @@ namespace de.fearvel.net.FnLog
             LogLocalSendAll
         }
 
+        /// <summary>
+        /// list of logs to reduce the amount of queries 
+        /// </summary>
         private List<Log> _logs;
 
-
         /// <summary>
-        /// Set Instance for the singleton
+        /// Set Instance for the Singleton
         /// </summary>
         /// <param name="fip">FnLogInitPackage</param>
         public static void SetInstance(FnLogInitPackage fip)
@@ -86,6 +91,7 @@ namespace de.fearvel.net.FnLog
 
         /// <summary>
         /// Set Instance for the singleton
+        /// this will use a existing SqliteConnector
         /// </summary>
         /// <param name="fip">FnLogInitPackage</param>
         /// <param name="con">for integration in a existing sqlite db</param>
@@ -112,9 +118,11 @@ namespace de.fearvel.net.FnLog
         /// <returns>enum value of the LogType</returns>
         public static LogType ParseLogType(int i) => (LogType) i;
 
-
         /// <summary>
         /// Constructor
+        /// creates an empty List of Log
+        /// fills properties
+        /// creates the LocalLogger instance
         /// </summary>
         /// <param name="fip">FnLogInitPackage</param>
         internal FnLog(FnLogInitPackage fip)
@@ -125,9 +133,11 @@ namespace de.fearvel.net.FnLog
                 _fnLogInitPackage.FileName, _fnLogInitPackage.EncryptionKey);
         }
 
-
         /// <summary>
-        /// 
+        /// Constructor used for using an existend SqliteConnection
+        /// creates an empty List of Log
+        /// fills properties
+        /// creates the LocalLogger instance
         /// </summary>
         /// <param name="fip">FnLogInitPackage</param>
         /// <param name="con">for integration in a existing sqlite db</param>
@@ -139,13 +149,17 @@ namespace de.fearvel.net.FnLog
             _localLog = new LocalLogger(con);
         }
 
+        /// <summary>
+        /// Deconstructor
+        /// used to write the List of Log to the database and or send it to the Server
+        /// </summary>
         ~FnLog()
         {
             ProcessLogList();
         }        
 
         /// <summary>
-        /// writes and or sends a log
+        /// writes and or sends a log, depending on the TelemetryType
         /// </summary>
         /// <param name="t">LogType</param>
         /// <param name="title">title</param>
@@ -187,18 +201,28 @@ namespace de.fearvel.net.FnLog
             }
         }
 
-
+        /// <summary>
+        /// Adds a log to the logList to reduce the amount of queries
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddToLogList(LogType t, string title, string description)
         {
-            _localLog.AddLog(t, title, description);
+        //    _localLog.AddLog(t, title, description);
             _logs.Add(new Log(_fnLogInitPackage.ProgramName, _fnLogInitPackage.ProgramVersion.ToString(),
                 FnLogClientVersion.ToString(), _localLog.UUID.ToString(), title, description, ((int) t)));
-            if (_logs.Count == 40)
+            if (_logs.Count == 100)
             {
                 ProcessLogList();
             }
         }
 
+        /// <summary>
+        /// writes the logList to the internal database
+        /// and sends logs to the fnLog server
+        /// </summary>
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void ProcessLogList()
         {
@@ -206,6 +230,7 @@ namespace de.fearvel.net.FnLog
 
             foreach (var log in _logs)
             {
+                _localLog.AddLog(log.LogType,log.Title,log.Description);
                 cloneList.Add((Log) log.Clone());
             }
 
@@ -217,15 +242,34 @@ namespace de.fearvel.net.FnLog
             }
         }
 
+        /// <summary>
+        /// testing!
+        /// like ProcessLogList just threaded
+        /// </summary>
+        /// <returns></returns>
+        internal Thread ThreadedProcessLogList()
+        {
+            return new Thread(ProcessLogList);
+        }
+
+        /// <summary>
+        /// sends logs list to the server
+        /// </summary>
+        /// <param name="logs"></param>
         private void LogPackage(List<Log> logs)
         {
-            List<Log> logsToSend = FilterPackage(logs);
+            var logsToSend = FilterPackage(logs);
             if (logsToSend.Count > 0)
             {
                 FnLogClient.SendLogPackage(logs, _fnLogInitPackage.LogServer);
             }
         }
 
+        /// <summary>
+        /// creates a sublist depending on the TelemetryTypeSettings
+        /// </summary>
+        /// <param name="logs"></param>
+        /// <returns></returns>
         private List<Log> FilterPackage(List<Log> logs)
         {
             var logsToSend = new List<Log>();
@@ -248,6 +292,10 @@ namespace de.fearvel.net.FnLog
             return logsToSend;
         }
 
+        /// <summary>
+        /// logs a list of log locally in the SQLite DB
+        /// </summary>
+        /// <param name="logs"></param>
         private void LogPackLocal(List<Log> logs)
         {
             foreach (var log in logs)
@@ -256,9 +304,8 @@ namespace de.fearvel.net.FnLog
             }
         }
 
-
         /// <summary>
-        /// Gets all logs of a LogType
+        /// Returns a DataTable containing all logs of a LogType
         /// </summary>
         /// <param name="t">LogType</param>
         /// <returns>DataTable</returns>
@@ -266,7 +313,15 @@ namespace de.fearvel.net.FnLog
             _localLog.GetLog(t);
 
         /// <summary>
-        /// Gets all Error and Warning Logs
+        /// Returns a DataTable containing all logs
+        /// </summary>
+        /// <param name="t">LogType</param>
+        /// <returns>DataTable</returns>
+        public DataTable GetLog() =>
+            _localLog.GetLog();
+
+        /// <summary>
+        /// Returns a DataTable containing all Error and Warning Logs
         /// </summary>
         /// <returns>DataTable</returns>
         public DataTable GetErrorsAndWarnings() =>
@@ -274,6 +329,7 @@ namespace de.fearvel.net.FnLog
 
         /// <summary>
         /// Class for init package
+        /// Á Package containing all Information needed to init the FnLog Client
         /// </summary>
         public class FnLogInitPackage : JsonSerializable<FnLogInitPackage>
         {
@@ -309,6 +365,7 @@ namespace de.fearvel.net.FnLog
 
             /// <summary>
             /// Constructor
+            /// fills the Variables with values
             /// </summary>
             /// <param name="logServer">LogServer URL</param>
             /// <param name="programName">programName</param>

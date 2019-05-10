@@ -1,15 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using de.fearvel.net.DataTypes;
-using de.fearvel.net.DataTypes.AbstractDataTypes;
-using de.fearvel.net.DataTypes.Exceptions;
 using de.fearvel.net.DataTypes.FnLog;
 using de.fearvel.net.DataTypes.SocketIo;
 using de.fearvel.net.SocketIo;
-using Quobject.SocketIoClientDotNet.Client;
 using Newtonsoft.Json;
 
 namespace de.fearvel.net.FnLog
@@ -22,7 +15,7 @@ namespace de.fearvel.net.FnLog
     {
         /// <summary>
         /// ThreadedLogSender
-        /// Class for sending a log as a thread
+        /// Class for sending a log as a thread       
         /// <copyright>Andreas Schreiner 2019</copyright>
         /// </summary>
         private class ThreadedLogSender
@@ -38,7 +31,7 @@ namespace de.fearvel.net.FnLog
             private readonly string _serverUrl;
 
             /// <summary>
-            /// boll for accepting self signed certificates
+            /// bool == true for accepting self signed certificates
             /// </summary>
             private readonly bool _acceptSelfSigned;
 
@@ -47,8 +40,20 @@ namespace de.fearvel.net.FnLog
             /// </summary>
             private readonly int _timeout;
 
+            /// <summary>
+            /// the name of the event on the server
+            /// </summary>
             private readonly string _senderEventName;
 
+
+            /// <summary>
+            /// sends log threaded
+            /// </summary>
+            /// <param name="log"></param>
+            /// <param name="serverUrl"></param>
+            /// <param name="acceptSelfSigned"></param>
+            /// <param name="timeout"></param>
+            /// <param name="senderEventName"></param>
             public ThreadedLogSender(string log, string serverUrl, bool acceptSelfSigned = true,
                 int timeout = 20000, string senderEventName = "log")
             {
@@ -78,12 +83,11 @@ namespace de.fearvel.net.FnLog
                   "closer", _senderEventName, _logSerialized);
 
                 }
-                catch (System.Exception e)
+                catch (System.Exception)
                 {
                     // ignored
                 }
             }
-
         }
 
         /// <summary>
@@ -97,6 +101,13 @@ namespace de.fearvel.net.FnLog
             var threadedLogSender = new ThreadedLogSender(log.Serialize(), serverUrl, acceptSelfSigned);
             threadedLogSender.Send();
         }
+
+        /// <summary>
+        /// sends multiple logs as serialized json list of log
+        /// </summary>
+        /// <param name="logs"></param>
+        /// <param name="serverUrl"></param>
+        /// <param name="acceptSelfSigned"></param>
         public static void SendLogPackage(List<Log> logs, string serverUrl, bool acceptSelfSigned = true)
         {
              var logPak = JsonConvert.SerializeObject(logs, Formatting.Indented).Trim().
@@ -105,6 +116,14 @@ namespace de.fearvel.net.FnLog
             threadedLogSender.Send();
         }
 
+        /// <summary>
+        /// testing atm!
+        /// retrieves logs from the fnLog server
+        /// </summary>
+        /// <param name="logRequest"></param>
+        /// <param name="serverUrl"></param>
+        /// <param name="acceptSelfSigned"></param>
+        /// <returns></returns>
         public static List<Log> RetrieveLog(LogRequest logRequest, string serverUrl, bool acceptSelfSigned = true) 
         {
             return SocketIoClient.RetrieveSingleValue<List<Log>>(serverUrl,

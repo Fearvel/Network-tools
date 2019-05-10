@@ -128,12 +128,6 @@ namespace de.fearvel.net
             return ipResult;
         }
 
-        /// <summary>
-        /// Returns am IPStatus
-        /// </summary>
-        /// <param name="ip">IPAddress</param>
-        /// <returns>IPStatus</returns>
-        public IPStatus GetIpStatus(IPAddress ip) => GetIpStatus(ip, 5000);
 
         /// <summary>
         /// Returns am IPStatus
@@ -141,23 +135,11 @@ namespace de.fearvel.net
         /// <param name="ip">IPAddress</param>
         /// <param name="timeout">timeout in ms</param>
         /// <returns>IPStatus</returns>
-        public IPStatus GetIpStatus(IPAddress ip, int timeout) =>
+        public static IPStatus GetIpStatus(IPAddress ip, int timeout  = 5000) =>
             new System.Net.NetworkInformation.Ping().Send(ip, timeout)?.Status ?? IPStatus.BadDestination;
 
-        /// <summary>
-        /// Calculates the theoretical Time the Planed ping will need
-        /// It expects Lan speed and latencies
-        /// on slower networks it will be inaccurate 
-        /// </summary>
-        /// <returns>TimeSpan</returns>
-        public TimeSpan CalculateEstimatedTime()
-        {
-            Double timeEst = CalculateIpRangeIpAddresses().Count * 0.035;
-            return new TimeSpan((((((int) timeEst) / 60) / 60) / 24) % 60,
-                ((((int) timeEst) / 60) / 60) % 60,
-                (((int) timeEst) / 60) % 60,
-                ((int) timeEst) % 60 + 1,
-                (int) ((timeEst % 1) * 1000));
-        }
+        public static bool PingAndCheckSuccess(IPAddress ip, int timeout = 5000) =>
+            GetIpStatus(ip, timeout) == IPStatus.Success;
+
     }
 }
