@@ -12,7 +12,8 @@ namespace de.fearvel.net.SocketIo
     public static class SocketIoClient
     {
         /// <summary>
-        /// Sends a request to the SocketIo and receives a Task containing a JSON string that can be deserialized to Type T
+        /// Sends a request to the SocketIo and receives a Task containing a JSON string that can be
+        /// deserialized to Type T
         /// </summary>
         /// <typeparam name="T">T</typeparam>
         /// <param name="serverUrl">serverUrl</param>
@@ -29,7 +30,8 @@ namespace de.fearvel.net.SocketIo
                 acceptSelfSigned, timeout);
 
         /// <summary>
-        /// Sends a request  to the SocketIo and receives a Task containing a JSON string that can be deserialized to Type T
+        /// Sends a request  to the SocketIo and receives a Task containing a JSON string that can be
+        /// deserialized to Type T
         /// </summary>
         /// <typeparam name="T">T</typeparam>
         /// <param name="serverUrl">serverUrl</param>

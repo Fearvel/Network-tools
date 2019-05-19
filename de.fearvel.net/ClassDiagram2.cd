@@ -1,0 +1,727 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\AbstractDataTypes\JsonSerializable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.ComboBoxDataRowKeyStringValueWrap">
+    <Position X="14.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAgAAAAAgAAAAAAA=</HashCode>
+      <FileName>DataTypes\ComboBoxDataRowKeyStringValueWrap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.ComboBoxKeyValueWrap">
+    <Position X="10.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DataTypes\ComboBoxKeyValueWrap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.CustomInit">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="2.875" />
+        <Point X="2.5" Y="2.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\CustomInit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.DateTimeWrapper">
+    <Position X="2.5" Y="9" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="9.438" />
+        <Point X="2.5" Y="9.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>DataTypes\DateTimeWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.FnPingResult">
+    <Position X="18.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAgAAAAAAAAAAACQAAAIAAgAAAAAAAAABAAQAA=</HashCode>
+      <FileName>DataTypes\FnPingResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.TimeDelay">
+    <Position X="8.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\TimeDelay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.VersionWrapper">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="7.063" />
+        <Point X="6.5" Y="7.063" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\VersionWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.AccessKeyDeclinedException">
+    <Position X="10.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\AccessKeyDeclinedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.ActivationExpiredException">
+    <Position X="10.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\ActivationExpiredException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.InstanceNotSetException">
+    <Position X="18.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\InstanceNotSetException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.NoLicenceKeyRegistredException">
+    <Position X="20.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\NoLicenceKeyRegistredException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.OfferInvalidException">
+    <Position X="20.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\OfferInvalidException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.QueryFailedException">
+    <Position X="20.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\QueryFailedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.RequestDeclinedException">
+    <Position X="20.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\RequestDeclinedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.ResultNullOrNotReceivedException">
+    <Position X="20.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\ResultNullOrNotReceivedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.WrongDataTypeReceivedException">
+    <Position X="20.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\WrongDataTypeReceivedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.Manastone.ActivationFailedException">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.Exceptions.Manastone.ManastoneException" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12" Y="1.125" />
+        <Point X="12.24" Y="1.125" />
+        <Point X="12.24" Y="4.188" />
+        <Point X="12" Y="4.188" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\Manastone\ActivationFailedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.Manastone.FailedToRetrieveTokenException">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.Exceptions.Manastone.ManastoneException" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12" Y="1.125" />
+        <Point X="12.24" Y="1.125" />
+        <Point X="12.24" Y="2.625" />
+        <Point X="12" Y="2.625" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\Manastone\FailedToRetrieveTokenException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.Manastone.ManastoneException">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\Manastone\ManastoneException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Exceptions.Manastone.ManastoneOfferNotReceivedCorrectlyException">
+    <Position X="10.5" Y="5" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.Exceptions.Manastone.ManastoneException" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12" Y="1.125" />
+        <Point X="12.24" Y="1.125" />
+        <Point X="12.24" Y="5.562" />
+        <Point X="12" Y="5.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Exceptions\Manastone\ManastoneOfferNotReceivedCorrectlyException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.FnLog.Log">
+    <Position X="4.5" Y="5.5" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="7.062" />
+        <Point X="6" Y="7.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAICQAAAAAAgAEAAEAAAAQAAAAAAAAAAAAEAAAAAABA=</HashCode>
+      <FileName>DataTypes\FnLog\Log.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.FnLog.LogRequest">
+    <Position X="6.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>DataTypes\FnLog\LogRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.FnLog.LogSet">
+    <Position X="4.5" Y="13.25" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="13.812" />
+        <Point X="6" Y="13.812" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\FnLog\LogSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.ActivationOffer">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="7.375" />
+        <Point X="2" Y="7.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAQBAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\ActivationOffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.ActivationOnlineCheckOffer">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="11.688" />
+        <Point X="2" Y="11.688" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAADAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\ActivationOnlineCheckOffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.ActivationOnlineCheckRequest">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="5.062" />
+        <Point X="2.5" Y="5.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAIAAAAAAAAAAAAEAQBAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\ActivationOnlineCheckRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.ActivationRequest">
+    <Position X="4.5" Y="1.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="3" />
+        <Point X="6" Y="3" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAEAAACAAACCAAAAAEAAAAgEAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\ActivationRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.CheckTokenOffer">
+    <Position X="2.5" Y="10.5" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="11.688" />
+        <Point X="2.5" Y="11.688" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAIAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\CheckTokenOffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.CheckTokenRequest">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="3" />
+        <Point X="6.5" Y="3" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>DataTypes\Manastone\CheckTokenRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.CustomerReferenceOffer">
+    <Position X="6.5" Y="7.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="8.688" />
+        <Point X="6.5" Y="8.688" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\CustomerReferenceOffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.CustomerReferenceRequest">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="2.875" />
+        <Point X="2" Y="2.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAQBAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\CustomerReferenceRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.TokenOffer">
+    <Position X="0.5" Y="8.5" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="9.438" />
+        <Point X="2" Y="9.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>DataTypes\Manastone\TokenOffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.Manastone.TokenRequest">
+    <Position X="0.5" Y="13" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="13.875" />
+        <Point X="2" Y="13.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAQBAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Manastone\TokenRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.SocketIo.CommonResult">
+    <Position X="2.5" Y="6.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="7.375" />
+        <Point X="2.5" Y="7.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>DataTypes\SocketIo\CommonResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.SocketIo.KeyValueWrap">
+    <Position X="2.5" Y="12.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="13.875" />
+        <Point X="2.5" Y="13.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\SocketIo\KeyValueWrap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.SocketIo.OfferWrapper&lt;T&gt;">
+    <Position X="4.5" Y="9" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="10.125" />
+        <Point X="6" Y="10.125" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\SocketIo\OfferWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.SocketIo.SimpleOfferWrapper&lt;T&gt;">
+    <Position X="4.5" Y="11.25" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="12.25" />
+        <Point X="6" Y="12.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\SocketIo\SimpleOfferWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.SocketIo.SimpleResult">
+    <Position X="6.5" Y="9.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="6.26" Y="1.302" />
+        <Point X="6.26" Y="10.375" />
+        <Point X="6.5" Y="10.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\SocketIo\SimpleResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.DataTypes.SocketIo.ValueWrap">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.DataTypes.AbstractDataTypes.JsonSerializable&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.062" />
+        <Point X="4.25" Y="1.302" />
+        <Point X="2.26" Y="1.302" />
+        <Point X="2.26" Y="5.062" />
+        <Point X="2" Y="5.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\SocketIo\ValueWrap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.FnLog.FnLog">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="de.fearvel.net.FnLog.FnLog.LogType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FnLog\FnLog.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="de.fearvel.net.FnLog.FnLog.TelemetryType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FnLog\FnLog.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="de.fearvel.net.FnLog.FnLog.FnLogInitPackage" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FnLog\FnLog.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAEQEAAAAEBAgAAAABCAIAABAggEQBAAAAABAKAAAA=</HashCode>
+      <FileName>FnLog\FnLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.FnLog.FnLogClient">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="de.fearvel.net.FnLog.FnLogClient.ThreadedLogSender" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FnLog\FnLogClient.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAIAAAgAAAAAAAA=</HashCode>
+      <FileName>FnLog\FnLogClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.FnLog.LocalLogger">
+    <Position X="12.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAABAABAAEAFAAEAIAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>FnLog\LocalLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.FnPing">
+    <Position X="18.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAEAAAAAAAEACAgAgAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>FnPing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.WebRequest">
+    <Position X="18.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAIEAAA=</HashCode>
+      <FileName>WebRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Gui.wpf.Adressverwaltung" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Gui\wpf\Adressverwaltung.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="de.fearvel.net.Gui.wpf.RestrictableTableEditor">
+    <Position X="14.5" Y="3.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="de.fearvel.net.Gui.wpf.RestrictableTableEditor.AccessType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Gui\wpf\RestrictableTableEditor.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAkgEAAAAAIABiABAAAAAABhAAAACQAACAAAAAAAAA=</HashCode>
+      <FileName>Gui\wpf\RestrictableTableEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Gui.wpf.RestrictableTableEditorManager" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="de.fearvel.net.Gui.wpf.RestrictableTableEditorManager.TablePermissionWrap" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Gui\wpf\RestrictableTableEditorManager.xaml.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAEABAAAAAAAAAAAAAAARAAAAAAAABAAAAAgAAAAA=</HashCode>
+      <FileName>Gui\wpf\RestrictableTableEditorManager.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="de.fearvel.net.Gui.wpf.SetManager" BaseTypeListCollapsed="true">
+    <Position X="20.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAACAQAAgAAAYAAAQAAAAAAAE=</HashCode>
+      <FileName>Gui\wpf\SetManager.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="de.fearvel.net.Manastone.ManastoneClient">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="de.fearvel.net.Manastone.ManastoneClient.LicenseCheckType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Manastone\ManastoneClient.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIEAEACAIAAAGDAAAACAAAABAwAAAQAQhAAQQAJAAA=</HashCode>
+      <FileName>Manastone\ManastoneClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Manastone.ManastoneDatabase">
+    <Position X="16.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAABAACAABBAAkAAQBAQAAgAAGBAwA=</HashCode>
+      <FileName>Manastone\ManastoneDatabase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Security.Crypto.SimpleDES">
+    <Position X="18.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Crypto\SimpleDES.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Security.Hash.Sha256">
+    <Position X="16.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Hash\Sha256.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Security.Hash.Utils">
+    <Position X="8.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Hash\Utils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Security.Ident">
+    <Position X="6.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Security\Ident.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.SocketIo.SocketIoClient">
+    <Position X="18.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAFIAAAAAAABAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>SocketIo\SocketIoClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.SQL.Connector.MssqlConnector">
+    <Position X="8.5" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.SQL.Connector.SqlConnector" FixedFromPoint="true">
+      <Path>
+        <Point X="10" Y="1.813" />
+        <Point X="10.24" Y="1.813" />
+        <Point X="10.24" Y="4.347" />
+        <Point X="10" Y="4.347" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAABBAAAAA=</HashCode>
+      <FileName>SQL\Connector\MssqlConnector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.SQL.Connector.MysqlConnector">
+    <Position X="8.5" Y="8.25" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.SQL.Connector.SqlConnector" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10" Y="1.813" />
+        <Point X="10.24" Y="1.813" />
+        <Point X="10.24" Y="9.375" />
+        <Point X="10" Y="9.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAABBAAAAA=</HashCode>
+      <FileName>SQL\Connector\MysqlConnector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.SQL.Connector.SqlConnector">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAACAAAAAAAIAAAAAAAAgAAAAABACAAAA=</HashCode>
+      <FileName>SQL\Connector\SqlConnector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.SQL.Connector.SqliteConnector">
+    <Position X="8.5" Y="5.75" Width="1.5" />
+    <InheritanceLine Type="de.fearvel.net.SQL.Connector.SqlConnector" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10" Y="1.813" />
+        <Point X="10.24" Y="1.813" />
+        <Point X="10.24" Y="7.063" />
+        <Point X="10" Y="7.063" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAhBAAAAA=</HashCode>
+      <FileName>SQL\Connector\SqliteConnector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="de.fearvel.net.Tools.DataTypeTools">
+    <Position X="10.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tools\DataTypeTools.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="de.fearvel.net.DataTypes.Interfaces.IReloadable">
+    <Position X="14.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Interfaces\IReloadable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

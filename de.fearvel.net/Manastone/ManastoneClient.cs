@@ -139,7 +139,8 @@ namespace de.fearvel.net.Manastone
         {
             try
             {
-                _database.Log.AddToLogList(FnLog.FnLog.LogType.MajorDrmLog, "Activate", "req " + req.SerialNumber + " " + req.ProductUUID + " " + req.HardwareId); //DEBUG
+                _database.Log.AddToLogList(FnLog.FnLog.LogType.MajorDrmLog, "Activate", "req " + req.SerialNumber +
+                                                                                        " " + req.ProductUUID + " " + req.HardwareId); //DEBUG
 
                 _database.Log.AddToLogList(FnLog.FnLog.LogType.MajorDrmLog, "Activate", "Start");
                 var activationKey =
